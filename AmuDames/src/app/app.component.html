@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <title>AMU dames</title>
   </head>
   <body>
@@ -27,7 +28,7 @@
         </ul>
         <div class="navbar-collapse collapse">
           <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
+              <li class="nav-item" >
                 <div class="info-navbar">
                   <p>
                     <i class="flag flag-china">flag</i> Pseudo <br>
@@ -36,7 +37,7 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a href="#">
+                <a href="#" (click)="open(modalConnexion)">
                   <img class="user-img" src="../assets/images/user/user_blank.png">
                 </a>
               </li>
@@ -44,45 +45,68 @@
       </div>
       </div>
     </nav>
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal fade" id="modalConnexion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          ...
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
 
     <main role="main" class="container">
-      <h1 class="mt-5">Sticky footer with fixed navbar</h1>
-      <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
-      <p>Back to <a href="../sticky-footer/">the default sticky footer</a> minus the navbar.</p>
-    </main>
-
-    <footer class="footer" style="position: sticky;">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
+      <!-- mockup pas connecter-->
+      <div class="jumbotron bg-dark p-5 rounded-lg m-3">
+        <h1 class="display-4 text-white">Bienvenu sur AMU dames !</h1>
+        <p class="lead text-white">
+          AMU dames est un jeu de dame en ligne multijoueur et blablabla
+        </p>
+        <hr class="my-4">
+        <h1><span class="badge badge-secondary">News</span></h1>
+        <!-- exemple de news feed du projet -->
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-dark">17/02/2021</span>
+            <p>lancement du projet amu dame</p>
+          </div>
+        </div>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-danger">17/02/2021</span>
+            <p>rien ne marche</p>
+          </div>
+        </div>
       </div>
+    </main>
+    <!-- MODALS BEGIN -->
+    <ng-template #modalConnexion let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Vous n'êtes pas connecté</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Inscription</button>
+        <button type="button" class="btn btn-outline-success" (click)="modal.close('Save click')">Connexion</button>
+      </div>
+    </ng-template>
+    <!-- MODALS END -->
+    <footer class="footer bg-dark">
+        <p>© PIERARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
-
-    <!-- bootstrap scripts-->
   </body>
 </html>
