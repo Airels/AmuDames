@@ -1,3 +1,11 @@
+/*
+    CODE CREATED BY :
+    YUN Eunsun,
+    IKHLEF Eddy,
+    PIERRARD Kévin,
+    VIZCAINO Yohan,
+*/
+
 import express from 'express';
 import session from 'express-session';
 import usersHandler from './services/users-handler';
