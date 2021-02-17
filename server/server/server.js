@@ -25,6 +25,13 @@ app.post('/register', usersHandler.addUser);
 
 app.post('/login', usersHandler.login);
 
-app.put('/update', usersHandler.updateUser);
+app.use((req, res, next) => { // CHECK IF USER CONNECTED
+    if (req.session.username == undefined) res.sendStatus(401)
+    else next();
+});
 
-app.listen(8080);
+app.put('/user', usersHandler.updateUser);
+
+app.delete('/user', usersHandler.deleteUser);
+
+app.listen(8080, () => console.log("Amudames opened on port 8080"));
