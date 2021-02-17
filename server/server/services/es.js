@@ -10,15 +10,24 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const addUser = () => {
+const addUser = (username, email, password) => {
 
 };
 
-const getUser = () => {
+const userLogin = (username, password) => {
 
 };
 
-const updateUser = () => {
+const getUser = () {
+    byUsername: (username) => {
+
+    },
+    byEmail: (email) => {
+
+    }
+};
+
+const updateUser = (username) => {
 
 };
 
@@ -28,6 +37,7 @@ const deleteUser = () => {
 
 export default {
     addUser,
+    userLogin,
     getUser,
     updateUser,
     deleteUser
