@@ -11,11 +11,15 @@ const handleElasticsearchError = (error) => {
 }
 
 const createParty = () => {
-
+    return 501;
 }
 
 const getParty = () => {
+    return 501;
+}
 
+const updateParty = () => {
+    return 501;
 }
 
 const deleteParty = () => {
@@ -25,5 +29,6 @@ const deleteParty = () => {
 export default {
     createParty,
     getParty,
+    updateParty,
     deleteParty
 };
