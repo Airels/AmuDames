@@ -1,4 +1,5 @@
 import { Server } from 'ws';
+import gameManager from './services/game-manager';
 
 const serverSocket = new Server({port: 8085});
 
@@ -17,11 +18,18 @@ serverSocket.on('connection', (ws) => {
             source = args[1];
             target = args[2];
 
-            // check move
-        } else if (message == 'HELP') {
+            gameManager.checkMoveIsValid(gameID, username, source, target).then(result => {
+                if (result == 1) {
+                    // Broadcast nouveaux états de la case source et la case target + autres possibles cases (mangeage etc...)
+                }
+            });
+        } else if (message = 'INFO') {
+            ws.send('501 - Not Implemented Yet');
+        }else if (message == 'HELP') {
             ws.send("Available commands:\n"
             + "CONNECT <Game ID> <Username> - To connect to a game\n"
             + "MOVE <source pawn> <target pawn> - To move a pawn\n"
+            + "INFO - To display informations you submitted\n"
             + "HELP - I mean.. it's obvious what this command do...");
         } else {
             ws.send('Request unrecognized');

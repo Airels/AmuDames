@@ -36,8 +36,20 @@ const createGame = async (whitePlayer, blackPlayer) => {
     gamesList.push(game);
 }
 
-const checkMoveIsValid = (gameId, username, sourceCase, targetCase) => {
+const checkMoveIsValid = (gameID, username, sourceCase, targetCase) => {
+    var game = game[gameID];
+    
+    if (game == undefined)  return 0;
+    if (game.playerTurn == 0 && game.whiteUser != username) return 0;
+    if (game.playerTurn == 1 && game.blackUser != username) return 0;
 
+    var cases = game.cases;
+
+    if (cases[targetCase] != 0) return 0;
+    if (cases[sourceCase] == 0) return 0;
+
+    if (getPossibleMoves(sourceCase).includes(targetCase))
+        return 1;
 }
 
 function createCases() {
@@ -65,6 +77,14 @@ function createCases() {
     return cases;
 }
 
+function getPossibleMoves(source) {
+
+}
+
 export default {
-    
+    addPlayerWaiting,
+    removePlayerWaiting,
+    matchPlayers,
+    createGame,
+    checkMoveIsValid
 };
