@@ -11,6 +11,7 @@ import session from 'express-session';
 import usersHandler from './services/users-handler';
 import explRouter from './routes/expl-routes';
 import gameRouter from './routes/game-routes';
+import newsRouter from './routes/news-routes';
 import serverSocket from './server-socket';
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static('./app/AmuDames/'));
 // Routers
 app.use('/expl', explRouter);
 app.use('/game', gameRouter);
+app.use('/news', newsRouter);
 
 // Main route
 app.get('/', (req, res) => {
