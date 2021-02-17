@@ -3,6 +3,7 @@ import session from 'express-session';
 import usersHandler from './services/users-handler';
 import explRouter from './routes/expl-routes';
 import gameRouter from './routes/game-routes';
+import serverSocket from './server-socket';
 
 const app = express();
 var sess = {

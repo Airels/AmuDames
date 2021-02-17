@@ -12,7 +12,7 @@ async function updateGame(req, res) {
     res.sendStatus(501);
 }
 
-async function getGame(req, res) {
+async function deleteGame(req, res) {
     res.sendStatus(403);
 }
 

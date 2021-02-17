@@ -1,4 +1,3 @@
-
 var waitingList = [];
 var gamesList = [];
 
