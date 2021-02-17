@@ -3,6 +3,9 @@
     text-align: right;
     font-size: small;
 }
+.profile-navbar {
+    position: fixed; top: 0; right: 0; border: 0;
+}
 
 .user-img {
     border-color: white;
@@ -16,7 +19,12 @@ footer {
     color: white;
     position: fixed;
     text-align: center;
-    height: 1.5em;
+    height: 1.6em;
+    font-size: 1em;
+    width: 100%;
     bottom: 0;
-    width: 22%;
+}
+
+input {
+    width: 100%;
 }
