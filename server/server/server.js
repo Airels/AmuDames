@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import usersHandler from './services/users-handler';
 import explRouter from './routes/expl-routes';
+import gameRouter from './routes/game-routes';
 
 const app = express();
 var sess = {
@@ -15,6 +16,7 @@ app.use(express.static('./app/AmuDames/'));
 
 // Routers
 app.use('/expl', explRouter);
+app.use('/game', gameRouter);
 
 // Main route
 app.get('/', (req, res) => {
@@ -30,8 +32,8 @@ app.use((req, res, next) => { // CHECK IF USER CONNECTED
     else next();
 });
 
-app.put('/user', usersHandler.updateUser);
-
-app.delete('/user', usersHandler.deleteUser);
+app.route('/user')
+    .get(usersHandler.updateUser)
+    .delete(usersHandler.deleteUser);
 
 app.listen(8080, () => console.log("Amudames opened on port 8080"));

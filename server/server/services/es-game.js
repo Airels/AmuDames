@@ -10,25 +10,25 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const createParty = () => {
+const createGame = () => {
     return 501;
 }
 
-const getParty = () => {
+const getGame = () => {
     return 501;
 }
 
-const updateParty = () => {
+const updateGame = () => {
     return 501;
 }
 
-const deleteParty = () => {
+const deleteGame = () => {
     return 501;
 }
 
 export default {
-    createParty,
-    getParty,
-    updateParty,
-    deleteParty
+    createGame,
+    getGame,
+    updateGame,
+    deleteGame
 };
