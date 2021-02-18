@@ -1,0 +1,16 @@
+<div class="jumbotron bg-dark p-5 rounded-lg m-3">
+    <h1 class="display-4 text-white">Bienvenu sur AMU dames !</h1>
+    <p class="lead text-white">
+      AMU dames est un jeu de dame en ligne multijoueur et blablabla
+    </p>
+    <hr class="my-4">
+    <h1><span class="badge badge-secondary">News</span></h1>
+    <ul class="list-group">
+      <div class="card list-group-item" *ngFor="let news of newsList">
+        <div class="card-body">
+          <h5><span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u></h5>
+          <p>{{ news.content }}</p>
+        </div>
+      </div>
+    </ul>
+</div>

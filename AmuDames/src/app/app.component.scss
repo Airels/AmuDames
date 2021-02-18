@@ -1,0 +1,30 @@
+.info-navbar {
+    color: white;
+    text-align: right;
+    font-size: small;
+}
+.profile-navbar {
+    position: fixed; top: 0; right: 0; border: 0;
+}
+
+.user-img {
+    border-color: white;
+    border-radius: 50%;
+    border-width: 0.2em;
+    border-style: solid;
+    margin-left: 10%;
+}
+
+footer {
+    color: white;
+    position: fixed;
+    text-align: center;
+    height: 1.6em;
+    font-size: 1em;
+    width: 100%;
+    bottom: 0;
+}
+
+input {
+    width: 100%;
+}

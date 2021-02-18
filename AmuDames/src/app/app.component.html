@@ -3,86 +3,128 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <title>AMU dames</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" routerLinkActive="active" routerLink="home">
         <img src="../assets/images/logo-mini.png">
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="order-3 order-lg-3">
+        <ul class="navbar-nav  flex-row">
+            <li class="nav-item" >
+              <div class="info-navbar">
+                <p>
+                  <i class="flag flag-china">flag</i> Pseudo <br>
+                  666 <br>
+                </p>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="#" (click)="open(modalConnexion)">
+                <img class="user-img" src="../assets/images/user/user_blank.png">
+              </a>
+            </li>
+        </ul>
+      </div>
+      <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsExampleDefault" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse order-2 order-lg-2 dropdown-menu-left" id="navbarNavDropdown" [ngbCollapse]="isCollapsed">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Partie Rapide</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="play">Play</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Classement</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="ranking">Ranking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Guide</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="guide">Guide</a>
           </li>
         </ul>
-        <div class="navbar-collapse collapse">
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <div class="info-navbar">
-                  <p>
-                    <i class="flag flag-china">flag</i> Pseudo <br>
-                    666 <br>
-                  </p>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="#">
-                  <img class="user-img" src="../assets/images/user/user_blank.png">
-                </a>
-              </li>
-          </ul>
-      </div>
       </div>
     </nav>
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+      <div class="modal fade" id="modalConnexion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          ...
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MODALS BEGIN -->
+    <!--modal pas connecter-->
+    <ng-template #modalConnexion let-modal>
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title">Connexion</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div id="signUpForm">
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmitForm()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" formControlName="username">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" id="password" class="form-control" formControlName="password">
+            </div>
+            <div class="form-group">
+              <label for="passwordConfirm">Password Confirm</label>
+              <input type="text" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
+            </div>
+            <button type="submit" class="btn btn-success">Sign-up</button> <!--[disabled]="userForm.invalid"-->
+            </form>
+        </div>
+        <div id="signInForm" hidden=true>
+          <div class="modal-body" id="signInForm" >
+            <form [formGroup]="signInForm" (ngSubmit)="onSubmitForm()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" id="email" class="form-control" formControlName="email">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id="password" class="form-control" formControlName="password">
+              </div>
+              <button type="submit" class="btn btn-success">Sign-in</button> <!--[disabled]="userForm.invalid"-->
+              </form>
+          </div>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer text-center d-flex" >
+        <a href="#" (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account ? Sign-In!</u></i></p></a>
       </div>
-    </div>
-  </div>
-</div>
+    </ng-template>
+    <!-- MODALS END -->
 
-
+    <!--ROUTER-->
     <main role="main" class="container">
-      <h1 class="mt-5">Sticky footer with fixed navbar</h1>
-      <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
-      <p>Back to <a href="../sticky-footer/">the default sticky footer</a> minus the navbar.</p>
+      <router-outlet></router-outlet>
     </main>
-
-    <footer class="footer" style="position: sticky;">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
+    <!--ROUTER END-->
+    <footer class="footer bg-dark">
+        <p>© PIERRARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
-
-    <!-- bootstrap scripts-->
   </body>
 </html>
