@@ -66,10 +66,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  onSubmitForm() {
-    let formValue;
-    if(this.formIsSignUp) {
-      formValue = this.signUpForm.value;
+  onSubmitSignUp() {
+      var formValue = this.signUpForm.value;
       const signUp = new User(
         formValue['username'],
         formValue['password'],
@@ -93,12 +91,36 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/home']);
          }
          );
-    }
-    else {
-      formValue = this.signInForm.value;
-    }
     console.log(formValue);
   }
+
+  onSubmitSignIn() {
+    var formValue = this.signInForm.value;
+    const signIn = new User(
+      "",
+      formValue['password'],
+      formValue['email'],
+      undefined,
+      "",
+      "",
+      undefined,
+      false
+    );
+
+    this.http.getUserByUsername(signIn.username).subscribe((res: any)=>{
+      if(res && res.email === 'ok') { //promise
+        alert('Successfully connected!');
+        } else {
+        alert('Couldn\'t Connect');
+        };
+       }, (e: any) => { //failure
+       console.log('erreur',e);
+       }, ()=>{ //finally
+        this.router.navigate(['/home']);
+       }
+       );
+  console.log(formValue);
+}
 
   public switchConnexionForm() {
     var button = document.getElementsByClassName("connexionButton");
