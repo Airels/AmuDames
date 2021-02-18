@@ -1,12 +1,12 @@
 export class User {
     constructor(
         public username: string,
-        public password: string,
-        public email: string,
-        public elo: number,
+        public password: string | undefined,
+        public email: string | undefined,
+        public elo: number | undefined,
         public profileImageURL: string,
         public country: string,
-        public description: string,
+        public description: string | undefined,
         public isAdmin: boolean
     ) { }
 }

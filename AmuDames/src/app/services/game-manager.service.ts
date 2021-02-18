@@ -1,7 +1,7 @@
 import { Game } from '../models/game.models';
 
 export class GameManager {
-    game: Game;
+    game!: Game;
 
     constructor() {}
 

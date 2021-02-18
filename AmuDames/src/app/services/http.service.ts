@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+//import { Observable } from 'rxjs/Observable';
 import { User } from '../models/user.models';
 
 export class HttpService {
@@ -13,7 +13,7 @@ export class HttpService {
     constructor(private http: HttpClient) {
 
     }
-
+/*
     public getCurrentUser(): Observable<User> {
         return this.http.get(this.serverURL + '/user/');
     }
@@ -33,4 +33,5 @@ export class HttpService {
     public deleteUser(): Observable<any> {
         return this.http.delete(this.serverURL + "/user");
     }
+    */
 }

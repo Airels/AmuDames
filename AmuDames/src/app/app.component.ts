@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from './services/http.service';
+import { User } from './models/user.models'
 
 @Component({
   selector: 'app-root',
@@ -40,8 +41,24 @@ export class AppComponent {
 
   onSubmitForm() {
     let formValue;
-    if(this.formIsSignUp) formValue = this.signInForm.value;
-    else formValue = this.signUpForm.value;
+    if(this.formIsSignUp) {
+      formValue = this.signInForm.value;
+      const signUp = new User(
+        formValue['username'],
+        formValue['password'],
+        formValue['email'],
+        undefined,
+        "../assets/images/user/user_blank.png",
+        "fr",
+        undefined,
+        false
+      );
+
+      //todo http service create
+    }
+    else {
+      formValue = this.signUpForm.value;
+    }
     console.log(formValue);
   }
 
