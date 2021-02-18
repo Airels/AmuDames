@@ -5,18 +5,12 @@
     </p>
     <hr class="my-4">
     <h1><span class="badge badge-secondary">News</span></h1>
-    <!-- exemple de news feed du projet -->
-    <div class="card">
-      <div class="card-body">
-        <h5><span class="badge badge-dark">17/02/2021</span><u>Amu Dames is here!</u></h5>
-        <p>We started working on this project!</p>
+    <ul class="list-group">
+      <div class="card list-group-item" *ngFor="let news of newsList">
+        <div class="card-body">
+          <h5><span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u></h5>
+          <p>{{ news.content }}</p>
+        </div>
       </div>
-    </div>
-    <br>
-    <div class="card">
-      <div class="card-body">
-        <h5><span class="badge badge-danger">17/02/2021</span><u>Amu Dames is here!</u></h5>
-        <p>how even does that work ???</p>
-      </div>
-    </div>
+    </ul>
 </div>
