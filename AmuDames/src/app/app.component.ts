@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
+import { HttpService } from './services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +16,10 @@ export class AppComponent {
   closeResult: string = "";
   isCollapsed: boolean = true;
   formIsSignUp: boolean = true;
-  
-  constructor(private modalService: NgbModal) {}
+  signUpForm!: FormGroup;
+  signInForm!: FormGroup;
+
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router) {}
     
   open(content: any) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -33,43 +38,27 @@ export class AppComponent {
     }
   }
 
+  onSubmitForm() {
+    let formValue;
+    if(this.formIsSignUp) formValue = this.signInForm.value;
+    else formValue = this.signUpForm.value;
+    console.log(formValue);
+  }
+
   public switchConnexionForm() {
-    var form = document.getElementsByClassName("formConnexion");
-    console.log(form[0]);
     var button = document.getElementsByClassName("connexionButton");
+    var divSignUp = document.getElementById("signUpForm");
+    var divSignIn = document.getElementById("signInForm");
     if(this.formIsSignUp) {
-      form[0].innerHTML = `<div class="form-group">
-      <label for="signupMail">Email</label>
-      <input type="email" class="form-control d-flex" id="signupMail" aria-describedby="emailHelp" placeholder="toto@toto.com">
-    </div>
-    <div class="form-group">
-      <label for="signupPassword">Mot de passe</label>
-      <input type="password" class="form-control d-flex" id="signupPassword" placeholder="●●●●">
-    </div>
-    <button type="submit" class="btn btn-outline-success">Se connecter</button>`;
-    button[0].innerHTML = `<a href= "#" (click)="switchConnexionForm()"><p><i><u>Vous n'avez pas de un compte ? Inscrivez-vous !</u></i></p></a>`;
-    this.formIsSignUp = false;
+      if(divSignIn != null) divSignIn.hidden = true;
+      if(divSignUp != null) divSignUp.hidden = false;
+      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
+      this.formIsSignUp = false;
     } else {
-      console.log("cc");
-      form[0].innerHTML = `<div class="form-group">
-      <label for="signupName">Pseudo</label>
-      <input type="text" class="form-control d-flex" id="signupName" placeholder="toto">
-    </div>
-    <div class="form-group">
-      <label for="signupMail">Email</label>
-      <input type="email" class="form-control d-flex" id="signupMail" aria-describedby="emailHelp" placeholder="toto@toto.com">
-    </div>
-    <div class="form-group">
-      <label for="signupPassword">Mot de passe</label>
-      <input type="password" class="form-control d-flex" id="signupPassword" placeholder="●●●●">
-    </div>
-    <div class="form-group">
-      <label for="signupPasswordCheck">Confirmation</label>
-      <input type="password" class="form-control d-flex" id="signupPasswordCheck" placeholder="●●●●">
-    </div>
-    <button type="submit" class="btn btn-outline-success">S'inscrire</button>`;
-    button[0].innerHTML = `<a href= "#" (click)="switchConnexionForm()"><p><i><u>Vous avez déja un compte ? Connectez-vous !</u></i></p></a>`;
-    this.formIsSignUp = true;
+      if(divSignIn != null) divSignIn.hidden = false;
+      if(divSignUp != null) divSignUp.hidden = true;
+      button[0].innerHTML = `Already have an account ? Sign-In!`;
+      this.formIsSignUp = true;
     }
   }
 }

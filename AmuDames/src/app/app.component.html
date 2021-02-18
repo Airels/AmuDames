@@ -100,33 +100,50 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="formConnexion">
-          <div class="form-group">
-            <label for="signupName">Pseudo</label>
-            <input type="text" class="form-control d-flex" id="signupName" placeholder="toto">
+        <div id="signUpForm">
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmitForm()">
+            <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input type="text" id="nickname" class="form-control" formControlName="nickname">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" id="password" class="form-control" formControlName="password">
+            </div>
+            <div class="form-group">
+              <label for="passwordConfirm">Password</label>
+              <input type="text" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
+            </div>
+            <button type="submit" class="btn btn-success">Sign-up</button> <!--[disabled]="userForm.invalid"-->
+            </form>
+        </div>
+        <div id="signInForm" hidden=true>
+          <div class="modal-body" id="signInForm" >
+            <form [formGroup]="signInForm" (ngSubmit)="onSubmitForm()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" id="email" class="form-control" formControlName="email">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id="password" class="form-control" formControlName="password">
+              </div>
+              <button type="submit" class="btn btn-success">Sign-in</button> <!--[disabled]="userForm.invalid"-->
+              </form>
           </div>
-          <div class="form-group">
-            <label for="signupMail">Email</label>
-            <input type="email" class="form-control d-flex" id="signupMail" aria-describedby="emailHelp" placeholder="toto@toto.com">
-          </div>
-          <div class="form-group">
-            <label for="signupPassword">Mot de passe</label>
-            <input type="password" class="form-control d-flex" id="signupPassword" placeholder="●●●●">
-          </div>
-          <div class="form-group">
-            <label for="signupPasswordCheck">Confirmation</label>
-            <input type="password" class="form-control d-flex" id="signupPasswordCheck" placeholder="●●●●">
-          </div>
-          <button type="submit" class="btn btn-outline-success">S'inscrire</button>
-        </form>
+        </div>
       </div>
       <div class="modal-footer text-center d-flex" >
-        <a href="#" (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Vous avez déja un compte ? Connectez-vous !</u></i></p></a>
+        <a href="#" (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account ? Sign-In!</u></i></p></a>
       </div>
     </ng-template>
     <!-- MODALS END -->
     <footer class="footer bg-dark">
-        <p>© PIERARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
+        <p>© PIERRARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
   </body>
 </html>
