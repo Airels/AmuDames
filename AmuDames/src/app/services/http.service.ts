@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.models';
 import { News } from '../models/news.models';
@@ -24,11 +24,11 @@ export class HttpService {
         return this.http.post<User>(this.serverURL + '/login', {username: username, password: password}, this.httpOptions);
     }
     
-    public registerUser(user: User): Observable<any> | number {
+    public registerUser(user: User): Observable<any> {
         if (user.username == undefined 
             || user.password == undefined 
             || user.email == undefined
-            || user.country == undefined ) return 400;
+            || user.country == undefined ) return new Observable(undefined);
 
         return this.http.post(this.serverURL + '/register', user, this.httpOptions);
     }
@@ -45,10 +45,6 @@ export class HttpService {
 
     public getUserByUsername(username: string): Observable<any> {
         return this.http.get<User>(this.serverURL + `/users/username/${username}`);
-    }
-
-    public createUser(user: User): Observable<User> {
-        return this.http.post<User>(this.serverURL + "/users", user, this.httpOptions);
     }
 
     public updateUser(user: User): Observable<any> {

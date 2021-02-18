@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
 
   onSubmitSignUp() {
       var formValue = this.signUpForm.value;
-      const signUp = new User(
+      const newUser = new User(
         formValue['username'],
         formValue['password'],
         formValue['email'],
@@ -79,8 +79,8 @@ export class AppComponent implements OnInit {
         false
       );
 
-      this.http.createUser(formValue).subscribe((res: any)=>{
-        if(res && res.email === 'ok') { //promise
+      this.http.registerUser(newUser).subscribe((res: any)=>{
+        if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
           } else {
           alert('An account with this email and/or username already exist');
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/home']);
          }
          );
-    console.log(formValue);
+        console.log(formValue);
   }
 
   onSubmitSignIn() {
