@@ -8,7 +8,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" routerLinkActive="active" routerLink="home">
         <img src="../assets/images/logo-mini.png">
       </a>
       <div class="order-3 order-lg-3">
@@ -34,13 +34,13 @@
       <div class="collapse navbar-collapse order-2 order-lg-2 dropdown-menu-left" id="navbarNavDropdown" [ngbCollapse]="isCollapsed">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Partie Rapide</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="play">Play</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Classement</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="ranking">Ranking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Guide</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="guide">Guide</a>
           </li>
         </ul>
       </div>
@@ -65,31 +65,6 @@
         </div>
       </div>
     </div>
-
-    <main role="main" class="container">
-      <div class="jumbotron bg-dark p-5 rounded-lg m-3">
-        <h1 class="display-4 text-white">Bienvenu sur AMU dames !</h1>
-        <p class="lead text-white">
-          AMU dames est un jeu de dame en ligne multijoueur et blablabla
-        </p>
-        <hr class="my-4">
-        <h1><span class="badge badge-secondary">News</span></h1>
-        <!-- exemple de news feed du projet -->
-        <div class="card">
-          <div class="card-body">
-            <span class="badge badge-dark">17/02/2021</span>
-            <p>lancement du projet amu dame</p>
-          </div>
-        </div>
-        <br>
-        <div class="card">
-          <div class="card-body">
-            <span class="badge badge-danger">17/02/2021</span>
-            <p>rien ne marche</p>
-          </div>
-        </div>
-      </div>
-    </main>
     <!-- MODALS BEGIN -->
     <!--modal pas connecter-->
     <ng-template #modalConnexion let-modal>
@@ -100,33 +75,56 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="formConnexion">
-          <div class="form-group">
-            <label for="signupName">Pseudo</label>
-            <input type="text" class="form-control d-flex" id="signupName" placeholder="toto">
+        <div id="signUpForm">
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmitForm()">
+            <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input type="text" id="nickname" class="form-control" formControlName="nickname">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" id="password" class="form-control" formControlName="password">
+            </div>
+            <div class="form-group">
+              <label for="passwordConfirm">Password</label>
+              <input type="text" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
+            </div>
+            <button type="submit" class="btn btn-success">Sign-up</button> <!--[disabled]="userForm.invalid"-->
+            </form>
+        </div>
+        <div id="signInForm" hidden=true>
+          <div class="modal-body" id="signInForm" >
+            <form [formGroup]="signInForm" (ngSubmit)="onSubmitForm()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" id="email" class="form-control" formControlName="email">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id="password" class="form-control" formControlName="password">
+              </div>
+              <button type="submit" class="btn btn-success">Sign-in</button> <!--[disabled]="userForm.invalid"-->
+              </form>
           </div>
-          <div class="form-group">
-            <label for="signupMail">Email</label>
-            <input type="email" class="form-control d-flex" id="signupMail" aria-describedby="emailHelp" placeholder="toto@toto.com">
-          </div>
-          <div class="form-group">
-            <label for="signupPassword">Mot de passe</label>
-            <input type="password" class="form-control d-flex" id="signupPassword" placeholder="●●●●">
-          </div>
-          <div class="form-group">
-            <label for="signupPasswordCheck">Confirmation</label>
-            <input type="password" class="form-control d-flex" id="signupPasswordCheck" placeholder="●●●●">
-          </div>
-          <button type="submit" class="btn btn-outline-success">S'inscrire</button>
-        </form>
+        </div>
       </div>
       <div class="modal-footer text-center d-flex" >
-        <a href="#" (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Vous avez déja un compte ? Connectez-vous !</u></i></p></a>
+        <a href="#" (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account ? Sign-In!</u></i></p></a>
       </div>
     </ng-template>
     <!-- MODALS END -->
+
+    <!--ROUTER-->
+    <main role="main" class="container">
+      <router-outlet></router-outlet>
+    </main>
+    <!--ROUTER END-->
     <footer class="footer bg-dark">
-        <p>© PIERARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
+        <p>© PIERRARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
   </body>
 </html>
