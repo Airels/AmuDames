@@ -8,8 +8,12 @@ usersRouter.use((req, res, next) => { // CHECK IF USER CONNECTED
     else next();
 });
 
-usersRouter.route('/')
-    .get(usersHandler.updateUser)
-    .delete(usersHandler.deleteUser);
+usersRouter.get('/', usersHandler.getUser);
+usersRouter.post('/', usersHandler.addUser);
+usersRouter.put('/', usersHandler.updateUser);
+usersRouter.delete('/', usersHandler.delete);
+
+usersRouter.get('/id/:id', (req, res) => { res.status(449).send("Username"); });
+usersRouter.get('/username/:username', usersHandler);
 
 export default usersRouter;
