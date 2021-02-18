@@ -1,9 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-<<<<<<< HEAD
-//import { Observable } from 'rxjs/Observable';
-=======
 import { Observable } from 'rxjs';
->>>>>>> 1be7ac9429ecdd8cd65a4c73f9eaee16cc5ec4f9
 import { User } from '../models/user.models';
 import { News } from '../models/news.models';
 
@@ -18,9 +14,6 @@ export class HttpService {
     constructor(private http: HttpClient) {
 
     }
-<<<<<<< HEAD
-/*
-=======
 
     // User management
     public loginUser(user: User): Observable<any> {
@@ -38,7 +31,6 @@ export class HttpService {
         return this.http.post(this.serverURL + '/register', user, this.httpOptions);
     }
     
->>>>>>> 1be7ac9429ecdd8cd65a4c73f9eaee16cc5ec4f9
     public getCurrentUser(): Observable<User> {
         return this.http.get<User>(this.serverURL + '/user/');
     }
@@ -58,9 +50,6 @@ export class HttpService {
     public deleteUser(): Observable<any> {
         return this.http.delete(this.serverURL + "/user");
     }
-<<<<<<< HEAD
-    */
-=======
 
     public updateUser(user: User): Observable<any> {
         return this.http.put(this.serverURL + '/user', user, this.httpOptions);
@@ -74,5 +63,4 @@ export class HttpService {
     public getLatestNews(): Observable<News[]> {
         return this.http.get<News[]>(this.serverURL + '/news');
     }
->>>>>>> 1be7ac9429ecdd8cd65a4c73f9eaee16cc5ec4f9
 }
