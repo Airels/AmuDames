@@ -96,19 +96,11 @@ export class AppComponent implements OnInit {
 
   onSubmitSignIn() {
     var formValue = this.signInForm.value;
-    const signIn = new User(
-      "",
-      formValue['password'],
-      formValue['email'],
-      undefined,
-      "",
-      "",
-      undefined,
-      false
-    );
 
-    this.http.getUserByUsername(signIn.username).subscribe((res: any)=>{
-      if(res && res.email === 'ok') { //promise
+    this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
+      if(res && res.status === '200') { //promise
+        console.log(res);
+        // TODO : Récupérer infos user dans res
         alert('Successfully connected!');
         } else {
         alert('Couldn\'t Connect');

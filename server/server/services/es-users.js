@@ -10,32 +10,32 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const addUser = (username, password, email, elo, country, profileImageURL, descrption) => { // Retourne 201 si ok
+const addUser = async (username, password, email, elo, country, profileImageURL, descrption) => { // Retourne 201 si ok
     return 501;
 };
 
-const userLogin = (username, password) => { // Retourne 401 si non trouvé / erreur d'auth, sinon retourner 200
+const userLogin = async (email, password) => { // Retourne 401 si non trouvé / erreur d'auth, sinon retourner 200
     return 501;
 };
 
 const getUser = { // Retour 404 si non trouvé, sinon TOUTES les infos
-    byId: (id) => {
+    byId: async (id) => {
         return 501;
     },
-    byUsername: (username) => {
+    byUsername: async (username) => {
         return 501;
     },
-    byEmail: (email) => {
+    byEmail: async (email) => {
         return 501;
     }
 };
 
-const updateUser = (username) => {
+const updateUser = async (username) => {
     return 501;
 };
 
 // Retour 200 si ok
-const deleteUser = (username) => {
+const deleteUser = async (username) => {
     return 501;
 };
 

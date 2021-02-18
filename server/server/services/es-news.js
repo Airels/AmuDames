@@ -1,6 +1,6 @@
 import es from '@elastic/elasticsearch';
 
-const index = 'users';
+const index = 'news';
 
 const handleElasticsearchError = (error) => {
     if (error.status === 404) {

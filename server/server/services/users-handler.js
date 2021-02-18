@@ -2,31 +2,39 @@ import esdb from './es-users.js';
 import User from '../models/users.models.js'
 
 async function login(req, res) {
-    let username = req.body.username;
+    let email = req.body.email;
     let password = req.body.password;
 
     try {
-        esdb.userLogin(username, password).then(result => {
-            if (result != 401) {
-                let user = new User(
-                    result.username,
-                    undefined,
-                    undefined,
-                    result.elo,
-                    result.profileImageURL,
-                    result.country,
-                    undefined,
-                    result.isAdmin
-                );
+        let result = await esdb.userLogin(email, password);
 
-                req.session.user = user;
-                res.json(user);
-            } else {
-                res.sendStatus(401);
-            }
-        });
+        if (result != 401) {
+            let queryResult = esdb.getUser.byEmail(email);
+
+            console.log(result);
+            console.log(queryResult);
+            res.sendStatus(501);
+            return;
+
+            let user = new User(
+                queryResult.username,
+                undefined,
+                undefined,
+                queryResult.elo,
+                queryResult.profileImageURL,
+                queryResult.country,
+                undefined,
+                queryResult.isAdmin
+            );
+
+            req.session.user = user;
+            res.json(user);
+        } else {
+            res.sendStatus(400);
+        }
     } catch (e) {
         res.status(500).send(e);
+        console.log("An error occured during login: " + e);
     }
 }
 
