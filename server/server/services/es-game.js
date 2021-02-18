@@ -1,4 +1,4 @@
-import es from '@elastic/elasticsearch';
+import es from './elasticsearch-client';
 
 const index = 'game';
 
