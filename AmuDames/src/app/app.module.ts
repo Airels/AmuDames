@@ -10,6 +10,10 @@ import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
 import { GuideComponent } from './guide/guide.component';
+import { GameManagerService } from './services/game-manager.service';
+import { HttpService } from './services/http.service';
+import { WebSocketService } from './services/web-socket.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,9 +28,14 @@ import { GuideComponent } from './guide/guide.component';
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    GameManagerService,
+    HttpService,
+    WebSocketService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { Game } from '../models/game.models';
 
-export class GameManager {
+export class GameManagerService {
     game!: Game;
 
     constructor() {}

@@ -10,11 +10,11 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const addUser = (username, email, password, elo, country, profileImageURL, descrption) => { // Retourne 201 si ok
+const addUser = (username, password, email, elo, country, profileImageURL, descrption) => { // Retourne 201 si ok
     return 501;
 };
 
-const userLogin = (username, password) => { // Retourne 401 si non trouvé / erreur d'auth, sinon retourner user, elo, profileURL, pays, isAdmin
+const userLogin = (username, password) => { // Retourne 401 si non trouvé / erreur d'auth, sinon retourner 200
     return 501;
 };
 
