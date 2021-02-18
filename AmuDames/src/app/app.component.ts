@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router) {}
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService) {}
   ngOnInit(): void {
     this.initForms();
   }
@@ -81,7 +81,18 @@ export class AppComponent implements OnInit {
         false
       );
 
-      //todo http service create
+      this.http.createUser(formValue).subscribe((res)=>{
+        if(res && res.email === 'ok') { //promise
+          alert('Your Account was sucessfully created!');
+          } else {
+          alert('An account with this email and/or username already exist');
+          };
+         }, (e) => { //failure
+         console.log('erreur',e);
+         }, ()=>{ //finally
+          this.router.navigate(['/home']);
+         }
+         );
     }
     else {
       formValue = this.signInForm.value;
