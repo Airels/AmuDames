@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { User } from '../models/user.models';
+import { News } from '../models/news.models';
 
 export class HttpService {
     private serverURL = "http://localhost:8080";
@@ -14,13 +15,14 @@ export class HttpService {
 
     }
 
-    public loginUser(user: User): any {
+    // User management
+    public loginUser(user: User): Observable<any> {
         if (user.username == undefined || user.password == undefined) return 400;
 
         return this.http.post(this.serverURL + '/login', user, this.httpOptions);
     }
 
-    public registerUser(user: User): any {
+    public registerUser(user: User): Observable<any> {
         if (user.username == undefined 
             || user.password == undefined 
             || user.email == undefined
@@ -30,15 +32,15 @@ export class HttpService {
     }
     
     public getCurrentUser(): Observable<User> {
-        return this.http.get(this.serverURL + '/user/');
+        return this.http.get<User>(this.serverURL + '/user/');
     }
 
     public getUserByID(id: number): Observable<User> {
-        return this.http.get(this.serverURL + `/user/id/${id}`);
+        return this.http.get<User>(this.serverURL + `/user/id/${id}`);
     }
 
-    public getUserByName(username: string): Observable<User> {
-        return this.http.get(this.serverURL + `/user/username/${username}`);
+    public getUserByName(username: string): Observable<any> {
+        return this.http.get<User>(this.serverURL + `/user/username/${username}`);
     }
 
     public createUser(user: User): Observable<User> {
@@ -49,7 +51,16 @@ export class HttpService {
         return this.http.delete(this.serverURL + "/user");
     }
 
-    public updateUser(user: User): any {
+    public updateUser(user: User): Observable<any> {
         return this.http.put(this.serverURL + '/user', user, this.httpOptions);
+    }
+
+    // News management
+    public getNews(id: number): Observable<News> {
+        return this.http.get<News>(this.serverURL + `/news/${id}`);
+    }
+
+    public getLatestNews(): Observable<News[]> {
+        return this.http.get<News[]>(this.serverURL + '/news');
     }
 }
