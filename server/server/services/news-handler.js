@@ -1,6 +1,6 @@
 import esdb from './es-news.js';
 
-async function addNews(req, res) {
+async function getNews(req, res) {
     try {
         res.send(`Get ${req.params.nbOfNews} news`);
     } catch (e) {
@@ -8,7 +8,7 @@ async function addNews(req, res) {
     }
 }
 
-async function getNews(req, res) {
+async function addNews(req, res) {
     try {
         res.sendStatus(501);
     } catch (e) {

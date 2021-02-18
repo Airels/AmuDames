@@ -6,7 +6,7 @@ const newsRouter = express.Router();
 newsRouter.get('/:nbOfNews', newsHandler.getNews);
 
 newsRouter.use((req, res, next) => {
-    if (req.session.isAdmin == false) return res.send(403);
+    if (req.session.isAdmin != true) return res.send(403);
     next();
 });
 
