@@ -81,13 +81,13 @@ export class AppComponent implements OnInit {
         false
       );
 
-      this.http.createUser(formValue).subscribe((res)=>{
+      this.http.createUser(formValue).subscribe((res: any)=>{
         if(res && res.email === 'ok') { //promise
           alert('Your Account was sucessfully created!');
           } else {
           alert('An account with this email and/or username already exist');
           };
-         }, (e) => { //failure
+         }, (e: any) => { //failure
          console.log('erreur',e);
          }, ()=>{ //finally
           this.router.navigate(['/home']);

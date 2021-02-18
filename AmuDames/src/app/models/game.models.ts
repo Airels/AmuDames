@@ -1,4 +1,12 @@
+import { stringify } from "@angular/compiler/src/util";
 import { User } from "./user.models";
+
+interface CaseID {
+    [key: string]: any;
+
+    row: string | number;
+    column: string;
+}
 
 export class Game {
     playerTurn: number = 0;
@@ -17,10 +25,11 @@ export class Game {
         2 = black pawn
         3 = white queen
         4 = black qween
-    */
-    public getCase(row: number, column: string): number {
-        return this.cases[row+column];
+    */ /*
+    public getCaseState(row: string, column: string): number {
+        return this.cases.
     }
+    */
 
     public getPlayerTurn(): number {
         return this.playerTurn;

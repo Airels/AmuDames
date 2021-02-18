@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.models';
 import { News } from '../models/news.models';
+import { Injectable } from '@angular/core';
 
+@Injectable({providedIn: 'root'})
 export class HttpService {
     private serverURL = "http://localhost:8080";
     private httpOptions = {

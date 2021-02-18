@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-session": "^1.17.1",
+    "rxjs-compat": "^6.6.3",
     "ws": "^7.4.3"
   },
   "devDependencies": {

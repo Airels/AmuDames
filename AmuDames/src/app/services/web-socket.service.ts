@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class WebSocketService {
     webSocket!: WebSocket;
@@ -10,7 +10,7 @@ export class WebSocketService {
     public createObservableSocket(url: string) : Observable<String> {
         this.webSocket = new WebSocket(url);
 
-        return new Observable(res => {
+        return new Observable((res: any) => {
             this.webSocket.onmessage = (message) => res.next(message.data);
             this.webSocket.onerror = (message) => res.error(message);
             this.webSocket.onclose = (message) => res.complete();
