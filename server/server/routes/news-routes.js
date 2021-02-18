@@ -1,9 +1,19 @@
 import express from 'express';
+import newsHandler from '../services/news-handler'
 
-const gameRouter = express.Router();
+const newsRouter = express.Router();
 
-gameRouter.get('/:nbOfNews', (req, res) => {
-    res.send(`Get ${req.params.nbOfNews} news`);
+newsRouter.get('/:nbOfNews', newsHandler.getNews);
+
+newsRouter.use((req, res, next) => {
+    if (req.session.isAdmin == false) return res.send(403);
+    next();
 });
 
-export default gameRouter;
+newsRouter.post('/', newsHandler.addNews);
+
+newsRouter.put('/:id', newsHandler.getNews);
+
+newsRouter.delete('/:id', newsHandler.deleteNews);
+
+export default newsRouter;
