@@ -17,19 +17,20 @@ export class HttpService {
 
     // User management
     public loginUser(user: User): Observable<any> {
-        if (user.username == undefined || user.password == undefined) return 400;
+        //if (user.username == undefined || user.password == undefined) return 400;
 
         return this.http.post(this.serverURL + '/login', user, this.httpOptions);
     }
-
+/*
     public registerUser(user: User): Observable<any> {
         if (user.username == undefined 
             || user.password == undefined 
             || user.email == undefined
-            /* || user.country == undefined */) return 400;
+            /* || user.country == undefined ) //return 400;
 
         return this.http.post(this.serverURL + '/register', user, this.httpOptions);
     }
+    */
     
     public getCurrentUser(): Observable<User> {
         return this.http.get<User>(this.serverURL + '/user/');
@@ -56,11 +57,7 @@ export class HttpService {
     }
 
     // News management
-    public getNews(id: number): Observable<News> {
-        return this.http.get<News>(this.serverURL + `/news/${id}`);
-    }
-
-    public getLatestNews(): Observable<News[]> {
-        return this.http.get<News[]>(this.serverURL + '/news');
+    public getNews(nb: number): Observable<News[]> {
+        return this.http.get<News[]>(this.serverURL + `/news/${nb}`);
     }
 }
