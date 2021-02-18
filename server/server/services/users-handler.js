@@ -98,6 +98,7 @@ async function deleteUser(req, res) {
 export default {
     login,
     getUser,
+    getUsers,
     addUser,
     updateUser,
     deleteUser
