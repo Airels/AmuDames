@@ -79,37 +79,35 @@
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmitForm()">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" formControlName="username">
+                <input type="text" id="usernameSignUp" class="form-control" formControlName="username">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" id="email" class="form-control" formControlName="email">
+                <input type="email" id="emailSignUp" class="form-control" formControlName="email">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="text" id="password" class="form-control" formControlName="password">
+              <input type="password" id="passwordSignUp" class="form-control" formControlName="password">
             </div>
             <div class="form-group">
               <label for="passwordConfirm">Password Confirm</label>
-              <input type="text" id="passwordConfirm" class="form-control" formControlName="passwordConfirm">
+              <input type="password" id="passwordConfirmSignUp" class="form-control" formControlName="passwordConfirm"> <!--to finish-->
             </div>
-            <button type="submit" class="btn btn-success">Sign-up</button> <!--[disabled]="userForm.invalid"-->
-            </form>
+            <button type="submit" class="btn btn-success" [disabled]="signUpForm.invalid">Sign-up</button>
+          </form>
         </div>
         <div id="signInForm" hidden=true>
-          <div class="modal-body" id="signInForm" >
-            <form [formGroup]="signInForm" (ngSubmit)="onSubmitForm()">
-              <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="text" id="email" class="form-control" formControlName="email">
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="text" id="password" class="form-control" formControlName="password">
-              </div>
-              <button type="submit" class="btn btn-success">Sign-in</button> <!--[disabled]="userForm.invalid"-->
-              </form>
-          </div>
+          <form [formGroup]="signInForm" (ngSubmit)="onSubmitForm()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="emailSignIn" class="form-control" formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="passwordSignIn" class="form-control" formControlName="password">
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="signInForm.invalid">Sign-in</button>
+          </form>
         </div>
       </div>
       <div class="modal-footer text-center d-flex" >
