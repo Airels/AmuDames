@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
-import { HttpService } from './services/http.service';
 import { User } from './models/user.models'
+import { AuthService } from './services/auth.service';
+import { HttpService } from './services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,13 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService) {}
+  isAuth: boolean = false;
+  user!: User;
+
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
   ngOnInit(): void {
     this.initForms();
+    this.isAuth = this.auth.isAuth;
   }
 
   initForms() {
@@ -96,12 +101,12 @@ export class AppComponent implements OnInit {
 
   onSubmitSignIn() {
     var formValue = this.signInForm.value;
-
     this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
       if(res && res.status === '200') { //promise
         console.log(res);
         // TODO : Récupérer infos user dans res
         alert('Successfully connected!');
+        //this.auth.signIn(formValue); //todo jsp, censer mettre le isAuth a true si on a pu se connecter
         } else {
         alert('Couldn\'t Connect');
         };
@@ -111,7 +116,7 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/home']);
        }
        );
-  console.log(formValue);
+       console.log(formValue);
 }
 
   public switchConnexionForm() {
