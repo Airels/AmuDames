@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
       if(res && res.status === '200') { //promise
         console.log(res);
         alert('Successfully connected!');
-        this.user = req.session.user;
+        this.user = res;
         } else {
         alert('Couldn\'t Connect');
         };
