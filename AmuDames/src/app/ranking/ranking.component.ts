@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../models/user.models';
+import { HttpService } from '../services/http.service';
+
 
 @Component({
   selector: 'app-ranking',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RankingComponent implements OnInit {
 
-  constructor() { }
+  userList!: User[];
+  rankinglist: any;
+  http: any;
 
-  ngOnInit(): void {
+  constructor() {}
+    
+
+  ngOnInit(): any {
+    
   }
 
 }
+

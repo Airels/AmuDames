@@ -77,4 +77,6 @@ export class HttpService {
     public deleteNews(): Observable<News> {
         return this.http.delete<News>(this.serverURL + `/news/:id`);
     }
+
+    
 }
