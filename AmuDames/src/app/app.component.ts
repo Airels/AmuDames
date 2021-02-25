@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
-    this.userService.connect(new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",false));
     this.user = this.userService.user;
   }
 
@@ -88,58 +87,67 @@ export class AppComponent implements OnInit {
         false
       );
 
-      this.http.registerUser(newUser).subscribe((res: any)=>{
-        console.log("result :" + res);
+      this.http.registerUser(newUser).subscribe({
+        next: res => {
+          switch (res.status) {
+            case 201:
+              alert("You account was successfully created!");
+              this.userService.connect(res.user);
+              this.user = this.userService.user;
+              break;
+            case 409:
+              alert("An account with this email already exist!")
+              break;
+            default:
+              alert("An error occured during registration: " + res.status);
+          }
+        },
+        error: e => {
+            alert("An error occured during registration, please try again later");
+            console.log("An error occured during registration: ", e);
+        },
+        complete: () => this.router.navigate(['/home'])
+      });
 
-        if(res && res.status === '201') { //promise
-          alert('Your Account was sucessfully created!');
-          this.userService.connect(res);
-          this.user = this.userService.user;
-          } else {
-          alert('An account with this email and/or username already exist');
-          };
-         }, (e: any) => { //failure
-         console.log('erreur',e);
-         }, ()=>{ //finally
-          this.router.navigate(['/home']);
-         }
-         );
-        console.log(formValue);
+      
+      console.log(formValue);
   }
 
   onSubmitSignIn() {
     var formValue = this.signInForm.value;
-    this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
-      if(res && res.status === '200') { //promise
-        console.log(res);
-        alert('Successfully connected!');
-        this.userService.connect(res);
-        this.user = this.userService.user;
+
+    this.http.loginUser(formValue['email'], formValue['password']).subscribe({
+      next: res => {
+        if (res.status == 200) {
+          alert("Successfully connected, welcome " + res.user.username + "!");
+          this.userService.connect(res.user);
+          this.user = this.userService.user;
+        } else if (res.status == 404) {
+          alert("Wrom e-mail or password, check your credentials!");
         } else {
-        alert('Couldn\'t Connect');
-        };
-       }, (e: any) => { //failure
-       console.log('erreur',e);
-       }, ()=>{ //finally
-        this.router.navigate(['/home']);
-       }
-       );
-       console.log(formValue);
+          alert("An error occured during registration: " + res.status);
+        }
+      },
+      error: e => {
+        alert("An error occured during authentication, please try again later");
+        console.log("An error occured during authentication: ", e);
+      },
+      complete: () => this.router.navigate(['/home'])
+    });
+
+    console.log(formValue);
 }
 
   public switchConnexionForm() {
-    var button = document.getElementsByClassName("connexionButton");
     var divSignUp = document.getElementById("signUpForm");
     var divSignIn = document.getElementById("signInForm");
     if(this.formIsSignUp) {
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
       this.formIsSignUp = false;
     } else {
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      button[0].innerHTML = `Already have an account ? Sign-In!`;
       this.formIsSignUp = true;
     }
   }
@@ -149,7 +157,7 @@ export class AppComponent implements OnInit {
     this.auth.signOut;
     this.isAuth = this.auth.isAuth;
     this.user = this.userService.user;
-    this.router.navigate(['home']);
+    this.router.navigate(['guide']);
   }
 
 }

@@ -14,6 +14,7 @@ usersRouter.post('/', asyncHandler(usersHandler.addUser));
 usersRouter.put('/', asyncHandler(usersHandler.updateUser));
 usersRouter.delete('/', asyncHandler(usersHandler.deleteUser));
 
-usersRouter.get('/username/:username', asyncHandler(usersHandler.getUsers));
+usersRouter.get('/username/:username', asyncHandler(usersHandler.getUsers))
+usersRouter.get('/email/:email', asyncHandler(usersHandler.getUser));
 
 export default usersRouter;
