@@ -4,6 +4,7 @@ import { GuideComponent } from './guide/guide.component';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'play', component:  PlayComponent },
   { path: 'ranking', component: RankingComponent },
   { path: 'guide', component: GuideComponent },
+  { path: 'user-profile', component: UserProfileComponent },
   { path: '**', redirectTo: 'home' }
 ];
 
