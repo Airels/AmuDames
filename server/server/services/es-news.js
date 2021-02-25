@@ -10,21 +10,13 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const createNews = () => {
-    return 501;
-}
+const createNews = () => 501;
 
-const getNews = () => {
-    return 501;
-}
+const getNews = () => 501;
 
-const updateNews = () => {
-    return 501;
-}
+const updateNews = () => 501;
 
-const deleteNews = () => {
-    return 501;
-}
+const deleteNews = () => 501;
 
 export default {
     createNews,
