@@ -12,7 +12,9 @@
         <img src="../assets/images/logo-mini.png">
       </a>
       <div class="order-3 order-lg-3">
-        <ul class="navbar-nav  flex-row">
+        <!-- USER-->
+        <div *ngIf="user != null; else elseBlock">
+          <ul class="navbar-nav  flex-row">
             <li class="nav-item" >
               <div class="info-navbar">
                 <a class="user-profile" routerLinkActive="active" routerLink="user-profile">
@@ -23,11 +25,22 @@
               </div>
             </li>
             <li class="nav-item">
-              <a (click)="open(modalConnexion)">
-                <img class="user-img" src="../assets/images/user/user_blank.png">
+              <a (click)="open(modalDisconnect)">
+                <img class="user-img user-img-connected" src="../assets/images/user/user_blank.png">
               </a>
             </li>
         </ul>
+        </div>
+        <ng-template #elseBlock>
+          <ul class="navbar-nav  flex-row">
+            <li class="nav-item">
+              <a (click)="open(modalConnexion)">
+                <img class="user-img user-img-disconnected" src="../assets/images/user/user_blank.png">
+              </a>
+            </li>
+        </ul>
+        </ng-template>
+        <!-- END USER-->
       </div>
       <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsExampleDefault" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -122,6 +135,22 @@
           <a (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account ? Sign-In!</u></i></p></a>
         </div>
       </div>
+    </ng-template>
+
+    <ng-template #modalDisconnect let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title">Disconnect</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="disconnectForm">
+          <p>Are you sure you want to disconnect?</p>
+          <button class="btn btn-danger" ng-click="disconnect()">Disconnect</button>
+        </div>
+      </div>
+      <div class="modal-footer text-center d-flex" ></div>
     </ng-template>
     <!-- MODALS END -->
 

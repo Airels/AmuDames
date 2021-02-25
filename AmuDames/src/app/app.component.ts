@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   signInForm!: FormGroup;
 
   isAuth: boolean = false;
-  user!: User;
+  user!: User | null;
 
   constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
   ngOnInit(): void {
@@ -135,4 +135,13 @@ export class AppComponent implements OnInit {
       this.formIsSignUp = true;
     }
   }
+
+  public disconnect() {
+    console.log("deconnexion !");
+    this.user = null;
+    this.auth.signOut;
+    this.isAuth = this.auth.isAuth;
+    this.router.navigate(['home']);
+  }
+
 }
