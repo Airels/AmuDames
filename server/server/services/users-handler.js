@@ -6,36 +6,18 @@ async function login(req, res) {
     let password = req.body.password;
 
     try {
-        console.log("LOGIN")
-        console.log(email);
-        console.log(password);
         let result = await esdb.userLogin(email, password);
-        console.log(result);
-        return;
 
-        if (result != 401) {
-            let queryResult = esdb.getUser.byEmail(email);
+        if (result.body.hits.total.value > 0) {
+            let user = result.body.hits.hits[0]._source;
+            user.password = undefined;
 
-            console.log(result);
-            console.log(queryResult);
-            res.sendStatus(501);
-            return;
-
-            let user = new User(
-                queryResult.username,
-                undefined,
-                undefined,
-                queryResult.elo,
-                queryResult.profileImageURL,
-                queryResult.country,
-                undefined,
-                queryResult.isAdmin
-            );
+            console.log(user);
 
             req.session.user = user;
-            res.json(user);
+            res.status(200).json(user);
         } else {
-            res.sendStatus(400);
+            res.sendStatus(404);
         }
     } catch (e) {
         res.status(500).send(e);
@@ -53,10 +35,10 @@ async function addUser(req, res) {
     let default_description = 'I am a new user!';
 
     try {
-        let result = await esdb.getUser.byUsername(username);
+        let result = await esdb.getUser.byEmail(email);
 
         if (result.body.hits.total.value == 0) {
-            let response = await esdb.addUser(username, email, passwd, default_elo, country, default_profileImageURL, default_description);
+            let response = await esdb.addUser(username, passwd, email, default_elo, country, default_profileImageURL, default_description);
             res.sendStatus(response.statusCode);
         } else {
             res.sendStatus(409);
