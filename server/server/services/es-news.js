@@ -4,19 +4,69 @@ const index = 'news';
 
 const handleElasticsearchError = (error) => {
     if (error.status === 404) {
-        throw new Error('User Not Found', 404);
+        throw new Error('News Not Found', 404);
     }
 
     throw new Error(error.msg, error.status || 500);
 }
 
-const createNews = () => 501;
+const createNews = (title, type, date, content) => es.index({
+    index,
+    refresh: 'true',
+    body: {
+        'title': title,
+        'type': type,
+        'date': date,
+        'content': content,
+    }
+})
+    .then(response => response)
+    .catch((error) => {
+        handleElasticsearchError(error);
+});
 
-const getNews = () => 501;
+const getNews = (date) => es.search({
+    index,
+    type: 'news',
+    body: {
+        query: {
+            match: { 'date': date },
+        }
+    }
+})
+    .then(res => res)
+    .catch(e => {
+        handleElasticsearchError(e)
+});
 
-const updateNews = () => 501;
 
-const deleteNews = () => 501;
+const updateNews = (date) => es.update({
+    index,
+    refresh: 'true',
+    body: {
+        title: 'username',
+        type: 'password',
+        'date': date,
+        content: 'content',
+    }
+})
+    .then(response => response)
+    .catch((error) => {
+        handleElasticsearchError(error);
+});
+
+const deleteNews = (date) => es.deleteByQuery({
+    index,
+    type: 'news',
+    refresh: 'true',
+    body: {
+        query: {
+            match: { 'date': date },
+        }
+    }
+}).then(response => response).catch((error) => {
+    handleElasticsearchError(error);
+});
 
 export default {
     createNews,

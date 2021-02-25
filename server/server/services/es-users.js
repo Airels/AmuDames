@@ -11,63 +11,63 @@ const handleElasticsearchError = (error) => {
 }
 
 const addUser = (username, password, email, elo, country, profileImageURL, description) => es.index({
-        index,
-        refresh: 'true',
-        body:{
-            'username':username,
-            'password':password,
-            'email':email,
-            'elo':elo,
-            'country':country,
-            'profileImg':profileImageURL,
-            'description':description,
-            'isAdmin':'false'
-        }
-    })
+    index,
+    refresh: 'true',
+    body: {
+        'username': username,
+        'password': password,
+        'email': email,
+        'elo': elo,
+        'country': country,
+        'profileImageURL': profileImageURL,
+        'description': description,
+        'isAdmin': 'false'
+    }
+})
     .then(response => response)
     .catch((error) => {
         handleElasticsearchError(error);
     });
 
 const userLogin = (mail, passwd) => es.search({
-        index,
-        body:{
-            "query":{
-                "bool": {
-                    "must": [
-                        {
-                            "match": {
-                                "email": mail
-                            }
-                        },
-                        {
-                            "match": {
-                                "password": passwd
-                            }
+    index,
+    body: {
+        "query": {
+            "bool": {
+                "must": [
+                    {
+                        "match": {
+                            "email": mail
                         }
-                    ]
-                }
+                    },
+                    {
+                        "match": {
+                            "password": passwd
+                        }
+                    }
+                ]
             }
         }
-    }).then(response => response).catch((error) => {
-        console.log(error);
-        handleElasticsearchError(error);
+    }
+}).then(response => response).catch((error) => {
+    console.log(error);
+    handleElasticsearchError(error);
 });
 
 const getUser = {
     byUsername: (username) => es.search({
-            index:'users',
-            type:'user',
-            body:{
-                query:{
-                    match: { 'username' : username },
-                }
+        index,
+        type: 'user',
+        body: {
+            query: {
+                match: { 'username': username },
             }
-        })
+        }
+    })
         .then(res => res)
         .catch(e => {
             handleElasticsearchError(e)
-    }),
+        }),
     byEmail: (mail) => es.search({
         index,
         body: {
@@ -80,25 +80,40 @@ const getUser = {
             }
         }
     })
-    .then(res => res)
-    .catch(e => {
-        handleElasticsearchError(e)
-        console.log(e);
-    })
+        .then(res => res)
+        .catch(e => {
+            handleElasticsearchError(e)
+            console.log(e);
+        })
 };
 
-const updateUser = (username) => 501;
-
-const deleteUser = (username) => es.deleteByQuery({
-        index:'users',
-        type:'user',
-        body:{
-            query:{
-                match: { 'username' : username },
-            }
-        }
-    }).then(response => response).catch((error) => {
+const updateUser = (email) => es.update({
+    index,
+    refresh: 'true',
+    body: {
+        username: 'username',
+        password: 'password',
+        'email': email,
+        profileImg: 'profileImageURL',
+        description: 'description',
+    }
+})
+    .then(response => response)
+    .catch((error) => {
         handleElasticsearchError(error);
+    });
+
+const deleteUser = (email) => es.deleteByQuery({
+    index,
+    type: 'user',
+    refresh: 'true',
+    body: {
+        query: {
+            match: { 'email': email },
+        }
+    }
+}).then(response => response).catch((error) => {
+    handleElasticsearchError(error);
 });
 
 export default {
