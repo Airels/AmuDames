@@ -147,7 +147,7 @@
       <div class="modal-body">
         <div id="disconnectForm">
           <p>Are you sure you want to disconnect?</p>
-          <button class="btn btn-danger" ng-click="disconnect()">Disconnect</button>
+          <button class="btn btn-danger" (click)="disconnect(); modal.dismiss('Cross click')">Disconnect</button>
         </div>
       </div>
       <div class="modal-footer text-center d-flex" ></div>
