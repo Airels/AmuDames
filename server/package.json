@@ -18,15 +18,18 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^7.11.0",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-session": "^1.17.1",
     "rxjs-compat": "^6.6.3",
+    "save-dev": "0.0.1-security",
     "ws": "^7.4.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.16",
-    "@babel/core": "^7.12.16",
-    "@babel/preset-env": "^7.12.16"
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.1",
+    "@babel/preset-env": "^7.13.5"
   }
 }
