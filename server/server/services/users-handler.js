@@ -6,7 +6,12 @@ async function login(req, res) {
     let password = req.body.password;
 
     try {
+        console.log("LOGIN")
+        console.log(email);
+        console.log(password);
         let result = await esdb.userLogin(email, password);
+        console.log(result);
+        return;
 
         if (result != 401) {
             let queryResult = esdb.getUser.byEmail(email);
@@ -34,22 +39,30 @@ async function login(req, res) {
         }
     } catch (e) {
         res.status(500).send(e);
-        console.log("An error occured during login: " + e);
+        console.log("An error occured during login: ", e);
     }
 }
 
 async function addUser(req, res) {
-    console.log(req);
-    res.sendStatus(501);
-    return;
+    let username = req.body.username;
+    let passwd = req.body.password;
+    let email = req.body.email;
+    let default_elo = 800;
+    let country = req.body.country;
+    let default_profileImageURL = req.body.profileImageURL;
+    let default_description = 'I am a new user!';
 
     try {
-        if (esdb.getUser.byUsername(username) == 200) {
-            res.sendStatus(409);
+        let result = await esdb.getUser.byUsername(username);
+
+        if (result.body.hits.total.value == 0) {
+            let response = await esdb.addUser(username, email, passwd, default_elo, country, default_profileImageURL, default_description);
+            res.sendStatus(response.statusCode);
         } else {
-            res.sendStatus(esdb.addUser(username, email, passwd, default_elo, country, default_profileImageURL, default_description));
+            res.sendStatus(409);
         }
     } catch (e) {
+        console.log("An error occured during register: ", e);
         res.status(500).send(e);
     }
 }
