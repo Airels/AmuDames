@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
     this.auth.signOut;
     this.isAuth = this.auth.isAuth;
     this.user = this.userService.user;
-    this.router.navigate(['/home']);
+    this.router.navigate(['guide']);
   }
 
 }
