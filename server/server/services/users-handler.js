@@ -12,12 +12,10 @@ async function login(req, res) {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
 
-            console.log(user);
-
             req.session.user = user;
-            res.status(200).json(user);
+            res.json({ status: 200, user: user});
         } else {
-            res.sendStatus(404);
+            res.json({ status: 404 });
         }
     } catch (e) {
         res.status(500).send(e);
@@ -34,14 +32,20 @@ async function addUser(req, res) {
     let default_profileImageURL = req.body.profileImageURL;
     let default_description = 'I am a new user!';
 
+    let user = new User(username, passwd, email, default_elo, default_profileImageURL, country, default_description, false);
+
     try {
         let result = await esdb.getUser.byEmail(email);
 
         if (result.body.hits.total.value == 0) {
             let response = await esdb.addUser(username, passwd, email, default_elo, country, default_profileImageURL, default_description);
-            res.sendStatus(response.statusCode);
+            
+            if (response.statusCode == 201)
+                res.json({ status: 201, user: user });
+            else
+                res.json({ status: response.statusCode});
         } else {
-            res.sendStatus(409);
+            res.json({ status: 409});
         }
     } catch (e) {
         console.log("An error occured during register: ", e);

@@ -18,10 +18,10 @@ export class HttpService {
     }
 
     // Login management
-    public loginUser(email: string, password: string): Observable<User | undefined> {
+    public loginUser(email: string, password: string): Observable<any> {
         if (email == undefined || password == undefined) return new Observable(undefined);
 
-        return this.http.post<User>(this.serverURL + '/login', {email: email, password: password}, this.httpOptions);
+        return this.http.post(this.serverURL + '/login', {email: email, password: password}, this.httpOptions);
     }
     
     public registerUser(user: User): Observable<any> {
