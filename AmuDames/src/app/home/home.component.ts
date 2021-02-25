@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //todo il faut qu'il puisse recuperer le user
-    alert("hello "+this.user);
   }
 
   ngOnDestroy(): void {
