@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
@@ -21,13 +21,15 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  isAuth: boolean = false;
+  isAuth: boolean = true;
+  //user!: User | null;
   user!: User | null;
 
   constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
+    this.user = new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",false);
   }
 
   initForms() {
@@ -85,8 +87,11 @@ export class AppComponent implements OnInit {
       );
 
       this.http.registerUser(newUser).subscribe((res: any)=>{
+        console.log("result :" + res);
+
         if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
+
           } else {
           alert('An account with this email and/or username already exist');
           };
@@ -125,12 +130,12 @@ export class AppComponent implements OnInit {
     if(this.formIsSignUp) {
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      button[0].innerHTML = `Already have an account ? Sign-In!`;
+      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
       this.formIsSignUp = false;
     } else {
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
+      button[0].innerHTML = `Already have an account ? Sign-In!`;
       this.formIsSignUp = true;
     }
   }
