@@ -39,10 +39,6 @@ export class HttpService {
         return this.http.get<User>(this.serverURL + '/users/');
     }
 
-    public getUserByID(id: number): Observable<User> {
-        return this.http.get<User>(this.serverURL + `/users/id/${id}`);
-    }
-
     public getUserByUsername(username: string): Observable<any> {
         return this.http.get<User>(this.serverURL + `/users/username/${username}`);
     }
