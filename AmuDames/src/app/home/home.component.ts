@@ -25,7 +25,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.user = this.userService.user;
+    // this.user = this.userService.user;
+    this.userService.userSubject.subscribe((user) => {
+      this.user = user;
+    });
+
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       type: ['', [Validators.required]],
@@ -45,7 +49,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (res.status == 200) {
           alert("Successfully connected, welcome " + res.user.username + "!");
           this.userService.connect(res.user);
-          this.user = this.userService.user;
         } else if (res.status == 404) {
           alert("Error sending the news");
         } else {

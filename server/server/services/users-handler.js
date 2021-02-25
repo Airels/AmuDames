@@ -11,6 +11,7 @@ async function login(req, res) {
         if (result.body.hits.total.value > 0) {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
+            user.isAdmin = true;
 
             req.session.user = user;
             res.json({ status: 200, user: user});

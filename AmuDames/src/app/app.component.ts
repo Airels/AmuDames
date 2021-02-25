@@ -27,10 +27,14 @@ export class AppComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService,
     private userService : UserService) {}
+
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
-    this.user = this.userService.user;
+    this.user = null;
+    this.userService.userSubject.subscribe((user) => {
+      this.user = user;
+    });
   }
 
   initForms() {
@@ -93,7 +97,6 @@ export class AppComponent implements OnInit {
             case 201:
               alert("You account was successfully created!");
               this.userService.connect(res.user);
-              this.user = this.userService.user;
               break;
             case 409:
               alert("An account with this email already exist!")
@@ -121,7 +124,6 @@ export class AppComponent implements OnInit {
         if (res.status == 200) {
           alert("Successfully connected, welcome " + res.user.username + "!");
           this.userService.connect(res.user);
-          this.user = this.userService.user;
         } else if (res.status == 404) {
           alert("Wrom e-mail or password, check your credentials!");
         } else {
@@ -156,8 +158,7 @@ export class AppComponent implements OnInit {
     this.userService.disconnect();
     this.auth.signOut;
     this.isAuth = this.auth.isAuth;
-    this.user = this.userService.user;
-    this.router.navigate(['guide']);
+    this.router.navigate(['/home']);
   }
 
 }
