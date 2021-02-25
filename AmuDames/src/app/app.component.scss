@@ -10,7 +10,7 @@
 .user-img {
     border-color: white;
     border-radius: 50%;
-    border-width: 0.2em;
+    border-width: 0.3em;
     border-style: solid;
     margin-left: 10%;
 }
@@ -21,6 +21,9 @@
     color: white;
     text-decoration: none;
 }
+
+.user-img-connected { border-color: green ;}
+.user-img-disconnected { border-color: red ;}
 
 footer {
     color: white;

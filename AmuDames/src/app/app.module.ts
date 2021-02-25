@@ -15,8 +15,8 @@ import { HttpService } from './services/http.service';
 import { WebSocketService } from './services/web-socket.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [

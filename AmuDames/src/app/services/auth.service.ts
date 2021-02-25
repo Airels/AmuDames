@@ -1,14 +1,14 @@
+
 export class AuthService {
     isAuth: boolean = false;
-    signIn() {
+
+    signIn(form: any) {
         return new Promise(
         (resolve, reject) => {
-            setTimeout(
-                () => {
-                    this.isAuth = true;
-                    resolve(true);
-                }, 100
-            );
+            if(form != null && form != undefined) { this.isAuth = true; }
+            else {
+                //todo error
+            }
         }
         );
     }
