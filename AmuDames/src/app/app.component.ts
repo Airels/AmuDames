@@ -85,6 +85,8 @@ export class AppComponent implements OnInit {
       );
 
       this.http.registerUser(newUser).subscribe((res: any)=>{
+        console.log("result :" + res);
+
         if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
           } else {
@@ -125,12 +127,12 @@ export class AppComponent implements OnInit {
     if(this.formIsSignUp) {
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      button[0].innerHTML = `Already have an account ? Sign-In!`;
+      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
       this.formIsSignUp = false;
     } else {
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
+      button[0].innerHTML = `Already have an account ? Sign-In!`;
       this.formIsSignUp = true;
     }
   }
