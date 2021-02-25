@@ -5,6 +5,7 @@ import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng
 import { User } from './models/user.models'
 import { AuthService } from './services/auth.service';
 import { HttpService } from './services/http.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +23,15 @@ export class AppComponent implements OnInit {
   signInForm!: FormGroup;
 
   isAuth: boolean = true;
-  //user!: User | null;
   user!: User | null;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService,
+    private userService : UserService) {}
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
-    this.user = new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",false);
+    this.userService.connect(new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",false));
+    this.user = this.userService.user;
   }
 
   initForms() {
@@ -91,7 +93,8 @@ export class AppComponent implements OnInit {
 
         if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
-
+          this.userService.connect(res);
+          this.user = this.userService.user;
           } else {
           alert('An account with this email and/or username already exist');
           };
@@ -110,7 +113,8 @@ export class AppComponent implements OnInit {
       if(res && res.status === '200') { //promise
         console.log(res);
         alert('Successfully connected!');
-        this.user = res;
+        this.userService.connect(res);
+        this.user = this.userService.user;
         } else {
         alert('Couldn\'t Connect');
         };
@@ -141,10 +145,10 @@ export class AppComponent implements OnInit {
   }
 
   public disconnect() {
-    console.log("deconnexion !");
-    this.user = null;
+    this.userService.disconnect();
     this.auth.signOut;
     this.isAuth = this.auth.isAuth;
+    this.user = this.userService.user;
     this.router.navigate(['home']);
   }
 
