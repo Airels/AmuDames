@@ -14,6 +14,7 @@ import { GameManagerService } from './services/game-manager.service';
 import { HttpService } from './services/http.service';
 import { WebSocketService } from './services/web-socket.service';
 import { HttpClientModule } from '@angular/common/http';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     PlayComponent,
     RankingComponent,
-    GuideComponent
+    GuideComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
