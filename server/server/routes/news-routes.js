@@ -12,8 +12,8 @@ newsRouter.use((req, res, next) => {
 
 newsRouter.post('/', newsHandler.addNews);
 
-newsRouter.put('/:id', newsHandler.getNews);
+newsRouter.put('/:date', newsHandler.getNews);
 
-newsRouter.delete('/:id', newsHandler.deleteNews);
+newsRouter.delete('/:date', newsHandler.deleteNews);
 
 export default newsRouter;

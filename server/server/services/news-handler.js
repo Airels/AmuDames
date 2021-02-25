@@ -10,7 +10,11 @@ async function getNews(req, res) {
 
 async function addNews(req, res) {
     try {
-        res.sendStatus(501);
+        let news = req.body.news;
+        news.date = Data.now();
+        let result = await esdb.createNews(news);
+
+        res.sendStatus(result.statusCode);
     } catch (e) {
         res.status(500).send(e);
     }
@@ -26,7 +30,10 @@ async function updateNews(req, res) {
 
 async function deleteNews(req, res) {
     try {
-        res.sendStatus(501);
+        let date = req.params.date;
+        let result = await esdb.deleteNews(date);
+        
+        res.sendStatus(result.statusCode);
     } catch (e) {
         res.status(500).send(e);
     }

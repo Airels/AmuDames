@@ -51,23 +51,16 @@ async function addUser(req, res) {
 
 async function getUser(req, res) {
     try {
-        let username = req.params.username;
+        let email = req.params.email;
 
-        esdb.getUser.byUsername(username).then(result => {
-            if (result == 404) res.sendStatus(404);
-            else {
-                res.json(new User(
-                    result.username,
-                    undefined,
-                    (req.session.user.username == username || req.session.user.isAdmin) ? result.email : undefined,
-                    result.elo,
-                    result.profileImageURL,
-                    result.country,
-                    result.description,
-                    result.isAdmin
-                ));
-            }
-        });
+        let result = await esdb.getUser.byEmail(email);
+        
+        if (result.body.hits.total.value == 0) {
+            res.sendStatus(404);
+        } else {
+            let user = result.body.hits.hits[0]._source;
+            res.status(200).json(user);
+        }
     } catch (e) {
         res.status(500).send(e);
     }
@@ -75,14 +68,24 @@ async function getUser(req, res) {
 
 async function getUsers(req, res) {
     try {
-        res.sendStatus(501);
-    } catch (e) {
+        let username = req.params.username;
 
+        let result = await esdb.getUser.byUsername(username);
+        let users = [];
+
+        for (let u of result.body.hits.hits) {
+            users.append(u);
+        }
+
+        res.status(200).json(users);
+    } catch (e) {
+        res.status(500).send(e);
     }
 }
 
 async function updateUser(req, res) {
     try {
+        let email = req.session.email;
         res.sendStatus(501);
     } catch (e) {
         res.status(500).send(e);
@@ -91,8 +94,10 @@ async function updateUser(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        let username = req.session.username;
-        res.sendStatus(esdb.deleteUser(username));
+        let email = req.session.email;
+        let result = await esdb.deleteUser(email);
+        
+        res.sendStatus(result.statusCode);
     } catch (e) {
         res.status(500).send(e);
     }
