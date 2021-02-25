@@ -5,6 +5,7 @@ import { News } from '../models/news.models';
 import { User } from '../models/user.models';
 import { HttpService } from '../services/http.service';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   user!: User | null;
   newsForm!: FormGroup;
 
-  constructor(private http: HttpService, public userService : UserService, private formBuilder : FormBuilder) { 
+  constructor(private http: HttpService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     this.newsSubscription = this.http.getNews(10).subscribe(
       (newsList: News[]) => { this.newsList = newsList; }
     );
@@ -38,7 +39,24 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSubmitNews() {
     var formValue = this.newsForm.value;
-    //todo form
+    let news = new News(formValue['title'], formValue['type'], undefined, formValue['content']);
+    this.http.createNews(news).subscribe({
+      next: res => {
+        if (res.status == 200) {
+          alert("Successfully connected, welcome " + res.user.username + "!");
+          this.userService.connect(res.user);
+          this.user = this.userService.user;
+        } else if (res.status == 404) {
+          alert("Error sending the news");
+        } else {
+          alert("Error sending the news");
+        }
+      },
+      error: e => {
+        alert("Error sending the news");
+      },
+      complete: () => this.router.navigate(['/home'])
+    });
   }
 
 }

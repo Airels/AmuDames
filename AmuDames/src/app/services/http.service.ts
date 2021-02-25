@@ -57,11 +57,11 @@ export class HttpService {
         return this.http.get<News[]>(this.serverURL + `/news/${nb}`);
     }
 
-    public createNews(news: News): Observable<any> | number {
+    public createNews(news: News): Observable<any> {
         if (news.content == undefined 
             || news.date == undefined 
             || news.title == undefined
-            || news.type == undefined ) return 400;
+            || news.type == undefined ) return new Observable(undefined);
 
         return this.http.post(this.serverURL + '/news/', news, this.httpOptions);
     }
