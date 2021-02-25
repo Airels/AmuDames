@@ -2,7 +2,16 @@ import esdb from './es-news.js';
 
 async function getNews(req, res) {
     try {
-        res.send(`Get ${req.params.nbOfNews} news`);
+        let nb = req.params.nbOfNews;
+        
+        let result = await esdb.getNews(nb);
+        let news = [];
+
+        for (let entry of result.body.hits.hits) {
+            news.push(entry._source);
+        }
+
+        res.json(news);
     } catch (e) {
         res.status(500).send(e);
     }

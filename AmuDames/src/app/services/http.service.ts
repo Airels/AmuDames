@@ -54,19 +54,18 @@ export class HttpService {
 
     // News management
     public getNews(nb: number): Observable<News[]> {
-        return this.http.get<News[]>(this.serverURL + `/news/${nb}`);
+        return this.http.get<News[]>(this.serverURL + `/news/${nb}`)
     }
 
     public createNews(news: News): Observable<any> {
         if (news.content == undefined 
-            || news.date == undefined 
             || news.title == undefined
             || news.type == undefined ) return new Observable(undefined);
 
         return this.http.post(this.serverURL + '/news/', news, this.httpOptions);
     }
 
-    public deleteNews(): Observable<News> {
-        return this.http.delete<News>(this.serverURL + `/news/:id`);
+    public deleteNews(): Observable<any> {
+        return this.http.delete<any>(this.serverURL + `/news/:id`);
     }
 }

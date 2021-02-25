@@ -25,13 +25,25 @@ const createNews = (news) => es.index({
         handleElasticsearchError(error);
 });
 
-const getNews = (date) => es.search({
+const getNews = (nb) => es.search({
+    index,
+    body: {
+        "size": nb,
+        "sort": [
+            { "date": "desc" }
+        ]
+    }
+});
+
+const getNewsByDate = (date) => es.search({
     index,
     type: 'news',
     body: {
-        query: {
-            match: { 'date': date },
-        }
+        "size": 10, 
+        "query": { "match_all": {} },
+        "sort": [
+            { "date": "desc" }
+        ]
     }
 })
     .then(res => res)

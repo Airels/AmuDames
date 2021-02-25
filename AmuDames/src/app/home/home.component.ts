@@ -20,7 +20,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     this.newsSubscription = this.http.getNews(10).subscribe(
-      (newsList: News[]) => { this.newsList = newsList; }
+      (newsList: News[]) => {
+        this.newsList = newsList; 
+      }
     );
   }
 
@@ -44,15 +46,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   onSubmitNews() {
     var formValue = this.newsForm.value;
     let news = new News(formValue['title'], formValue['type'], undefined, formValue['content']);
+
     this.http.createNews(news).subscribe({
       next: res => {
-        if (res.status == 200) {
-          alert("Successfully connected, welcome " + res.user.username + "!");
-          this.userService.connect(res.user);
-        } else if (res.status == 404) {
-          alert("Error sending the news");
-        } else {
-          alert("Error sending the news");
+        if (res.status == 201) {
+          alert("News added!");
+          this.newsForm.reset();
+        }
+        else {
+          alert("Error sending the news: " + res.status);
         }
       },
       error: e => {
