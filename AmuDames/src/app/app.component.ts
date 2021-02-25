@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
 import { User } from './models/user.models'
 import { AuthService } from './services/auth.service';
 import { HttpService } from './services/http.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -21,13 +22,16 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  isAuth: boolean = false;
+  isAuth: boolean = true;
   user!: User | null;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService,
+    private userService : UserService) {}
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
+    this.userService.connect(new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",true));
+    this.user = this.userService.user;
   }
 
   initForms() {
@@ -89,6 +93,8 @@ export class AppComponent implements OnInit {
 
         if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
+          this.userService.connect(res);
+          this.user = this.userService.user;
           } else {
           alert('An account with this email and/or username already exist');
           };
@@ -107,7 +113,8 @@ export class AppComponent implements OnInit {
       if(res && res.status === '200') { //promise
         console.log(res);
         alert('Successfully connected!');
-        this.user = res;
+        this.userService.connect(res);
+        this.user = this.userService.user;
         } else {
         alert('Couldn\'t Connect');
         };
@@ -121,27 +128,24 @@ export class AppComponent implements OnInit {
 }
 
   public switchConnexionForm() {
-    var button = document.getElementsByClassName("connexionButton");
     var divSignUp = document.getElementById("signUpForm");
     var divSignIn = document.getElementById("signInForm");
     if(this.formIsSignUp) {
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
       this.formIsSignUp = false;
     } else {
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      button[0].innerHTML = `Already have an account ? Sign-In!`;
       this.formIsSignUp = true;
     }
   }
 
   public disconnect() {
-    console.log("deconnexion !");
-    this.user = null;
+    this.userService.disconnect();
     this.auth.signOut;
     this.isAuth = this.auth.isAuth;
+    this.user = this.userService.user;
     this.router.navigate(['home']);
   }
 

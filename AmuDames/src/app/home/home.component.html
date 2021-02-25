@@ -4,6 +4,9 @@
       AMU dames est un jeu de dame en ligne multijoueur et blablabla
     </p>
     <hr class="my-4">
+    <div *ngIf="user != null && user.isAdmin">
+      cc cv ?
+    </div>
     <h1><span class="badge badge-secondary">News</span></h1>
     <ul class="list-group">
       <div class="card list-group-item" *ngFor="let news of newsList">
