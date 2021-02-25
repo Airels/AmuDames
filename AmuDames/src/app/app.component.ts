@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.initForms();
     this.isAuth = this.auth.isAuth;
-    this.userService.connect(new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",false));
+    this.userService.connect(new User("aaa","aaa","a.a@a.com",100,"../assets/images/user/user_blank.png","fr","",true));
     this.user = this.userService.user;
   }
 
@@ -128,18 +128,15 @@ export class AppComponent implements OnInit {
 }
 
   public switchConnexionForm() {
-    var button = document.getElementsByClassName("connexionButton");
     var divSignUp = document.getElementById("signUpForm");
     var divSignIn = document.getElementById("signInForm");
     if(this.formIsSignUp) {
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      button[0].innerHTML = `Don't have an account ? Sign-Up!`;
       this.formIsSignUp = false;
     } else {
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      button[0].innerHTML = `Already have an account ? Sign-In!`;
       this.formIsSignUp = true;
     }
   }
