@@ -21,6 +21,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private http: HttpService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     this.newsSubscription = this.http.getNews(10).subscribe(
       (newsList: News[]) => {
+        for (let news of newsList) {
+          if (news.date !== undefined) {
+            let dateObj = new Date(parseInt(news.date));
+            news.date = dateObj.toLocaleTimeString().toString() + " - " + dateObj.toLocaleDateString().toString();
+          }
+        }
+
         this.newsList = newsList; 
       }
     );

@@ -14,10 +14,10 @@
         <div class="form-group">
             <select name="type" id="type" class="form-control" formControlName="type">
               <option value="">--Kind of News--</option>
-              <option value="text-secondary">Info</option>
-              <option value="text-warning">Warning</option>
-              <option value="text-danger">Danger</option>
-              <option value="text-success">Nice</option>
+              <option value="secondary">Info</option>
+              <option value="warning">Warning</option>
+              <option value="danger">Danger</option>
+              <option value="success">Nice</option>
           </select>
         </div>
         <div class="form-group">
@@ -31,7 +31,7 @@
 
     <h1><span class="badge badge-secondary">News</span></h1>
     <ul class="list-group">
-      <div class="card list-group-item" *ngFor="let news of newsList">
+      <div class="card list-group-item mb-2" *ngFor="let news of newsList">
         <div class="card-body">
           <h5><span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u></h5>
           <p>{{ news.content }}</p>
