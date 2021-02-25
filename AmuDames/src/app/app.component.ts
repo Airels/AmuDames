@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   
   closeResult: string = "";
   isCollapsed: boolean = true;
-  formIsSignUp: boolean = true;
+  formIsSignUp: boolean = false;
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
@@ -142,13 +142,13 @@ export class AppComponent implements OnInit {
     var divSignUp = document.getElementById("signUpForm");
     var divSignIn = document.getElementById("signInForm");
     if(this.formIsSignUp) {
+      this.formIsSignUp = false;
       if(divSignIn != null) divSignIn.hidden = false;
       if(divSignUp != null) divSignUp.hidden = true;
-      this.formIsSignUp = false;
     } else {
+      this.formIsSignUp = true;
       if(divSignIn != null) divSignIn.hidden = true;
       if(divSignUp != null) divSignUp.hidden = false;
-      this.formIsSignUp = true;
     }
   }
 

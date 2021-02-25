@@ -88,7 +88,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div id="signUpForm">
+      <div id="signUpForm" hidden=true>
         <div class="modal-body">
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
             <div class="form-group">
@@ -120,7 +120,7 @@
           </div>
         </div>
       </div>
-      <div id="signInForm" hidden=true>
+      <div id="signInForm">
         <div class="modal-body">
           <form [formGroup]="signInForm" (ngSubmit)="onSubmitSignIn()">
             <div class="form-group">
