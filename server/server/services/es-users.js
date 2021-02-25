@@ -27,19 +27,15 @@ const addUser = (username, password, email, elo, country, profileImageURL, descr
         handleElasticsearchError(error);
 });
 
-const userLogin = (email, passwd) => es.search({
+const userLogin = (mail, passwd) => es.search({
         index:'users',
         type:'user',
         body:{
             query:{
-                match: { 
-                    email: {
-                        query: email
-                    },
-                    password: {
-                        query: passwd
-                    }
-                 }
+                multi_match: { 
+                    query: "this is a test",
+                    fields: [mail, passwd]
+                }
             }
         }
     }).then(response => response).catch((error) => {
