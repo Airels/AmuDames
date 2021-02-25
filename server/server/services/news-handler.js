@@ -10,12 +10,14 @@ async function getNews(req, res) {
 
 async function addNews(req, res) {
     try {
-        let news = req.body.news;
-        news.date = Data.now();
+        let news = req.body;
+        news.date = Date.now();
+
         let result = await esdb.createNews(news);
 
-        res.sendStatus(result.statusCode);
+        res.json({ status: result.statusCode });
     } catch (e) {
+        console.log(e);
         res.status(500).send(e);
     }
 }

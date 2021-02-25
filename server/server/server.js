@@ -19,7 +19,7 @@ import newsRouter from './routes/news-routes';
 const app = express();
 var sess = {
     secret: 'casino cest pas que des mots',
-    cookie: { secure: true }
+    cookie: { secure: false }
 }
 
 app.use(express.json());

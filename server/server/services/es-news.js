@@ -10,14 +10,14 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const createNews = (title, type, date, content) => es.index({
+const createNews = (news) => es.index({
     index,
     refresh: 'true',
     body: {
-        'title': title,
-        'type': type,
-        'date': date,
-        'content': content,
+        'title': news.title,
+        'type': news.type,
+        'date': news.date,
+        'content': news.content,
     }
 })
     .then(response => response)
