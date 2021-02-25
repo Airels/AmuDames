@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  isAuth: boolean = false;
+  isAuth: boolean = true;
   user!: User | null;
 
   constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
