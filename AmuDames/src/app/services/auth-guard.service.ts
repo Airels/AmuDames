@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private authService: AuthService, private router: Router) {
-
+    constructor(public authService: AuthService, private router: Router) {
+        
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
             return true;
         } else {
             //alert('GUARD: not connected');
-            this.router.navigate(['home']);
+            //this.router.navigate(['home']);
             return false;
         }
     }

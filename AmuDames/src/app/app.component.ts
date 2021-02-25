@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
-import { HttpService } from './services/http.service';
 import { User } from './models/user.models'
+import { AuthService } from './services/auth.service';
+import { HttpService } from './services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,13 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService) {}
+  isAuth: boolean = false;
+  user!: User | null;
+
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService) {}
   ngOnInit(): void {
     this.initForms();
+    this.isAuth = this.auth.isAuth;
   }
 
   initForms() {
@@ -96,12 +101,11 @@ export class AppComponent implements OnInit {
 
   onSubmitSignIn() {
     var formValue = this.signInForm.value;
-
     this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
       if(res && res.status === '200') { //promise
         console.log(res);
-        // TODO : Récupérer infos user dans res
         alert('Successfully connected!');
+        this.user = res;
         } else {
         alert('Couldn\'t Connect');
         };
@@ -111,7 +115,7 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/home']);
        }
        );
-  console.log(formValue);
+       console.log(formValue);
 }
 
   public switchConnexionForm() {
@@ -130,4 +134,13 @@ export class AppComponent implements OnInit {
       this.formIsSignUp = true;
     }
   }
+
+  public disconnect() {
+    console.log("deconnexion !");
+    this.user = null;
+    this.auth.signOut;
+    this.isAuth = this.auth.isAuth;
+    this.router.navigate(['home']);
+  }
+
 }
