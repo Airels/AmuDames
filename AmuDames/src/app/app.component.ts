@@ -104,9 +104,8 @@ export class AppComponent implements OnInit {
     this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
       if(res && res.status === '200') { //promise
         console.log(res);
-        // TODO : Récupérer infos user dans res
         alert('Successfully connected!');
-        //this.auth.signIn(formValue); //todo jsp, censer mettre le isAuth a true si on a pu se connecter
+        this.user = req.session.user;
         } else {
         alert('Couldn\'t Connect');
         };
