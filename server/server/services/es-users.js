@@ -1,4 +1,4 @@
-import es from '@elastic/elasticsearch';
+import es from './elasticsearch-client';
 
 const index = 'users';
 
@@ -10,34 +10,86 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const addUser = (username, password, email, elo, country, profileImageURL, descrption) => { // Retourne 201 si ok
-    return 501;
+const addUser = (username, password, email, elo, country, profileImageURL, descrption) => es.index({
+        index:'users',
+        type: 'user',
+        body:{
+            'username':username,
+            'password':password,
+            'email':email,
+            'elo':elo,
+            'country':country,
+            'profileImg':profileImageURL,
+            'description':descrption,
+            'isAdmin':'false'
+        }
+    }).then(response => response).catch((error) => {
+        handleElasticsearchError(error);
+});
+
+const userLogin = (mail, passwd) => es.search({
+        index:'users',
+        type:'user',
+        body:{
+            query:{
+                multi_match: { 
+                    query: "this is a test",
+                    fields: [mail, passwd]
+                }
+            }
+        }
+    }).then(response => response).catch((error) => {
+        console.log(error);
+        handleElasticsearchError(error);
+});
+
+const getUser = {
+    byId: (id) => es.search({
+        index:'users',
+        type:'user',
+        body:{
+            query:{
+                match: { 'id' : email },
+            }
+        }
+    }),
+    byUsername: (username) => es.search({
+            index:'users',
+            type:'user',
+            body:{
+                query:{
+                    match: { 'username' : username },
+                }
+            }
+        }).then(res => res)
+        .catch(e => {
+            handleElasticsearchError(e)
+            console.log(e);
+    }),
+    byEmail: (email) => es.search({
+        index:'users',
+        type:'user',
+        body:{
+            query:{
+                match: { 'email' : email },
+            }
+        }
+    })// à faire return de toutes les infos
 };
 
-const userLogin = (username, password) => { // Retourne 401 si non trouvé / erreur d'auth, sinon retourner 200
-    return 501;
-};
+const updateUser = (username) => 501;
 
-const getUser = { // Retour 404 si non trouvé, sinon TOUTES les infos
-    byId: (id) => {
-        return 501;
-    },
-    byUsername: (username) => {
-        return 501;
-    },
-    byEmail: (email) => {
-        return 501;
-    }
-};
-
-const updateUser = (username) => {
-    return 501;
-};
-
-// Retour 200 si ok
-const deleteUser = (username) => {
-    return 501;
-};
+const deleteUser = (username) => es.deleteByQuery({
+        index:'users',
+        type:'user',
+        body:{
+            query:{
+                match: { 'username' : username },
+            }
+        }
+    }).then(response => response).catch((error) => {
+        handleElasticsearchError(error);
+});
 
 export default {
     addUser,

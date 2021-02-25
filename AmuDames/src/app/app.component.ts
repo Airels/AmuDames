@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
 
   onSubmitSignUp() {
       var formValue = this.signUpForm.value;
-      const signUp = new User(
+      const newUser = new User(
         formValue['username'],
         formValue['password'],
         formValue['email'],
@@ -79,8 +79,8 @@ export class AppComponent implements OnInit {
         false
       );
 
-      this.http.createUser(formValue).subscribe((res: any)=>{
-        if(res && res.email === 'ok') { //promise
+      this.http.registerUser(newUser).subscribe((res: any)=>{
+        if(res && res.status === '201') { //promise
           alert('Your Account was sucessfully created!');
           } else {
           alert('An account with this email and/or username already exist');
@@ -91,24 +91,16 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/home']);
          }
          );
-    console.log(formValue);
+        console.log(formValue);
   }
 
   onSubmitSignIn() {
     var formValue = this.signInForm.value;
-    const signIn = new User(
-      "",
-      formValue['password'],
-      formValue['email'],
-      undefined,
-      "",
-      "",
-      undefined,
-      false
-    );
 
-    this.http.getUserByUsername(signIn.username).subscribe((res: any)=>{
-      if(res && res.email === 'ok') { //promise
+    this.http.loginUser(formValue['email'], formValue['password']).subscribe((res: any)=>{
+      if(res && res.status === '200') { //promise
+        console.log(res);
+        // TODO : Récupérer infos user dans res
         alert('Successfully connected!');
         } else {
         alert('Couldn\'t Connect');

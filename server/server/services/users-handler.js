@@ -2,46 +2,67 @@ import esdb from './es-users.js';
 import User from '../models/users.models.js'
 
 async function login(req, res) {
-    let username = req.body.username;
+    let email = req.body.email;
     let password = req.body.password;
 
     try {
-        esdb.userLogin(username, password).then(result => {
-            if (result != 401) {
-                let user = new User(
-                    result.username,
-                    undefined,
-                    undefined,
-                    result.elo,
-                    result.profileImageURL,
-                    result.country,
-                    undefined,
-                    result.isAdmin
-                );
+        console.log("LOGIN")
+        console.log(email);
+        console.log(password);
+        let result = await esdb.userLogin(email, password);
+        console.log(result);
+        return;
 
-                req.session.user = user;
-                res.json(user);
-            } else {
-                res.sendStatus(401);
-            }
-        });
+        if (result != 401) {
+            let queryResult = esdb.getUser.byEmail(email);
+
+            console.log(result);
+            console.log(queryResult);
+            res.sendStatus(501);
+            return;
+
+            let user = new User(
+                queryResult.username,
+                undefined,
+                undefined,
+                queryResult.elo,
+                queryResult.profileImageURL,
+                queryResult.country,
+                undefined,
+                queryResult.isAdmin
+            );
+
+            req.session.user = user;
+            res.json(user);
+        } else {
+            res.sendStatus(400);
+        }
     } catch (e) {
         res.status(500).send(e);
+        console.log("An error occured during login: ", e);
     }
 }
 
 async function addUser(req, res) {
-    console.log(req);
-    res.sendStatus(501);
-    return;
+    let username = req.body.username;
+    let passwd = req.body.password;
+    let email = req.body.email;
+    let default_elo = 800;
+    let country = req.body.country;
+    let default_profileImageURL = req.body.profileImageURL;
+    let default_description = 'I am a new user!';
 
     try {
-        if (esdb.getUser.byUsername(username) == 200) {
-            res.sendStatus(409);
+        let result = await esdb.getUser.byUsername(username);
+
+        if (result.body.hits.total.value == 0) {
+            let response = await esdb.addUser(username, email, passwd, default_elo, country, default_profileImageURL, default_description);
+            res.sendStatus(response.statusCode);
         } else {
-            res.sendStatus(esdb.addUser(username, email, passwd, default_elo, country, default_profileImageURL, default_description));
+            res.sendStatus(409);
         }
     } catch (e) {
+        console.log("An error occured during register: ", e);
         res.status(500).send(e);
     }
 }

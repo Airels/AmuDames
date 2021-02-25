@@ -1,6 +1,6 @@
-import es from '@elastic/elasticsearch';
+import es from './elasticsearch-client';
 
-const index = 'users';
+const index = 'game';
 
 const handleElasticsearchError = (error) => {
     if (error.status === 404) {
@@ -10,21 +10,13 @@ const handleElasticsearchError = (error) => {
     throw new Error(error.msg, error.status || 500);
 }
 
-const createGame = () => {
-    return 501;
-}
+const createGame = () => 501;
 
-const getGame = () => {
-    return 501;
-}
+const getGame = () => 501;
 
-const updateGame = () => {
-    return 501;
-}
+const updateGame = () => 501;
 
-const deleteGame = () => {
-    return 501;
-}
+const deleteGame = () => 501;
 
 export default {
     createGame,

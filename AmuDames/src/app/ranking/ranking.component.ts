@@ -11,13 +11,14 @@ import { HttpService } from '../services/http.service';
 export class RankingComponent implements OnInit {
 
   userList!: User[];
-  rankinglist: any;
-  http: any;
 
-  constructor() {}
+  constructor(private http:HttpService) {
+    this.userList = this.http.getRanking().subscribe((userList :User [])=>
+    {this.userList = userList;});
+  }
     
 
-  ngOnInit(): any {
+  ngOnInit(): void {
     
   }
 

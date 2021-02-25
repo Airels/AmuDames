@@ -39,6 +39,10 @@ app.get('/', (req, res) => {
 });
 */
 
+app.get('/home', (req, res) => {
+    res.redirect('/');
+});
+
 app.post('/register', asyncHandler(usersHandler.addUser)); 
 
 app.post('/login', asyncHandler(usersHandler.login));

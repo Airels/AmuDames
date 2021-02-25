@@ -14,6 +14,13 @@
     border-style: solid;
     margin-left: 10%;
 }
+.user-profile {
+    color: lightgray;
+}
+.user-profile:hover {
+    color: white;
+    text-decoration: none;
+}
 
 footer {
     color: white;
@@ -35,3 +42,4 @@ input {
 .plink:hover {
     color: blue;
 }
+

@@ -15,10 +15,11 @@
         <ul class="navbar-nav  flex-row">
             <li class="nav-item" >
               <div class="info-navbar">
-                <p>
-                  <i class="flag flag-china">flag</i> Pseudo <br>
+                <a class="user-profile" routerLinkActive="active" routerLink="user-profile">
+                  <i class="flag">flag</i> <br>
+                  Pseudo <br>
                   666 <br>
-                </p>
+                </a>
               </div>
             </li>
             <li class="nav-item">
@@ -79,19 +80,23 @@
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="usernameSignUp" class="form-control" formControlName="username">
+                <input type="text" id="usernameSignUp" class="form-control" formControlName="username"
+                [class.is-invalid]= "signUpForm.get('username')!.invalid && signUpForm.get('username')!.touched">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="emailSignUp" class="form-control" formControlName="email">
+                <input type="email" id="emailSignUp" class="form-control" formControlName="email"
+                [class.is-invalid]= "signUpForm.get('email')!.invalid && signUpForm.get('email')!.touched">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="passwordSignUp" class="form-control" formControlName="password">
+              <input type="password" id="passwordSignUp" class="form-control" formControlName="password"
+              [class.is-invalid]= "signUpForm.get('password')!.invalid && signUpForm.get('password')!.touched">
             </div>
             <div class="form-group">
               <label for="passwordConfirm">Password Confirm</label>
-              <input type="password" id="passwordConfirmSignUp" class="form-control" formControlName="passwordConfirm"> <!--to finish-->
+              <input type="password" id="passwordConfirmSignUp" class="form-control" formControlName="passwordConfirm"
+              [class.is-invalid]= "signUpForm.get('password')!.invalid && signUpForm.get('passwordConfirm')!.touched"> <!--to finish-->
             </div>
             <button type="submit" class="btn btn-success" [disabled]="signUpForm.invalid">Sign-up</button>
           </form>
@@ -100,11 +105,13 @@
           <form [formGroup]="signInForm" (ngSubmit)="onSubmitSignIn()">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" id="emailSignIn" class="form-control" formControlName="email">
+                <input type="text" id="emailSignIn" class="form-control" formControlName="email"
+                [class.is-invalid]= "signInForm.get('email')!.invalid && signInForm.get('email')!.touched">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" id="passwordSignIn" class="form-control" formControlName="password">
+              <input type="password" id="passwordSignIn" class="form-control" formControlName="password"
+              [class.is-invalid]= "signUpForm.get('password')!.invalid && signInForm.get('password')!.touched">
             </div>
             <button type="submit" class="btn btn-success" [disabled]="signInForm.invalid">Sign-in</button>
           </form>
