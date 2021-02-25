@@ -22,10 +22,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.newsSubscription = this.http.getNews(10).subscribe(
       (newsList: News[]) => {
         for (let news of newsList) {
-          if (news.date !== undefined) {
-            let dateObj = new Date(parseInt(news.date));
-            news.date = dateObj.toLocaleTimeString().toString() + " - " + dateObj.toLocaleDateString().toString();
-          }
+          if (news.date !== undefined)
+            news.date = new Date(parseInt(news.date)).toLocaleString();
         }
 
         this.newsList = newsList; 
