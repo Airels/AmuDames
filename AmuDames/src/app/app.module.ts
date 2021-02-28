@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
@@ -18,6 +18,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+import { NewsService } from './services/news.service';
+import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { UserService } from './services/user.service';
     PlayComponent,
     RankingComponent,
     GuideComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    NewsEditModalComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { UserService } from './services/user.service';
     WebSocketService,
     AuthService,
     AuthGuard,
-    UserService
+    UserService,
+    NewsService
   ],
   bootstrap: [AppComponent]
 })

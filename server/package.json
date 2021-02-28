@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-session": "^1.17.1",
+    "i": "^0.3.6",
     "rxjs-compat": "^6.6.3",
     "save-dev": "0.0.1-security",
     "ws": "^7.4.3"

@@ -6,14 +6,14 @@ const newsRouter = express.Router();
 newsRouter.get('/:nbOfNews', newsHandler.getNews);
 
 newsRouter.use((req, res, next) => {
-    if (req.session.isAdmin != true) return res.send(403);
+    if (req.session.user.isAdmin != true) return res.send(403);
     next();
 });
 
 newsRouter.post('/', newsHandler.addNews);
 
-newsRouter.put('/:id', newsHandler.getNews);
+newsRouter.put('/:date', newsHandler.getNews);
 
-newsRouter.delete('/:id', newsHandler.deleteNews);
+newsRouter.delete('/:date', newsHandler.deleteNews);
 
 export default newsRouter;

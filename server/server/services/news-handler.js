@@ -2,7 +2,16 @@ import esdb from './es-news.js';
 
 async function getNews(req, res) {
     try {
-        res.send(`Get ${req.params.nbOfNews} news`);
+        let nb = req.params.nbOfNews;
+        
+        let result = await esdb.getNews(nb);
+        let news = [];
+
+        for (let entry of result.body.hits.hits) {
+            news.push(entry._source);
+        }
+
+        res.json(news);
     } catch (e) {
         res.status(500).send(e);
     }
@@ -10,8 +19,14 @@ async function getNews(req, res) {
 
 async function addNews(req, res) {
     try {
-        res.sendStatus(501);
+        let news = req.body;
+        news.date = Date.now();
+
+        let result = await esdb.createNews(news);
+
+        res.json({ status: result.statusCode });
     } catch (e) {
+        console.log(e);
         res.status(500).send(e);
     }
 }
@@ -26,7 +41,10 @@ async function updateNews(req, res) {
 
 async function deleteNews(req, res) {
     try {
-        res.sendStatus(501);
+        let date = req.params.date;
+        let result = await esdb.deleteNews(date);
+        
+        res.sendStatus(result.statusCode);
     } catch (e) {
         res.status(500).send(e);
     }

@@ -18,10 +18,10 @@ export class HttpService {
     }
 
     // Login management
-    public loginUser(email: string, password: string): Observable<User | undefined> {
+    public loginUser(email: string, password: string): Observable<any> {
         if (email == undefined || password == undefined) return new Observable(undefined);
 
-        return this.http.post<User>(this.serverURL + '/login', {email: email, password: password}, this.httpOptions);
+        return this.http.post(this.serverURL + '/login', {email: email, password: password}, this.httpOptions);
     }
     
     public registerUser(user: User): Observable<any> {
@@ -31,6 +31,10 @@ export class HttpService {
             || user.country == undefined ) return new Observable(undefined);
 
         return this.http.post(this.serverURL + '/register', user, this.httpOptions);
+    }
+
+    public disconnect(): Observable<any> {
+        return this.http.get(this.serverURL + '/logout');
     }
     
 
@@ -54,20 +58,33 @@ export class HttpService {
 
     // News management
     public getNews(nb: number): Observable<News[]> {
-        return this.http.get<News[]>(this.serverURL + `/news/${nb}`);
+        return this.http.get<News[]>(this.serverURL + `/news/${nb}`)
     }
 
-    public createNews(news: News): Observable<any> | number {
+    public createNews(news: News): Observable<any> {
         if (news.content == undefined 
-            || news.date == undefined 
             || news.title == undefined
-            || news.type == undefined ) return 400;
+            || news.type == undefined ) return new Observable(undefined);
 
         return this.http.post(this.serverURL + '/news/', news, this.httpOptions);
     }
 
-    public deleteNews(): Observable<News> {
-        return this.http.delete<News>(this.serverURL + `/news/:id`);
+    public updateNews(news: News): Observable<any> {
+        return this.http.put(this.serverURL + '/news/:timestamp', news, this.httpOptions)
+    }
+
+    public deleteNews(timestamp: number): Observable<any> {
+        return this.http.delete<any>(this.serverURL + `/news/:timestamp`);
+    }
+
+
+    // Game-Finder Management
+    public gameFinderStart(): Observable<any> {
+        return this.http.get(this.serverURL + '/game/search/start');
+    }
+
+    public gameFinderStop(): Observable<any> {
+        return this.http.get(this.serverURL + '/game/search/stop');
     }
 
     //Ranking 

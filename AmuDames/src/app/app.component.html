@@ -60,25 +60,6 @@
       </div>
     </nav>
 
-      <div class="modal fade" id="modalConnexion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          ...
-        </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- MODALS BEGIN -->
     <!--modal pas connecter-->
     <ng-template #modalConnexion let-modal>
@@ -88,8 +69,8 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div id="signUpForm">
+      <div id="signUpForm" hidden=true>
+        <div class="modal-body">
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmitSignUp()">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -111,10 +92,17 @@
               <input type="password" id="passwordConfirmSignUp" class="form-control" formControlName="passwordConfirm"
               [class.is-invalid]= "signUpForm.get('password')!.invalid && signUpForm.get('passwordConfirm')!.touched"> <!--to finish-->
             </div>
-            <button type="submit" class="btn btn-success" [disabled]="signUpForm.invalid">Sign-up</button>
+            <button type="submit" class="btn btn-success" [disabled]="signUpForm.invalid" (click)="modal.dismiss('Cross click')">Sign-up</button>
           </form>
         </div>
-        <div id="signInForm" hidden=true>
+        <div class="modal-footer text-center d-flex" >
+          <div class="plink">
+            <a (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account ? Sign-In!</u></i></p></a>
+          </div>
+        </div>
+      </div>
+      <div id="signInForm">
+        <div class="modal-body">
           <form [formGroup]="signInForm" (ngSubmit)="onSubmitSignIn()">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -126,13 +114,13 @@
               <input type="password" id="passwordSignIn" class="form-control" formControlName="password"
               [class.is-invalid]= "signUpForm.get('password')!.invalid && signInForm.get('password')!.touched">
             </div>
-            <button type="submit" class="btn btn-success" [disabled]="signInForm.invalid">Sign-in</button>
+            <button type="submit" class="btn btn-success" [disabled]="signInForm.invalid" (click)="modal.dismiss('Cross click')">Sign-in</button>
           </form>
         </div>
-      </div>
-      <div class="modal-footer text-center d-flex" >
-        <div class="plink">
-          <a (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Already have an account? Sign-In!</u></i></p></a>
+        <div class="modal-footer text-center d-flex" >
+          <div class="plink">
+            <a (click)="switchConnexionForm()" class="connexionButton"><p><i><u>Don't have an account ? Sign-Up!</u></i></p></a>
+          </div>
         </div>
       </div>
     </ng-template>

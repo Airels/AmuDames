@@ -1,17 +1,42 @@
 <div class="jumbotron bg-dark p-5 rounded-lg m-3">
-    <h1 class="display-4 text-white">Bienvenu sur AMU dames !</h1>
+    <h1 class="display-4 text-white">AMU dames | Welcome!</h1>
     <p class="lead text-white">
       AMU dames est un jeu de dame en ligne multijoueur et blablabla
     </p>
+
     <hr class="my-4">
-    <div *ngIf="user != null && user.isAdmin">
-      cc cv ?
+    <div *ngIf="user?.isAdmin == true" id="newsBox">
+      <form [formGroup]="newsForm" (ngSubmit)="onSubmitNews()">
+        <div class="form-group">
+            <label for="title">News Title:</label>
+            <input type="text" id="title" class="form-control" formControlName="title">
+        </div>
+        <div class="form-group">
+            <select name="type" id="type" class="form-control" formControlName="type">
+              <option value="">--Kind of News--</option>
+              <option value="secondary">Info</option>
+              <option value="warning">Warning</option>
+              <option value="danger">Danger</option>
+              <option value="success">Nice</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="content">News Content:</label>
+          <textarea id="content" class="form-control" formControlName="content" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="newsForm.invalid">Publish</button>
+      </form>
+      <hr>
     </div>
+
     <h1><span class="badge badge-secondary">News</span></h1>
     <ul class="list-group">
-      <div class="card list-group-item" *ngFor="let news of newsList">
+      <div class="card list-group-item mb-2" *ngFor="let news of newsList; let index = index">
         <div class="card-body">
-          <h5><span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u></h5>
+          <h5>
+            <button class="btn btn-outline-info m-2" *ngIf="user?.isAdmin == true" (click)="open(index)">[edit]</button>
+            <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
+          </h5>
           <p>{{ news.content }}</p>
         </div>
       </div>

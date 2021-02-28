@@ -4,19 +4,81 @@ const index = 'news';
 
 const handleElasticsearchError = (error) => {
     if (error.status === 404) {
-        throw new Error('User Not Found', 404);
+        throw new Error('News Not Found', 404);
     }
 
     throw new Error(error.msg, error.status || 500);
 }
 
-const createNews = () => 501;
+const createNews = (news) => es.index({
+    index,
+    refresh: 'true',
+    body: {
+        'title': news.title,
+        'type': news.type,
+        'date': news.date,
+        'content': news.content,
+    }
+})
+    .then(response => response)
+    .catch((error) => {
+        handleElasticsearchError(error);
+});
 
-const getNews = () => 501;
+const getNews = (nb) => es.search({
+    index,
+    body: {
+        "size": nb,
+        "sort": [
+            { "date": "desc" }
+        ]
+    }
+});
 
-const updateNews = () => 501;
+const getNewsByDate = (date) => es.search({
+    index,
+    type: 'news',
+    body: {
+        "size": 10, 
+        "query": { "match_all": {} },
+        "sort": [
+            { "date": "desc" }
+        ]
+    }
+})
+    .then(res => res)
+    .catch(e => {
+        handleElasticsearchError(e)
+});
 
-const deleteNews = () => 501;
+
+const updateNews = (date) => es.update({
+    index,
+    refresh: 'true',
+    body: {
+        title: 'username',
+        type: 'password',
+        'date': date,
+        content: 'content',
+    }
+})
+    .then(response => response)
+    .catch((error) => {
+        handleElasticsearchError(error);
+});
+
+const deleteNews = (date) => es.deleteByQuery({
+    index,
+    type: 'news',
+    refresh: 'true',
+    body: {
+        query: {
+            match: { 'date': date },
+        }
+    }
+}).then(response => response).catch((error) => {
+    handleElasticsearchError(error);
+});
 
 export default {
     createNews,

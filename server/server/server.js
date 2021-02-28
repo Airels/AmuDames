@@ -19,7 +19,7 @@ import newsRouter from './routes/news-routes';
 const app = express();
 var sess = {
     secret: 'casino cest pas que des mots',
-    cookie: { secure: true }
+    cookie: { secure: false }
 }
 
 app.use(express.json());
@@ -46,5 +46,7 @@ app.get('/home', (req, res) => {
 app.post('/register', asyncHandler(usersHandler.addUser)); 
 
 app.post('/login', asyncHandler(usersHandler.login));
+
+app.get('/logout', asyncHandler(usersHandler.logout));
 
 app.listen(8080, () => console.log("Amudames opened on port 8080"));
