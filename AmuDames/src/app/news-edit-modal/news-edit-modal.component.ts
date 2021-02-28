@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../models/user.models';
-import { UserService } from '../services/user.service';
+import { NewsService } from '../services/news.service';
 
 @Component({
   selector: 'app-news-edit-modal',
@@ -11,49 +11,27 @@ import { UserService } from '../services/user.service';
 })
 export class NewsEditModalComponent implements OnInit {
 
-  @Input() index!: number;
-  @Input() title!: string;
-  @Input() type!: string;
-  @Input() date!: any;
-  @Input() content!: string;
-
   closeResult: string = "";
   newsEditForm!: FormGroup;
   user!: User;
 
-  constructor(private userService: UserService, private modalService: NgbModal, private formBuilder : FormBuilder) { }
+  constructor(private newsService: NewsService,private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    let news = this.newsService.newsBuffer;
+
     this.newsEditForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      type: ['', [Validators.required]],
-      content: ['', [Validators.required]]
-    });
-
-    this.userService.userSubject.subscribe((user) => {
-      this.user = user;
+      title: [news.title, [Validators.required]],
+      type: [news.type, [Validators.required]],
+      content: [news.content, [Validators.required]]
     });
   }
 
-  ngOnDestroy(): void {
-    this.userService.userSubject.unsubscribe();
+  editNews() {
+
   }
 
-  open(content: any) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-  
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+  deleteNews() {
+    
   }
 }

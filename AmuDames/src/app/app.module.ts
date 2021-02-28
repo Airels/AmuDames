@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
@@ -20,6 +20,7 @@ import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { NewsEditComponent } from './news-edit/news-edit.component';
 import { NewsService } from './services/news.service';
+import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NewsService } from './services/news.service';
     RankingComponent,
     GuideComponent,
     UserProfileComponent,
-    NewsEditComponent
+    NewsEditComponent,
+    NewsEditModalComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ export class NewsService {
 
     private newsList: News[] = [];
     public newsSubject: Subject<any> = new Subject<any>();
+    public newsBuffer!: News;
 
     constructor() {
         this.newsSubject.next(this.newsList);

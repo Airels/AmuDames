@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { NewsService } from '../services/news.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewsEditModalComponent } from '../news-edit-modal/news-edit-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -79,11 +80,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEditNews() {
-  }
-
-  open(content: any) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  open(index: number) {
+    this.newsService.newsBuffer = this.newsList[index];
+    
+    this.modalService.open(NewsEditModalComponent, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -98,15 +98,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       return  `with: ${reason}`;
     }
-  }
-
-  openEditModal(title: string, type: string, date: any, content: string) {
-    this.newsEditForm = this.formBuilder.group({
-      title: [title, [Validators.required]],
-      type: [type, [Validators.required]],
-      content: [content, [Validators.required]]
-    });
-
-    this.open("editNewsModal");
   }
 }
