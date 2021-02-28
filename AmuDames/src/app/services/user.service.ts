@@ -13,6 +13,7 @@ export class UserService {
     public connect(newUser: User) {
         this.user = newUser;
         this.userSubject.next(this.user);
+        console.log(this.user.isAdmin);
     }
 
     public disconnect() {

@@ -19,6 +19,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { NewsEditComponent } from './news-edit/news-edit.component';
+import { NewsService } from './services/news.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { NewsEditComponent } from './news-edit/news-edit.component';
     WebSocketService,
     AuthService,
     AuthGuard,
-    UserService
+    UserService,
+    NewsService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,7 +5,7 @@
     </p>
 
     <hr class="my-4">
-    <div *ngIf="user != null && user.isAdmin" id="newsBox">
+    <div *ngIf="user?.isAdmin == true" id="newsBox">
       <form [formGroup]="newsForm" (ngSubmit)="onSubmitNews()">
         <div class="form-group">
             <label for="title">News Title:</label>

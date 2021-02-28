@@ -1,11 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { News } from '../models/news.models';
 import { User } from '../models/user.models';
 import { HttpService } from '../services/http.service';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { NewsService } from '../services/news.service';
 
 @Component({
   selector: 'app-home',
@@ -13,22 +14,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  newsList!: News[];
+  newsList: News[] = [];
   newsSubscription!: Subscription;
   user!: User | null;
   newsForm!: FormGroup;
 
-  constructor(private http: HttpService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
-    this.newsSubscription = this.http.getNews(10).subscribe(
-      (newsList: News[]) => {
-        for (let news of newsList) {
-          if (news.date !== undefined)
-            news.date = new Date(parseInt(news.date)).toLocaleString();
-        }
-
-        this.newsList = newsList; 
-      }
-    );
+  constructor(private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
+    newsService.newsSubject.subscribe((newsList) => {
+      this.newsList = newsList;
+    });
   }
 
   ngOnInit(): void {
@@ -36,6 +30,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userService.userSubject.subscribe((user) => {
       this.user = user;
     });
+
+    this.newsSubscription = this.http.getNews(10).subscribe(
+      (newsList: News[]) => {
+        for (let news of newsList) {
+          if (news.date !== undefined)
+            news.date = new Date(parseInt(news.date)).toLocaleString();
+        }
+
+        this.newsService.initNews(newsList);
+      }
+    );
 
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -50,12 +55,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSubmitNews() {
     var formValue = this.newsForm.value;
-    let news = new News(formValue['title'], formValue['type'], undefined, formValue['content']);
+    let news = new News(formValue['title'], formValue['type'], new Date(Date.now()).toLocaleString(), formValue['content']);
 
     this.http.createNews(news).subscribe({
       next: res => {
         if (res.status == 201) {
           alert("News added!");
+          this.newsService.addNews(news);
+          this.changeDetection.detectChanges();
           this.newsForm.reset();
         }
         else {
