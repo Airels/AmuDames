@@ -1,0 +1,34 @@
+<ng-template #editNewsModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Edit News</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div>
+        <form [formGroup]="newsEditForm">
+            <div class="form-group">
+                <label for="title">News Title:</label>
+                <input type="text" id="title" class="form-control" formControlName="title" value="{{ title }}">
+            </div>
+            <div class="form-group">
+                <select name="type" id="type" class="form-control" formControlName="type">
+                <option value="">--Kind of News--</option>
+                <option value="secondary">Info</option>
+                <option value="warning">Warning</option>
+                <option value="danger">Danger</option>
+                <option value="success">Nice</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label for="content">News Content:</label>
+            <textarea id="content" class="form-control" formControlName="content" rows="5">{{ content }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+    <div class="modal-footer text-center d-flex" ></div>
+</ng-template>

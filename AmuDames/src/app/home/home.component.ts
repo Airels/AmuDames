@@ -50,12 +50,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       type: ['', [Validators.required]],
       content: ['', [Validators.required]]
     });
-
-    this.newsEditForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      type: ['', [Validators.required]],
-      content: ['', [Validators.required]]
-    });
   }
 
   ngOnDestroy(): void {
@@ -106,4 +100,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  openEditModal(title: string, type: string, date: any, content: string) {
+    this.newsEditForm = this.formBuilder.group({
+      title: [title, [Validators.required]],
+      type: [type, [Validators.required]],
+      content: [content, [Validators.required]]
+    });
+
+    this.open("editNewsModal");
+  }
 }
