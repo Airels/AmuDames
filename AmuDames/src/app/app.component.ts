@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   user!: User | null;
 
   constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService,
-    private userService : UserService) {}
+    private userService : UserService, private httpService: HttpService) {}
 
   ngOnInit(): void {
     this.initForms();
@@ -34,6 +34,10 @@ export class AppComponent implements OnInit {
     this.user = null;
     this.userService.userSubject.subscribe((user) => {
       this.user = user;
+    });
+
+    this.httpService.getCurrentUser().subscribe((user) => {
+      this.userService.connect(user);
     });
   }
 

@@ -24,6 +24,11 @@ async function login(req, res) {
     }
 }
 
+async function logout(req, res) {
+    req.session.destroy();
+    res.json({status: 200});
+}
+
 async function addUser(req, res) {
     let username = req.body.username;
     let passwd = req.body.password;
@@ -71,6 +76,11 @@ async function getUser(req, res) {
     }
 }
 
+async function getCurrentUser(req, res) {
+    req.params.email = req.session.user.email;
+    await getUser(req, res);
+}
+
 async function getUsers(req, res) {
     try {
         let username = req.params.username;
@@ -110,7 +120,9 @@ async function deleteUser(req, res) {
 
 export default {
     login,
+    logout,
     getUser,
+    getCurrentUser,
     getUsers,
     addUser,
     updateUser,

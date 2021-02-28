@@ -32,6 +32,10 @@ export class HttpService {
 
         return this.http.post(this.serverURL + '/register', user, this.httpOptions);
     }
+
+    public disconnect(): Observable<any> {
+        return this.http.get(this.serverURL + '/logout');
+    }
     
 
     // User management

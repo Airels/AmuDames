@@ -47,4 +47,6 @@ app.post('/register', asyncHandler(usersHandler.addUser));
 
 app.post('/login', asyncHandler(usersHandler.login));
 
+app.get('/logout', asyncHandler(usersHandler.logout));
+
 app.listen(8080, () => console.log("Amudames opened on port 8080"));
