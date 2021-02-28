@@ -18,7 +18,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
-import { NewsEditComponent } from './news-edit/news-edit.component';
 import { NewsService } from './services/news.service';
 import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
 
@@ -30,7 +29,6 @@ import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.compon
     RankingComponent,
     GuideComponent,
     UserProfileComponent,
-    NewsEditComponent,
     NewsEditModalComponent
   ],
   imports: [

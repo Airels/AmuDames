@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
     <div>
-    <form [formGroup]="newsEditForm" (ngSubmit)="editForm()">
+    <form [formGroup]="newsEditForm" (ngSubmit)="editNews()">
         <div class="form-group">
             <label for="title">News Title:</label>
             <input type="text" id="title" class="form-control" formControlName="title">
@@ -24,7 +24,7 @@
         <button type="submit" class="btn btn-success">Edit</button>
     </form>
 
-        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-danger mt-2">Delete</button>
     </div>
 </div>
 <div class="modal-footer text-center d-flex" ></div>
