@@ -31,16 +31,16 @@
 
     <h1><span class="badge badge-secondary">News</span></h1>
     <ul class="list-group">
-      <div class="card list-group-item mb-2" *ngFor="let news of newsList; let i = 0" >
+      <div class="card list-group-item mb-2" *ngFor="let news of newsList; let id = index">
         <div class="card-body">
           <h5>
-            <a *ngIf="user?.isAdmin == true" (click)="open(modalEditNews-{{ i }})">[edit]</a>
+            <a *ngIf="user?.isAdmin == true" (click)="open(id)">[edit]</a>
             <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
           </h5>
           <p>{{ news.content }}</p>
         </div>
         <!-- modal edit/delete-->
-        <ng-template #modalEditNews-{{ i }} let-modal>
+        <ng-template id="{{ id }}" let-modal>
           <div class="modal-header">
             <h5 class="modal-title">Edit News</h5>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -49,7 +49,7 @@
           </div>
           <div class="modal-body">
             <div>
-              <form [formGroup]="newsEditForm" (ngSubmit)="onEditNews({{ news }})">
+              <form [formGroup]="newsForm" (ngSubmit)="onEditNews()">
                 <div class="form-group">
                     <label for="title">News Title:</label>
                     <input type="text" id="title" class="form-control" formControlName="title" value="{{ news.title }}">
@@ -67,7 +67,7 @@
                   <label for="content">News Content:</label>
                   <textarea id="content" class="form-control" formControlName="content" rows="5">{{ news.content }}</textarea>
                 </div>
-                <button type="submit" class="btn btn-success" [disabled]="newsEditForm.invalid">Edit</button>
+                <button type="submit" class="btn btn-success">Edit</button>
               </form>
               <button type="submit" class="btn btn-danger">Delete</button>
             </div>
