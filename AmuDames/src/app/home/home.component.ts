@@ -69,4 +69,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  onEditNews(news: News) {
+    
+  }
+
 }

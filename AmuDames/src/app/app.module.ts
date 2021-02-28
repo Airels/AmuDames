@@ -18,6 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+import { NewsEditComponent } from './news-edit/news-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { UserService } from './services/user.service';
     PlayComponent,
     RankingComponent,
     GuideComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    NewsEditComponent
   ],
   imports: [
     BrowserModule,

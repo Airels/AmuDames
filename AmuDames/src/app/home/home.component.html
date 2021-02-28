@@ -33,9 +33,47 @@
     <ul class="list-group">
       <div class="card list-group-item mb-2" *ngFor="let news of newsList">
         <div class="card-body">
-          <h5><span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u></h5>
+          <h5>
+            <a *ngIf="user != null && user.isAdmin" (click)="open(modalEditNews-{{ news.date.replace('', ) }})">[edit]</a>
+            <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
+          </h5>
           <p>{{ news.content }}</p>
         </div>
+        <!-- modal edit/delete-->
+        <ng-template #modalEditNews-{{ news.date.replace('', ) }} let-modal>
+          <div class="modal-header">
+            <h5 class="modal-title">Edit News</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <form [formGroup]="newsForm" (ngSubmit)="onEditNews({{ news }})">
+                <div class="form-group">
+                    <label for="title">News Title:</label>
+                    <input type="text" id="title" class="form-control" formControlName="title" value="{{ news.title }}">
+                </div>
+                <div class="form-group">
+                    <select name="type" id="type" class="form-control" formControlName="type">
+                      <option value="">--Kind of News--</option>
+                      <option value="secondary">Info</option>
+                      <option value="warning">Warning</option>
+                      <option value="danger">Danger</option>
+                      <option value="success">Nice</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="content">News Content:</label>
+                  <textarea id="content" class="form-control" formControlName="content" rows="5">{{ news.content }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success" [disabled]="newsForm.invalid">Edit</button>
+              </form>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+          <div class="modal-footer text-center d-flex" ></div>
+        </ng-template>
       </div>
     </ul>
 </div>
