@@ -34,13 +34,13 @@
       <div class="card list-group-item mb-2" *ngFor="let news of newsList">
         <div class="card-body">
           <h5>
-            <a *ngIf="user != null && user.isAdmin" (click)="open(modalEditNews-{{ news.date.replace('', ) }})">[edit]</a>
+            <a *ngIf="user?.isAdmin == true" (click)="open(modalEditNews-{{ news.date }})">[edit]</a>
             <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
           </h5>
           <p>{{ news.content }}</p>
         </div>
         <!-- modal edit/delete-->
-        <ng-template #modalEditNews-{{ news.date.replace('', ) }} let-modal>
+        <ng-template #modalEditNews-{{ news.date }} let-modal>
           <div class="modal-header">
             <h5 class="modal-title">Edit News</h5>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">

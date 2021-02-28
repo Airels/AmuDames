@@ -7,6 +7,7 @@ import { HttpService } from '../services/http.service';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { NewsService } from '../services/news.service';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +19,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   newsSubscription!: Subscription;
   user!: User | null;
   newsForm!: FormGroup;
+  closeResult: string = "";
 
-  constructor(private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
+  constructor(private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     newsService.newsSubject.subscribe((newsList) => {
       this.newsList = newsList;
     });
@@ -77,7 +79,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onEditNews(news: News) {
-    
+
+  }
+
+  open(content: any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
 }
