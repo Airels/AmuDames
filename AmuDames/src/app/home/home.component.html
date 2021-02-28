@@ -40,7 +40,7 @@
           <p>{{ news.content }}</p>
         </div>
         <!-- modal edit/delete-->
-        <ng-template id="{{ news.title }}" let-modal>
+        <ng-template [id]="[news.title]" let-modal>
           <div class="modal-header">
             <h5 class="modal-title">Edit News</h5>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
