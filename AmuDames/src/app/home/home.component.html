@@ -31,16 +31,16 @@
 
     <h1><span class="badge badge-secondary">News</span></h1>
     <ul class="list-group">
-      <div class="card list-group-item mb-2" *ngFor="let news of newsList">
+      <div class="card list-group-item mb-2" *ngFor="let news of newsList; let i = 0" >
         <div class="card-body">
           <h5>
-            <a *ngIf="user?.isAdmin == true" (click)="open(modalEditNews-{{ news.date }})">[edit]</a>
+            <a *ngIf="user?.isAdmin == true" (click)="open(modalEditNews-{{ i }})">[edit]</a>
             <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
           </h5>
           <p>{{ news.content }}</p>
         </div>
         <!-- modal edit/delete-->
-        <ng-template #modalEditNews-{{ news.date }} let-modal>
+        <ng-template #modalEditNews-{{ i }} let-modal>
           <div class="modal-header">
             <h5 class="modal-title">Edit News</h5>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
