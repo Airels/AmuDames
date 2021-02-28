@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'ranking', canActivate: [AuthGuard], component: RankingComponent },
   { path: 'guide', component: GuideComponent },
   { path: 'user-profile', canActivate: [AuthGuard], component: UserProfileComponent },
-  { path: 'news-edit', canActivate: [AuthGuard], component: NewsEditComponent} //todo add guard admin
+  { path: 'news-edit', canActivate: [AuthGuard], component: NewsEditComponent}, //todo add guard admin
   { path: '**', redirectTo: 'home' }
 ];
 
