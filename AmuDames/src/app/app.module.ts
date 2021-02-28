@@ -18,6 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+import { NewsService } from './services/news.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { UserService } from './services/user.service';
     WebSocketService,
     AuthService,
     AuthGuard,
-    UserService
+    UserService,
+    NewsService
   ],
   bootstrap: [AppComponent]
 })
