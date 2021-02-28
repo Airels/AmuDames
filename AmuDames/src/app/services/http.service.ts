@@ -79,11 +79,11 @@ export class HttpService {
 
 
     // Game-Finder Management
-    public findGame(): Observable<any> {
+    public gameFinderStart(): Observable<any> {
         return this.http.get(this.serverURL + '/game/search/start');
     }
 
-    public stopFind(): Observable<any> {
+    public gameFinderStop(): Observable<any> {
         return this.http.get(this.serverURL + '/game/search/stop');
     }
 }

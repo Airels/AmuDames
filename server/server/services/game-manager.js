@@ -1,20 +1,54 @@
 var waitingList = [];
 var gamesList = [];
 
-const addPlayerWaiting = (username) => {
-    waitingList.push(username);
+setTimeout(5000, async () => {
+    // Utiliser un sémaphore ici
+    if (waitingList.length < 2) return;
+
+    let wl = waitingList;
+    let p1 = waitingList.shift();
+    let p2 = undefined;
+    let eloDiff = 0;
+
+    for (let player of wl) {
+        if (p2 === undefined) {
+            p2 = player;
+            eloDiff = Math.abs(p1.elo - p2.elo);
+        }
+
+        if (Math.abs(p1.elo - player.elo) < eloDiff) {
+            p2 = player;
+            eloDiff = Math.abs(p1.elo - p2.elo);
+        }
+    }
+
+
+});
+
+const addPlayerWaiting = (user) => {
+    waitingList.push(user);
 }
 
-const removePlayerWaiting = (username) => {
-    let index = array.indexOf(username);
+const removePlayerWaiting = (user) => {
+    let index = -1;
+
+    let i = 0;
+    for (let player of waitingList) {
+        if (player.username == user.username) {
+            index = i;
+            break;
+        }
+
+        i++;
+    }
 
     if (index > -1)
-        array.splice(index, 1);
+        waitingList = array.splice(index, 1);
     else
         return -1;
 }
 
-const matchPlayers = () => {
+const matchPlayers = (p1, p2) => {
     // Tentative de mettre deux joueurs ensembles avec le moins d'écart d'élo possible
 
 
