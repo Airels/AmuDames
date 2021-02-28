@@ -76,4 +76,14 @@ export class HttpService {
     public deleteNews(timestamp: number): Observable<any> {
         return this.http.delete<any>(this.serverURL + `/news/:timestamp`);
     }
+
+
+    // Game-Finder Management
+    public findGame(): Observable<any> {
+        return this.http.get(this.serverURL + '/game/search/start');
+    }
+
+    public stopFind(): Observable<any> {
+        return this.http.get(this.serverURL + '/game/search/stop');
+    }
 }
