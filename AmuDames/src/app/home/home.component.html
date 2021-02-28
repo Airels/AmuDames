@@ -49,7 +49,7 @@
           </div>
           <div class="modal-body">
             <div>
-              <form [formGroup]="newsForm" (ngSubmit)="onEditNews({{ news }})">
+              <form [formGroup]="newsEditForm" (ngSubmit)="onEditNews({{ news }})">
                 <div class="form-group">
                     <label for="title">News Title:</label>
                     <input type="text" id="title" class="form-control" formControlName="title" value="{{ news.title }}">
@@ -67,7 +67,7 @@
                   <label for="content">News Content:</label>
                   <textarea id="content" class="form-control" formControlName="content" rows="5">{{ news.content }}</textarea>
                 </div>
-                <button type="submit" class="btn btn-success" [disabled]="newsForm.invalid">Edit</button>
+                <button type="submit" class="btn btn-success" [disabled]="newsEditForm.invalid">Edit</button>
               </form>
               <button type="submit" class="btn btn-danger">Delete</button>
             </div>

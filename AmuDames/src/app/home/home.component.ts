@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   newsSubscription!: Subscription;
   user!: User | null;
   newsForm!: FormGroup;
+  newsEditForm!: FormGroup;
   closeResult: string = "";
 
   constructor(private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
@@ -45,6 +46,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
 
     this.newsForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      content: ['', [Validators.required]]
+    });
+
+    this.newsEditForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       type: ['', [Validators.required]],
       content: ['', [Validators.required]]
@@ -79,7 +86,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onEditNews(news: News) {
-
   }
 
   open(content: any) {
