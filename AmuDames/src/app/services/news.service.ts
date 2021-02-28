@@ -3,7 +3,7 @@ import { News } from '../models/news.models';
 
 export class NewsService {
 
-    private newsList: any[] = [];
+    private newsList: News[] = [];
     public newsSubject: Subject<any> = new Subject<any>();
 
     constructor() {
@@ -18,10 +18,7 @@ export class NewsService {
     }
 
     public addNews(news: News) {
-        this.newsList.unshift({
-            id: this.newsList.length,
-            content: news
-        });
+        this.newsList.unshift(news);
         this.newsSubject.next(this.newsList);
     }
 }
