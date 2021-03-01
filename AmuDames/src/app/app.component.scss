@@ -7,12 +7,19 @@
     position: fixed; top: 0; right: 0; border: 0;
 }
 
+.collapse-menu {
+    position: absolute;
+    left: 15%;
+}
+
 .user-img {
     border-color: white;
     border-radius: 50%;
     border-width: 0.3em;
     border-style: solid;
     margin-left: 10%;
+    width: 64px;
+    height: 64px;
 }
 .user-profile {
     color: lightgray;
@@ -20,6 +27,12 @@
 .user-profile:hover {
     color: white;
     text-decoration: none;
+}
+
+.user-info {
+    position: absolute;
+    right: 1%;
+    top: 1%;
 }
 
 .user-img-connected { border-color: green ;}
@@ -46,3 +59,6 @@ input {
     color: blue;
 }
 
+html {
+    overflow: hidden !important;
+}
