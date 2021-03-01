@@ -32,6 +32,7 @@ async function addNews(req, res) {
 }
 
 async function updateNews(req, res) {
+    //todo implementation
     try {
         res.sendStatus(501);
     } catch (e) {

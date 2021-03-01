@@ -22,4 +22,14 @@ export class NewsService {
         this.newsList.unshift(news);
         this.newsSubject.next(this.newsList);
     }
+
+    public updateNews(news: News, title: String, date: String | undefined, type: String, content: String) {
+        this.newsList.unshift(news);
+        this.newsSubject.next(this.newsList);
+    }
+
+    public deleteNews(news: News) {
+        this.newsList.filter(function(item) { return item !== news; }); //remove using filter if don't work please change w/ a split
+        this.newsSubject.next(this.newsList);
+    }
 }
