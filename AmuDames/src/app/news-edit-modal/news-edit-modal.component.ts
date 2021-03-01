@@ -19,7 +19,7 @@ export class NewsEditModalComponent implements OnInit {
   newsDeleteForm!: FormGroup;
   news!: News;
 
-  constructor(private http : HttpService, private newsService: NewsService,private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private modalService: NgbModal, private http : HttpService, private newsService: NewsService,private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.news = this.newsService.newsBuffer;
@@ -35,7 +35,11 @@ export class NewsEditModalComponent implements OnInit {
     });
   }
 
-  editNews() {
+  closeModal(): void {
+    this.modalService.dismissAll();
+  }
+
+  editNews(): void {
     if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) {
       let timestamp = (new Date(this.news.date).getTime()/1000);
       this.http.updateNews(this.news, timestamp).subscribe({
@@ -60,7 +64,7 @@ export class NewsEditModalComponent implements OnInit {
     }
   }
 
-  deleteNews() {
+  deleteNews(): void {
     if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) { 
       let timestamp = (new Date(this.news.date).getTime()/1000);
       this.http.deleteNews(timestamp).subscribe({
