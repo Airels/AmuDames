@@ -1,32 +1,46 @@
-var waitingList = [];
-var gamesList = [];
+const semaphore = require('semaphore')(1);
 
-setTimeout(5000, async () => {
-    // Utiliser un sémaphore ici
+var waitingList = [];
+var gameList = [];
+
+function tryMatch() {
     if (waitingList.length < 2) return;
 
-    let wl = waitingList;
-    let p1 = waitingList.shift();
-    let p2 = undefined;
-    let eloDiff = 0;
+    semaphore.take(() => {
+        let p1 = waitingList.shift();
+        let p2 = undefined;
+        let eloDiff = 0;
 
-    for (let player of wl) {
-        if (p2 === undefined) {
-            p2 = player;
-            eloDiff = Math.abs(p1.elo - p2.elo);
+        for (let player of wl) {
+            if (p2 === undefined) {
+                p2 = player;
+                eloDiff = Math.abs(p1.elo - p2.elo);
+            }
+
+            if (Math.abs(p1.elo - player.elo) < eloDiff) {
+                p2 = player;
+                eloDiff = Math.abs(p1.elo - p2.elo);
+            }
         }
 
-        if (Math.abs(p1.elo - player.elo) < eloDiff) {
-            p2 = player;
-            eloDiff = Math.abs(p1.elo - p2.elo);
+        if (p2 !== undefined) {
+            removePlayerWaiting(p2)
+            semaphore.leave();
+            matchPlayers(p1, p2);
         }
-    }
+    });
+}
 
+function matchPlayers(p1, p2) {
 
-});
+}
 
 const addPlayerWaiting = (user) => {
-    waitingList.push(user);
+    semaphore.take(() => {
+        waitingList.push(user);
+        semaphore.leave();
+        tryMatch();
+    });
 }
 
 const removePlayerWaiting = (user) => {
@@ -48,25 +62,11 @@ const removePlayerWaiting = (user) => {
         return -1;
 }
 
-const matchPlayers = (p1, p2) => {
-    // Tentative de mettre deux joueurs ensembles avec le moins d'écart d'élo possible
-
-
-}
-
 const createGame = async (whitePlayer, blackPlayer) => {
     // ID généré par elastic search
-
-    var game = {
-        id: {
-            whiteUser: whitePlayer,
-            blackUser: blackPlayer,
-            startTime: Date.now(),
-            playerTurn: 0,
-            cases: await createCases()
-        }
-    }
-
+    let id = 0;
+    
+    var game = new Game(id, whitePlayer, blackPlayer, Date.now(), await createCases());
     gamesList.push(game);
 }
 

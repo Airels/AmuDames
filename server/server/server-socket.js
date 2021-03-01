@@ -8,11 +8,17 @@ serverSocket.on('connection', (ws) => {
 
     ws.on('message', (message) => {
         if (message.startsWith('CONNECT')) {
+            if (args.length != 4) {
+                ws.send("Missing arguments.")
+                return;
+            }
+
             args = message.split(' ');
             gameID = args[1];
             username = args[2];
+            password = args[3];
 
-            // connect to game
+            // Connect
         } else if (message.startsWith('MOVE')) {
             args = message.split(' ');
             source = args[1];
@@ -27,7 +33,7 @@ serverSocket.on('connection', (ws) => {
             ws.send('501 - Not Implemented Yet');
         }else if (message == 'HELP') {
             ws.send("Available commands:\n"
-            + "CONNECT <Game ID> <Username> - To connect to a game\n"
+            + "CONNECT <Game ID> <Username> <Password> - To connect to a game\n"
             + "MOVE <source pawn> <target pawn> - To move a pawn\n"
             + "INFO - To display informations you submitted\n"
             + "HELP - I mean.. it's obvious what this command do...");
