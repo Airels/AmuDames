@@ -56,14 +56,14 @@ export class NewsEditModalComponent implements OnInit {
   }
 
   deleteNews() {
-    if(this.news.date != null) { 
+    if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) { 
       let timestamp = (new Date(this.news.date).getTime()/1000) 
       this.http.deleteNews(timestamp).subscribe({
         next: res => {
           switch (res.status) {
             case 201:
               alert("The news was successfully deleted!");
-              //todo supprimer la news de l'array du service
+              this.newsService.deleteNews(this.news);
               break;
             default:
               alert("An error occured during news delete: " + res.status);
