@@ -41,7 +41,7 @@ export class NewsEditModalComponent implements OnInit {
         switch (res.status) {
           case 201:
             alert("The news was successfully updated!");
-            //todo recuperer les valeurs et continuer les switch case
+            this.newsService.updateNews(this.news, this.news.title, this.news.date, this.news.type, this.news.content);
             break;
           default:
             alert("An error occured during news delete: " + res.status);
@@ -61,7 +61,7 @@ export class NewsEditModalComponent implements OnInit {
       this.http.deleteNews(timestamp).subscribe({
         next: res => {
           switch (res.status) {
-            case 201:
+            case 200:
               alert("The news was successfully deleted!");
               this.newsService.deleteNews(this.news);
               break;
