@@ -48,6 +48,7 @@ export class NewsEditModalComponent implements OnInit {
             case 201:
               alert("The news was successfully updated!");
               this.newsService.updateNews(this.news, this.news.title, this.news.date, this.news.type, this.news.content);
+              this.closeModal();
               break;
             default:
               alert("An error occured during news update: " + res.status);
@@ -73,6 +74,7 @@ export class NewsEditModalComponent implements OnInit {
             case 200:
               alert("The news was successfully deleted!");
               this.newsService.deleteNews(this.news);
+              this.closeModal();
               break;
             default:
               alert("An error occured during news delete: " + res.status);
