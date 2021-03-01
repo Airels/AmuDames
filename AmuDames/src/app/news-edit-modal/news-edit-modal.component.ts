@@ -40,34 +40,35 @@ export class NewsEditModalComponent implements OnInit {
   }
 
   editNews(): void {
-    if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) {
-      let timestamp = (new Date(this.news.date).getTime()/1000);
-      this.http.updateNews(this.news, timestamp).subscribe({
-        next: res => {
-          switch (res.status) {
-            case 201:
-              alert("The news was successfully updated!");
-              this.newsService.updateNews(this.news, this.news.title, this.news.date, this.news.type, this.news.content);
-              this.closeModal();
-              break;
-            default:
-              alert("An error occured during news update: " + res.status);
-          }
-        },
-        error: e => {
-            alert("An error occured during update, please try again later");
-            console.log("An error occured during update: ", e);
-        },
-        complete: () => this.router.navigate(['/home'])
-      });
-    } else {
-      alert("An error occured during update, please try again later");
-    }
+    let timestamp = <number>this.news.timestamp;
+    this.news.title = this.newsEditForm.get('title')?.value;
+    this.news.type = this.newsEditForm.get('type')?.value;
+    this.news.content = this.newsEditForm.get('content')?.value;
+
+    this.http.updateNews(this.news, timestamp).subscribe({
+      next: res => {
+        switch (res.status) {
+          case 200:
+            alert("The news was successfully updated!");
+            this.newsService.updateNews(this.news);
+            this.closeModal();
+            break;
+          default:
+            console.log(res);
+            alert("An error occured during news update: " + res.status);
+        }
+      },
+      error: e => {
+          alert("An error occured during update, please try again later");
+          console.log("An error occured during update: ", e);
+      },
+      complete: () => this.router.navigate(['/home'])
+    });
   }
 
   deleteNews(): void {
     if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) { 
-      let timestamp = (new Date(this.news.date).getTime()/1000);
+      let timestamp = <number>this.news.timestamp;
       this.http.deleteNews(timestamp).subscribe({
         next: res => {
           switch (res.status) {

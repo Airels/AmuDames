@@ -69,7 +69,6 @@ const updateNews = (date) => es.update({
 
 const deleteNews = (date) => es.deleteByQuery({
     index,
-    type: 'news',
     refresh: 'true',
     body: {
         query: {

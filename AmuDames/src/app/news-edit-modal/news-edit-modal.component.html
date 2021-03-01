@@ -29,12 +29,10 @@
     </div>
 </div>
 <div class="modal-footer text-left" >
-    <p>Delete news:<br>
-    pleaese type the news title to delete it</p>
+    <p>Delete news: Please type the news title to delete it</p>
     <form [formGroup]="newsDeleteForm" (ngSubmit)="deleteNews()">
         <div class="form-group">
-            <label for="title">News Title:</label>
-            <input type="text" id="title" class="form-control" formControlName="title">
+            <input type="text" id="title" class="form-control" formControlName="title" autocomplete="off">
         </div>
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
