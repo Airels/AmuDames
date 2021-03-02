@@ -14,7 +14,8 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         let user = this.userService.getUser(this);
-        console.log(user);
+
+        return !(user === null || user === undefined);
 
         if(user === null || user === undefined) {
             alert('GUARD: not connected');

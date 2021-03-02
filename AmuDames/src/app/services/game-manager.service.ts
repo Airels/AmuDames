@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { Game } from '../models/game.models';
 import { HttpService } from './http.service';
@@ -7,7 +8,7 @@ import { HttpService } from './http.service';
 export class GameManagerService {
     game!: Game;
 
-    constructor(private httpService: HttpService) {}
+    constructor(private httpService: HttpService, private router: Router) {}
 
     public createGame(): void {
         
@@ -15,7 +16,10 @@ export class GameManagerService {
 
     public searchGame(): void {
         this.httpService.gameFinderStart().subscribe((res) => {
-            console.log(res);
+            if (res.status == 409) {
+                alert("Another instance of your account is actually finding a game, please disconnect from your previous session to continue.");
+                this.router.navigate(['/home']);
+            }
         });
     }
 

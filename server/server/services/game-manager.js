@@ -37,8 +37,16 @@ function matchPlayers(p1, p2) {
     console.log(p2);
 }
 
-const addPlayerWaiting = (user) => {
+const addPlayerWaiting = (user, callback) => {
     semaphore.take(() => {
+        if (waitingList.find(u => u.username == user.username)) {
+            callback(false);
+            semaphore.leave();
+            return;
+        } 
+
+        callback(true);
+
         waitingList.push(user);
         semaphore.leave();
         tryMatch();
