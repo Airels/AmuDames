@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { News } from '../models/news.models';
@@ -31,7 +31,7 @@ export class NewsEditModalComponent implements OnInit {
     });
 
     this.newsDeleteForm = this.formBuilder.group({
-      title: ['', [Validators.required]]
+      title: ['', [Validators.required, Validators.pattern(`^${this.news.title}$`)]]
     });
   }
 

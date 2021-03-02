@@ -34,7 +34,7 @@
         <div class="form-group">
             <input type="text" id="title" class="form-control" formControlName="title" autocomplete="off">
         </div>
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-danger" [disabled]="newsDeleteForm.get('title')?.invalid">Delete</button>
     </form>
 </div>
 
