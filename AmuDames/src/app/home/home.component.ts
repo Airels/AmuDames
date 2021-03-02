@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { NewsService } from '../services/news.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsEditModalComponent } from '../news-edit-modal/news-edit-modal.component';
+import { AuthGuard } from '../services/auth-guard.service';
 
 @Component({
   selector: 'app-home',
@@ -23,14 +24,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   newsEditForm!: FormGroup;
   closeResult: string = "";
 
-  constructor(private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
+  constructor(private auth: AuthGuard, private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     newsService.newsSubject.subscribe((newsList) => {
       this.newsList = newsList;
     });
   }
 
   ngOnInit(): void {
-    // this.user = this.userService.user;
     this.userService.userSubject.subscribe((user) => {
       this.user = user;
     });

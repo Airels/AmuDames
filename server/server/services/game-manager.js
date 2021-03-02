@@ -11,7 +11,7 @@ function tryMatch() {
         let p2 = undefined;
         let eloDiff = 0;
 
-        for (let player of wl) {
+        for (let player of waitingList) {
             if (p2 === undefined) {
                 p2 = player;
                 eloDiff = Math.abs(p1.elo - p2.elo);
@@ -32,7 +32,9 @@ function tryMatch() {
 }
 
 function matchPlayers(p1, p2) {
-
+    console.log("IT'S A MATCH!");
+    console.log(p1);
+    console.log(p2);
 }
 
 const addPlayerWaiting = (user) => {
@@ -57,7 +59,7 @@ const removePlayerWaiting = (user) => {
     }
 
     if (index > -1)
-        waitingList = array.splice(index, 1);
+        waitingList = waitingList.splice(index, 1);
     else
         return -1;
 }
