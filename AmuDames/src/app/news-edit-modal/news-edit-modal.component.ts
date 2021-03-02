@@ -67,8 +67,7 @@ export class NewsEditModalComponent implements OnInit {
   }
 
   deleteNews(): void {
-    if(this.news.date != null && this.news.title != this.newsDeleteForm.get('title')?.value) { 
-      let timestamp = <number>this.news.timestamp;
+    let timestamp = <number>this.news.timestamp;
       this.http.deleteNews(timestamp).subscribe({
         next: res => {
           switch (res.status) {
@@ -87,8 +86,5 @@ export class NewsEditModalComponent implements OnInit {
         },
         complete: () => this.router.navigate(['/home'])
       });
-    } else {
-      alert("An error occured during delete, please try again later");
-    }
   } 
 }

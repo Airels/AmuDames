@@ -30,7 +30,13 @@ export class NewsService {
     }
 
     public deleteNews(news: News) {
-        this.newsList.filter(function(item) { return item !== news; }); //remove using filter if don't work please change w/ a split
+        // this.newsList.filter(function(item) { return item !== news; }); //remove using filter if don't work please change w/ a split
+        let index = this.newsList.indexOf(news);
+        console.log(index);
+        if (index > -1) {
+            this.newsList.splice(index);
+        }
+
         this.newsSubject.next(this.newsList);
     }
 }
