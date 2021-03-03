@@ -1,7 +1,7 @@
 const semaphore = require('semaphore')(1);
 
-var waitingList = [];
-var gameList = [];
+var waitingList = new Array();
+var gameList = new Array();
 
 function tryMatch() {
     if (waitingList.length < 2) return;
@@ -33,19 +33,21 @@ function tryMatch() {
 
 function matchPlayers(p1, p2) {
     console.log("IT'S A MATCH!");
-    console.log(p1);
-    console.log(p2);
+    console.log(p1.username + " vs " + p2.username);
+    
+    p1.callback({ status: 201 });
+    p2.callback({ status: 201 });
 }
 
 const addPlayerWaiting = (user, callback) => {
     semaphore.take(() => {
         if (waitingList.find(u => u.username == user.username)) {
-            callback(false);
+            callback({ status: 409 });
             semaphore.leave();
             return;
-        } 
+        }
 
-        callback(true);
+        user.callback = callback;
 
         waitingList.push(user);
         semaphore.leave();
@@ -54,22 +56,17 @@ const addPlayerWaiting = (user, callback) => {
 }
 
 const removePlayerWaiting = (user) => {
-    let index = -1;
+    let index = waitingList.indexOf(user);
 
-    let i = 0;
-    for (let player of waitingList) {
-        if (player.username == user.username) {
-            index = i;
-            break;
-        }
-
-        i++;
-    }
+    console.log("index: " + index);
+    console.log("length: " + waitingList.length);
 
     if (index > -1)
-        waitingList = waitingList.splice(index, 1);
+        waitingList.splice(index);
     else
         return -1;
+
+    console.log("new length: " + waitingList.length);
 }
 
 const createGame = async (whitePlayer, blackPlayer) => {

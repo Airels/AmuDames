@@ -13,11 +13,10 @@ gameRouter.get('/', (req, res) => {
 });
 
 gameRouter.get('/search/start', (req, res) => {
-    gameManager.addPlayerWaiting(req.session.user, (result => {
-        if (!result) {
-            res.json({ status: 409 });
-        }
-    }));
+    gameManager.addPlayerWaiting(req.session.user, (result) => {
+        res.json(result);
+        res.end();
+    });
 });
 
 gameRouter.get('/search/stop', (req, res) => {
