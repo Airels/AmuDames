@@ -116,6 +116,18 @@ const deleteUser = (email) => es.deleteByQuery({
     handleElasticsearchError(error);
 });
 
+const getRanking = () => es.search({
+    index,
+    body: {
+        "sort": [
+            { "elo": "desc" }
+        ]
+    }
+}).then(res => res)
+.catch((err) => {
+    handleElasticsearchError(err);
+})
+
 export default {
     addUser,
     userLogin,

@@ -120,7 +120,11 @@ async function deleteUser(req, res) {
 
 async function getRanking(req, res) {
     try {
-        res.sendStatus(501);
+        let result = await esdb.getRanking();
+
+        console.log(result);
+
+        res.json(result);
     } catch (e) {
         res.status(500).send(e);
     }
