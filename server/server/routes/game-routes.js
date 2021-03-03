@@ -1,9 +1,10 @@
 import express from 'express';
+import gameManager from '../services/game-manager';
 
 const gameRouter = express.Router();
 
 gameRouter.use((req, res, next) => { // CHECK IF USER CONNECTED
-    if (req.session.username == undefined) res.sendStatus(401)
+    if (req.session.user.username == undefined) res.sendStatus(401)
     else next();
 });
 
@@ -12,9 +13,11 @@ gameRouter.get('/', (req, res) => {
 });
 
 gameRouter.get('/search/start', (req, res) => {
-    res.sendStatus(501);
-
-    // Recherche un joueur dans la liste de joueurs en attente
+    gameManager.addPlayerWaiting(req.session.user, (result => {
+        if (!result) {
+            res.json({ status: 409 });
+        }
+    }));
 });
 
 gameRouter.get('/search/stop', (req, res) => {

@@ -7,18 +7,31 @@
     <title>AMU dames</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end">
       <a class="navbar-brand" routerLinkActive="active" routerLink="home">
         <img src="../assets/images/logo-mini.png">
       </a>
-      <div class="order-3 order-lg-3">
+      <div class="flex-grow-0" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="search">Play</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="ranking">Ranking</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="guide">Guide</a>
+          </li>
+        </ul>
+      </div>
+      <div class="ml-auto mr-1">
         <!-- USER-->
         <div *ngIf="user != null; else elseBlock">
           <ul class="navbar-nav  flex-row">
             <li class="nav-item" >
               <div class="info-navbar">
                 <a class="user-profile" routerLinkActive="active" routerLink="user-profile">
-                  <i class="flag">{{ user.country }}</i> <br>
+                  <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
                   {{ user.username }} <br>
                   {{ user.elo }} <br>
                 </a>
@@ -38,25 +51,9 @@
                 <img class="user-img user-img-disconnected" src="../assets/images/user/user_blank.png">
               </a>
             </li>
-        </ul>
+          </ul>
         </ng-template>
         <!-- END USER-->
-      </div>
-      <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsExampleDefault" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse order-2 order-lg-2 dropdown-menu-left" id="navbarNavDropdown" [ngbCollapse]="isCollapsed">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="play">Play</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="ranking">Ranking</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="guide">Guide</a>
-          </li>
-        </ul>
       </div>
     </nav>
 

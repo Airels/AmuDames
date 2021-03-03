@@ -26,6 +26,7 @@
     "i": "^0.3.6",
     "rxjs-compat": "^6.6.3",
     "save-dev": "0.0.1-security",
+    "semaphore": "^1.1.0",
     "ws": "^7.4.3"
   },
   "devDependencies": {

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { NewsService } from '../services/news.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsEditModalComponent } from '../news-edit-modal/news-edit-modal.component';
+import { AuthGuard } from '../services/auth-guard.service';
 
 @Component({
   selector: 'app-home',
@@ -23,25 +24,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   newsEditForm!: FormGroup;
   closeResult: string = "";
 
-  constructor(private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
+  constructor(private auth: AuthGuard, private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     newsService.newsSubject.subscribe((newsList) => {
       this.newsList = newsList;
     });
   }
 
   ngOnInit(): void {
-    // this.user = this.userService.user;
     this.userService.userSubject.subscribe((user) => {
       this.user = user;
     });
 
     this.newsSubscription = this.http.getNews(10).subscribe(
       (newsList: News[]) => {
-        for (let news of newsList) {
-          if (news.date !== undefined)
-            news.date = new Date(parseInt(news.date)).toLocaleString();
-        }
-
         this.newsService.initNews(newsList);
       }
     );
@@ -59,12 +54,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSubmitNews() {
     var formValue = this.newsForm.value;
-    let news = new News(formValue['title'], formValue['type'], new Date(Date.now()).toLocaleString(), formValue['content']);
+    let news = new News(formValue['title'], formValue['type'], undefined, undefined, formValue['content']);
 
     this.http.createNews(news).subscribe({
       next: res => {
         if (res.status == 201) {
           alert("News added!");
+          news.timestamp = res.timestamp;
+          news.date = new Date(res.timestamp).toLocaleString();
           this.newsService.addNews(news);
           this.changeDetection.detectChanges();
           this.newsForm.reset();

@@ -24,7 +24,7 @@ async function addNews(req, res) {
 
         let result = await esdb.createNews(news);
 
-        res.json({ status: result.statusCode });
+        res.json({ status: result.statusCode, timestamp: news.date });
     } catch (e) {
         console.log(e);
         res.status(500).send(e);
@@ -33,7 +33,24 @@ async function addNews(req, res) {
 
 async function updateNews(req, res) {
     try {
-        res.sendStatus(501);
+        let timestamp = req.params.timestamp;
+        let news = req.body;
+        news.date = timestamp;
+        news.timestamp = undefined;
+
+        let result = await esdb.deleteNews(timestamp);
+        
+        if (result.statusCode == 200 && result.body.deleted > 0) {
+            let result2 = await esdb.createNews(news);
+
+            if (result2.statusCode == 201) {
+                res.json({ status: 200 });
+            } else {
+                res.json({ status: 521 });
+            }
+        } else {
+            res.json({ status: 520 });
+        }
     } catch (e) {
         res.status(500).send(e);
     }
@@ -41,10 +58,15 @@ async function updateNews(req, res) {
 
 async function deleteNews(req, res) {
     try {
-        let date = req.params.date;
-        let result = await esdb.deleteNews(date);
-        
-        res.sendStatus(result.statusCode);
+        let timestamp = req.params.timestamp;
+        let result = await esdb.deleteNews(timestamp);
+        console.log(timestamp);
+        console.log(result);
+
+        if (result.statusCode == 200 && result.body.deleted > 0)
+            res.json({ status: 200 });
+        else 
+            res.json({ status: 520, deleted: result.body.deleted });
     } catch (e) {
         res.status(500).send(e);
     }

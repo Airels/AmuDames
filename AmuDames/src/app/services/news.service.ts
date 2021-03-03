@@ -13,6 +13,8 @@ export class NewsService {
 
     public initNews(newsArray: News[]) {
         newsArray.forEach(news => {
+            news.timestamp = Number(news.date);
+            news.date = new Date(<number>news.timestamp).toLocaleString();
             this.newsList.push(news);
         });
         this.newsSubject.next(this.newsList);
@@ -20,6 +22,19 @@ export class NewsService {
 
     public addNews(news: News) {
         this.newsList.unshift(news);
+        this.newsSubject.next(this.newsList);
+    }
+
+    public updateNews(news: News) {
+        this.newsSubject.next(this.newsList);
+    }
+
+    public deleteNews(news: News) {
+        let index = this.newsList.indexOf(news);
+        if (index > -1) {
+            this.newsList.splice(index);
+        }
+
         this.newsSubject.next(this.newsList);
     }
 }

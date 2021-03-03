@@ -20,6 +20,7 @@ import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { NewsService } from './services/news.service';
 import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
+import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.compon
     RankingComponent,
     GuideComponent,
     UserProfileComponent,
-    NewsEditModalComponent
+    NewsEditModalComponent,
+    GameLobbyComponent
   ],
   imports: [
     BrowserModule,

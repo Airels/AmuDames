@@ -69,12 +69,12 @@ export class HttpService {
         return this.http.post(this.serverURL + '/news/', news, this.httpOptions);
     }
 
-    public updateNews(news: News): Observable<any> {
-        return this.http.put(this.serverURL + '/news/:timestamp', news, this.httpOptions)
+    public updateNews(news: News, timestamp: number): Observable<any> {
+        return this.http.put<any>(this.serverURL + `/news/${timestamp}`, news, this.httpOptions);
     }
 
     public deleteNews(timestamp: number): Observable<any> {
-        return this.http.delete<any>(this.serverURL + `/news/:timestamp`);
+        return this.http.delete<any>(this.serverURL + `/news/${timestamp}`);
     }
 
 
