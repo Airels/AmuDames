@@ -3,13 +3,12 @@ html {
     background: url(../assets/images/bkg.jpg) no-repeat center center fixed; 
     background-size: cover;
     background-attachment: fixed;
+    background-repeat: repeat;
     height: 100% !important;
     overflow: hidden !important;
 }
+
 body {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     background-color: transparent;
     height: 100% !important;
 }
