@@ -5,7 +5,8 @@
                 <div class="d-inline-flex p-2">
                     <ul class="navbar-nav  flex-row">
                         <li>
-                            <img class="user-img user-img player1" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerWhite" *ngIf="isWhite" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerBlack" *ngIf="!isWhite" src="../assets/images/user/user_blank.png">
                         </li>
                         <li>
                             <div>
@@ -30,13 +31,14 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <img class="user-img user-img player2" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerWhite" *ngIf="!isWhite" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerBlack" *ngIf="isWhite" src="../assets/images/user/user_blank.png">
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="p-2 canvas">
-                <canvas #canvas width="500" height="500"></canvas>
+                <canvas #canvas id="canvas" width="500" height="500"></canvas>
             </div>
         </div>
     </div>

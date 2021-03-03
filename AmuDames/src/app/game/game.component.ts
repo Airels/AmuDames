@@ -13,26 +13,15 @@ export class GameComponent implements OnInit {
   bound: any;
   x: number = 0; y: number = 0;
   nRow: number =  10;
-  board?: number[][] =
-  [
-    [0, 3, 0, 3, 0, 3, 0, 3, 0, 3],
-    [3, 0, 3, 0, 3, 0, 3, 0, 3, 0],
-    [0, 3, 0, 3, 0, 3, 0, 3, 0, 3],
-    [3, 0, 3, 0, 3, 0, 3, 0, 3, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-  ];
+  board?: number[][] = [];
   sizeMen: number = 10;
   sizeDame: number = 20;
   selected?: number[] = [0, 0];
 
   user!: User | null;
   opponent!: User | null;
-  isWhite: boolean = false;
+
+  isWhite: boolean = true;
   isPlaying: boolean = true;
 
   constructor(private router: Router) { }
@@ -42,6 +31,36 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.canvas != undefined) {
+      //if white: this board
+      if(this.isWhite) {
+        this.board = [
+          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+        ];
+      } else {
+        this.board = [
+          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0]
+        ];
+      }
+
+      //draw canvas
       this.ctx = this.canvas.nativeElement.getContext('2d');
       this.initCanvas();
       this.bound = this.canvas.nativeElement.getBoundingClientRect();
@@ -67,7 +86,7 @@ export class GameComponent implements OnInit {
             this.initCanvas();
             this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
             this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, true);
-          } else if((this.board[pos[0]][pos[1]] == 3) && !this.isWhite) {
+          } else if((this.board[pos[0]][pos[1]] == 2) && !this.isWhite) {
             this.initCanvas();
             this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
             this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, false);
@@ -132,7 +151,7 @@ export class GameComponent implements OnInit {
       for (var i = 0; i<this.nRow; i++) {
         for (var j = 0; j<this.nRow; j++) {
           if(this.board[j][i] == 1) {this.drawWhiteMen(i, j, w, this.sizeMen, false); }
-          if(this.board[j][i] == 3) {this.drawBlackMen(i, j, w, this.sizeMen, false); }
+          if(this.board[j][i] == 2) {this.drawBlackMen(i, j, w, this.sizeMen, false); }
           //todo les dames
         }
       }

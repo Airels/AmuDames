@@ -12,10 +12,16 @@
     height: 64px;
 }
 
-.player1 {
+.playerWhite {
     border-color: white;
 }
 
-.player1 {
+.playerBlack {
     border-color: black;
+}
+
+#canvas {
+    border-width: 0.2em;
+    border-color: black;
+    border-style: solid;
 }
