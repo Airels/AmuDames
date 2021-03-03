@@ -2,94 +2,35 @@
     <h1 class="display-4 text-white">AMU Dames' Ranking</h1>
     <p class="lead text-white">Check out the best players of Amu Dames!</p>
     <hr>
-    <div class="row justify-content-around">
-        <div class="col-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl">
-                        <ul class="navbar-nav  flex-row">
-                            <li>
-                                <img class="user-img user-img" src="{{ first.profileImageURL }}">
-                            </li>
-                            <li>
-                                <div>
-                                    <img src="https://www.countryflags.io/{{ first.country }}/flat/24.png"> <br>
-                                    {{ first.username }} <span class="badge badge-warning mr-3">1</span><br>
-                                    {{ first.elo }} <br>
-                                </div>
-                            </li>
-                        </ul>
+    <div class="row justify-content-between">
+        <div *ngFor="let user of ranking; let index = index">
+            <div class="col-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl">
+                            <ul class="navbar-nav  flex-row">
+                                <li>
+                                    <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
+                                        {{ user.username }} 
+                                        <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
+                                        <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
+                                        <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
+                                        <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
+                                        <br>
+                                        {{ user.elo }} <br>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
       </div>
-      <br>
-
-    <div class="row justify-content-around">
-        <div class="col-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl">
-                        <ul class="navbar-nav  flex-row">
-                            <li>
-                                <img class="user-img user-img" src="{{ second.profileImageURL }}">
-                            </li>
-                            <li>
-                                <div>
-                                    <img src="https://www.countryflags.io/{{ second.country }}/flat/24.png"> <br>
-                                    {{ second.username }} <span class="badge badge-light mr-3">2</span><br>
-                                    {{ second.elo }} <br>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-xl">
-                        <ul class="navbar-nav  flex-row">
-                            <li>
-                                <img class="user-img user-img" src="{{ third.profileImageURL }}">
-                            </li>
-                            <li>
-                                <div>
-                                    <img src="https://www.countryflags.io/{{ third.country }}/flat/24.png"> <br>
-                                    {{ third.username }} <span class="badge badge-secondary mr-3">3</span><br>
-                                    {{ third.elo }} <br>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    <hr>
-    
-    <div *ngFor="let user of ranking; let index = index">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-xl">
-                    <ul class="navbar-nav  flex-row">
-                        <li>
-                            <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
-                        </li>
-                        <li>
-                            <div>
-                                <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
-                                {{ user.username }} <span class="badge badge-dark mr-3">{{ index+4 }}</span><br>
-                                {{ user.elo }} <br>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
     <br>
 </div>
 

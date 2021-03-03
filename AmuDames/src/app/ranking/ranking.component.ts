@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
 })
 export class RankingComponent implements OnInit {
   ranking: User[] = [];
-  first?: User; second?: User; third?: User;
   rankingSubscription!: Subscription;
 
   constructor(private http: HttpService) {
@@ -25,10 +24,6 @@ export class RankingComponent implements OnInit {
         this.ranking.push(user);
       }
     });
-
-    this.first = this.ranking.shift();
-    this.second = this.ranking.shift();
-    this.third = this.ranking.shift();
   }
 
 }
