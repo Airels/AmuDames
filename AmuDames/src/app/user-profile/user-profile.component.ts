@@ -13,12 +13,16 @@ export class UserProfileComponent implements OnInit {
   userObservable !: Observable<User>;
   user!: User |null;
 
-  constructor(private http : HttpService, public userService : UserService, public userSubscription : User) { }
+  constructor(private http : HttpService, public userService : UserService, public userSubscription : User) { 
+    
+  }
 
   ngOnInit(): void {
     this.userObservable = this.http.getCurrentUser();
-    //this.user = this.userService.user;
-    //this.userSubscription = this;
+
+    this.userService.userSubject.subscribe((user) => {
+      this.user = user;
+    });
       
     
   }

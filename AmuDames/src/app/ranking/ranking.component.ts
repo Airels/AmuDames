@@ -24,8 +24,6 @@ export class RankingComponent implements OnInit {
       this.users= users;
     });
     
-
-    
   }
 
 }
