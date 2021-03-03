@@ -1,44 +1,76 @@
-<div class="jumbotron bg-dark p-5 rounded-lg m-3">
-    <h1 class="display-4 text-white">AMU dames | Welcome!</h1>
-    <p class="lead text-white">
-      AMU dames est un jeu de dame en ligne multijoueur et blablabla
-    </p>
-
-    <hr class="my-4">
-    <div *ngIf="user?.isAdmin == true" id="newsBox">
-      <form [formGroup]="newsForm" (ngSubmit)="onSubmitNews()">
-        <div class="form-group">
-            <label for="title">News Title:</label>
-            <input type="text" id="title" class="form-control" formControlName="title">
-        </div>
-        <div class="form-group">
-            <select name="type" id="type" class="form-control" formControlName="type">
-              <option value="">--Kind of News--</option>
-              <option value="secondary">Info</option>
-              <option value="warning">Warning</option>
-              <option value="danger">Danger</option>
-              <option value="success">Nice</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="content">News Content:</label>
-          <textarea id="content" class="form-control" formControlName="content" rows="5"></textarea>
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="newsForm.invalid">Publish</button>
-      </form>
-      <hr>
-    </div>
-
-    <h1><span class="badge badge-secondary">News</span></h1>
-    <ul class="list-group">
-      <div class="card list-group-item mb-2" *ngFor="let news of newsList; let index = index">
-        <div class="card-body">
-          <h5>
-            <button class="btn btn-outline-info m-2" *ngIf="user?.isAdmin == true" (click)="open(index)">[edit]</button>
-            <span class="badge badge-{{ news.type }}">{{ news.date }}</span><u>{{ news.title }}</u>
-          </h5>
-          <p>{{ news.content }}</p>
+<div class="jumbotron bg-dark p-4 rounded-lg m-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h1 class="display-4 text-white">Welcome!</h1>
+        <hr>
+        <p class="lead text-white">
+          AMU dames is an online application to play checkers (Dames) in multiplayer. 
+          Featuring a ranking system, be among the best checkers player on AMU dames!
+          <br><br>
+          The name come from AMU, stands for Aix-Marseille University, our university at the time of this project, and 
+          dames, as we call checkers in, cocorico, french (baguette)
+          <br><br>
+          To navigate you can use the navbar on the top of the screen or the following links:<br>
+          <a class="sub-link" (click)="goTo('/search')">Play</a><br>
+          <i>To start seeking for an opponent and fight in a feroce and wild game to climb the rankings!</i><br>
+          <a class="sub-link" (click)="goTo('/ranking')">Ranking</a><br>
+          <i>Check out the best players and check if you are among them!</i><br>
+          <a class="sub-link" (click)="goTo('/guide')">Guide</a><br>
+          <i>Are you a newcomer or you forgot the rules? A quick guide will help you!</i><br>
+        </p>
+        <hr class="my-4">
+        <div *ngIf="user?.isAdmin == true" id="newsBox">
+          <p>
+            <button type="button" class="btn btn-outline-light" (click)="collapse.toggle()">
+              Write News
+            </button>
+          </p>
+          <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+            <form [formGroup]="newsForm" (ngSubmit)="onSubmitNews()">
+              <div class="form-group">
+                <label for="title">News Title:</label>
+                <input type="text" id="title" class="form-control" formControlName="title">
+              </div>
+              <div class="form-group">
+                <select name="type" id="type" class="form-control" formControlName="type">
+                  <option value="">--Kind of News--</option>
+                  <option value="secondary">Info</option>
+                  <option value="warning">Warning</option>
+                  <option value="danger">Danger</option>
+                  <option value="success">Nice</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="content">News Content:</label>
+                <textarea id="content" class="form-control" formControlName="content" rows="5"></textarea>
+              </div>
+              <button type="submit" class="btn btn-outline-success" [disabled]="newsForm.invalid">Publish</button>
+            </form>
+          </div>
         </div>
       </div>
-    </ul>
+      <div class="col-xl scrollable">
+        <h1><span class="badge badge-light">News</span></h1>
+        <ul class="list-group">
+          <div class="card list-group-item mb-2" *ngFor="let news of newsList; let index = index">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl">
+                  <div class="d-flex flex-column"><h5>
+                    <div class="m-0"><span class="badge badge-{{ news.type }} mr-3">{{ news.date }}</span></div>
+                    <div class="m-0"><u>{{ news.title }}</u></div>
+                  </h5></div>
+                </div>
+                <div class="col-md-auto">
+                  <h5><button class="btn btn-outline-danger mr-3 pr-3" *ngIf="user?.isAdmin == true" (click)="open(index)">[EDIT]</button></h5>
+                </div>
+              </div>
+              <p>{{ news.content }}</p>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
