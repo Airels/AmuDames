@@ -5,7 +5,7 @@ import usersHandler from './services/users-handler';
 const serverSocket = new Server({port: 8085});
 
 serverSocket.on('connection', (ws) => {
-    var gameID, mail, connected = false;
+    var gameID, playerID, connected = false;
 
     ws.on('message', (message) => {
         let args;
@@ -19,36 +19,26 @@ serverSocket.on('connection', (ws) => {
             }
 
             gameID = args[1];
-            mail = args[2];
-            let passwd = args[3];
+            let mail = args[2];
 
-            let answer = { status: 200 };
-            let req = {
-                body: {
-                    email: mail,
-                    password: passwd
-                }
-            }
-            let res = {
-                json: (jsn) => {
-                    answer = jsn;
-                }
-            }
-            // usersHandler.login(req, res).then();
+            gameManager.getGame(gameID).then((game) => {
+                if (game === undefined) ws.send('ERR: GAME (' + gameID + ') UNKNOWN');
+                else {
+                    ws.send('GAME FOUND, CONNECTING...');
 
-            if (answer.status == 200) {
-                ws.send('OK');
-                ws.send('CONNECTING TO GAME...')
-                
-                gameManager.getGame(gameID).then((game) => {
-                    if (game === undefined) ws.send('ERR: GAME (' + gameID + ') UNKNOWN');
-                    else {
+                    if (game.whiteUser.email == mail) {
+                        playerID = 0;
                         connected = true;
                         ws.send('CONNECTED');
-                    }
-                });
-            }
-            else ws.send('ERR: CONNECTION DENIED');
+                        ws.send('HELLO PLAYER 1');
+                    } else if (game.blackUser.email == mail) {
+                        playerID = 1;
+                        connected = true;
+                        ws.send('CONNECTED');
+                        ws.send('HELLO PLAYER 2');
+                    } else ws.send('ERR: CONNECTION DENIED');
+                }
+            });
         } else if (message.startsWith('MOVE')) {
             if (!connected) {
                 ws.send('ERR: NOT CONNECTED YET. PLEASE USE "CONNECT" FIRST');
@@ -68,7 +58,7 @@ serverSocket.on('connection', (ws) => {
             ws.send('501 - Not Implemented Yet');
         }else if (message == 'HELP') {
             ws.send("Available commands:\n"
-            + "CONNECT <Game ID> <E-Mail> <Password> - To connect to a game\n"
+            + "CONNECT <Game ID> <E-Mail> - To connect to a game\n"
             + "MOVE <source pawn> <target pawn> - To move a pawn\n"
             + "INFO - To display informations you submitted\n"
             + "HELP - I mean.. it's obvious what this command do...");
