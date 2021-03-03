@@ -118,6 +118,18 @@ async function deleteUser(req, res) {
     }
 }
 
+async function getRanking(req, res) {
+    try {
+        let result = await esdb.getRanking();
+
+        console.log(result);
+
+        res.json(result);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}
+
 export default {
     login,
     logout,
@@ -126,5 +138,6 @@ export default {
     getUsers,
     addUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getRanking
 };
