@@ -69,6 +69,8 @@ async function getUser(req, res) {
             res.sendStatus(404);
         } else {
             let user = result.body.hits.hits[0]._source;
+            user.password = undefined;
+            user.email = undefined;
             res.status(200).json(user);
         }
     } catch (e) {
@@ -89,6 +91,9 @@ async function getUsers(req, res) {
         let users = [];
 
         for (let u of result.body.hits.hits) {
+            u.password = undefined;
+            u.email = undefined;
+
             users.append(u);
         }
 
@@ -121,11 +126,22 @@ async function deleteUser(req, res) {
 async function getRanking(req, res) {
     try {
         let result = await esdb.getRanking();
+        let users = [];
 
-        console.log(result);
+        for (let entry of result.body.hits.hits) {
+            let user = entry._source;
 
-        res.json(result);
+            user.password = undefined;
+            user.email = undefined;
+
+            console.log(user.country);
+
+            users.push(user);
+        }
+
+        res.json(users);
     } catch (e) {
+        console.log(e);
         res.status(500).send(e);
     }
 }

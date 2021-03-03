@@ -19,6 +19,11 @@ export class GameManagerService {
             if (res.status == 409) {
                 alert("Another instance of your account is actually finding a game, please disconnect from your previous session to continue.");
                 this.router.navigate(['/home']);
+            } else if (res.status == 201) {
+                alert("MATCH FOUND! PREPARE TO BATTLE! BAYBLADE!");
+            } else {
+                alert("An error occured. Please try again later.");
+                console.log(res);
             }
         });
     }

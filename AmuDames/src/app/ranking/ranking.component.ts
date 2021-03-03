@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ranking.component.scss']
 })
 export class RankingComponent implements OnInit {
-  ranking!: User[];
+  ranking: User[] = [];
   rankingSubscription!: Subscription;
 
   constructor(private http: HttpService) {
@@ -19,8 +19,10 @@ export class RankingComponent implements OnInit {
     
 
   ngOnInit(): any {
-    this.rankingSubscription = this.http.getRanking().subscribe((user) => {
-      this.ranking.push(user);
+    this.rankingSubscription = this.http.getRanking().subscribe((users) => {
+      for (let user of users) {
+        this.ranking.push(user);
+      }
     });
   }
 

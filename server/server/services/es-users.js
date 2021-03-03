@@ -133,5 +133,6 @@ export default {
     userLogin,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getRanking
 };

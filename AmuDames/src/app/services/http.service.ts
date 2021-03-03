@@ -87,17 +87,9 @@ export class HttpService {
         return this.http.get(this.serverURL + '/game/search/stop');
     }
 
-    //Ranking 
-    public getRanking(): Observable<User> {
-        return this.http.get<User>(this.serverURL +'/users');
-    }
-
-    public getRankingById(id : number): Observable<User> {
-        return this.http.get<User>(this.serverURL +'/users/id/${id}');
-    }
-
-    public getRankingByName(name : string): Observable<User> {
-        return this.http.get<User>(this.serverURL +'/users/username/${username}');
+    // Ranking 
+    public getRanking(): Observable<any> {
+        return this.http.get(this.serverURL + '/users/rank');
     }
 
     

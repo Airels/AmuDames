@@ -2,18 +2,19 @@
     <h1 class="display-4 text-white">AMU Dames' Ranking</h1>
     <p class="lead text-white">Check out the best players of Amu Dames!</p>
     <hr>
+
     <div *ngFor="let user of ranking; let index = index">
         <div class="card-body">
             <div class="row">
                 <div class="col-xl">
                     <ul class="navbar-nav  flex-row">
                         <li>
-                            <img class="user-img user-img player1" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
                         </li>
                         <li>
                             <div>
-                                <img src="https://www.countryflags.io/[[ user.country }}/flat/24.png"> <br>
-                                {{ user.username }} <span class="badge badge-light mr-3">{{ index }}</span><br>
+                                <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
+                                {{ user.username }} <span class="badge badge-light mr-3">{{ index+1 }}</span><br>
                                 {{ user.elo }} <br>
                             </div>
                         </li>
