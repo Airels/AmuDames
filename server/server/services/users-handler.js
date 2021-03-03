@@ -42,7 +42,7 @@ async function addUser(req, res) {
 
     try {
         let result = await esdb.getUser.byEmail(email);
-
+        
         if (result.body.hits.total.value == 0) {
             let response = await esdb.addUser(username, passwd, email, default_elo, country, default_profileImageURL, default_description);
             
