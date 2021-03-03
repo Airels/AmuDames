@@ -17,4 +17,6 @@ usersRouter.delete('/', asyncHandler(usersHandler.deleteUser));
 usersRouter.get('/username/:username', asyncHandler(usersHandler.getUsers))
 usersRouter.get('/email/:email', asyncHandler(usersHandler.getUser));
 
+usersRouter.get('/rank', asyncHandler(usersHandler.getRanking));
+
 export default usersRouter;
