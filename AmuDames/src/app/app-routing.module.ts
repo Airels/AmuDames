@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameLobbyComponent } from './game-lobby/game-lobby.component';
+import { GameComponent } from './game/game.component';
 import { GuideComponent } from './guide/guide.component';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'ranking', canActivate: [AuthGuard], component: RankingComponent },
   { path: 'guide', component: GuideComponent },
   { path: 'user-profile', canActivate: [AuthGuard], component: UserProfileComponent },
+  { path: 'game', component: GameComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

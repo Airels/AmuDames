@@ -7,12 +7,12 @@
     <title>AMU dames</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end fixed-top">
       <a class="navbar-brand" routerLinkActive="active" routerLink="home">
         <img src="../assets/images/logo-mini.png">
       </a>
-      <div class="flex-grow-0" id="navbarSupportedContent">
-        <ul class="navbar-nav text-right">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="search">Play</a>
           </li>
@@ -57,8 +57,13 @@
       </div>
     </nav>
 
+    <!--ROUTER-->
+    <main role="main" class="container">
+      <br><br><br><br>
+      <router-outlet></router-outlet>
+    </main>
+
     <!-- MODALS BEGIN -->
-    <!--modal pas connecter-->
     <ng-template #modalConnexion let-modal>
       <div class="modal-header">
         <h5 class="modal-title">Connect or Register</h5>
@@ -138,12 +143,6 @@
       <div class="modal-footer text-center d-flex" ></div>
     </ng-template>
     <!-- MODALS END -->
-
-    <!--ROUTER-->
-    <main role="main" class="container">
-      <router-outlet></router-outlet>
-    </main>
-    <!--ROUTER END-->
     <footer class="footer bg-dark">
         <p>© PIERRARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
