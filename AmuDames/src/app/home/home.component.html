@@ -1,8 +1,10 @@
-<div class="jumbotron bg-dark p-5 rounded-lg m-3">
+<br><br><br><br>
+<div class="jumbotron bg-dark p-4 rounded-lg m-3">
   <div class="container">
     <div class="row">
       <div class="col-sm">
-        <h1 class="display-4 text-white">AMU dames Welcome!</h1>
+        <h1 class="display-4 text-white">Welcome!</h1>
+        <hr>
         <p class="lead text-white">
           AMU dames is an online application to play checkers (Dames) in multiplayer. 
           Featuring a ranking system, be among the best checkers player on AMU dames!
@@ -19,7 +21,7 @@
           <i>Are you a newcomer or you forgot the rules? A quick guide will help you!</i><br>
         </p>
         <hr class="my-4">
-        <div *ngIf="true" id="newsBox"> <!--user?.isAdmin == false-->
+        <div *ngIf="user?.isAdmin == true" id="newsBox">
           <p>
             <button type="button" class="btn btn-outline-light" (click)="collapse.toggle()">
               Write News
@@ -49,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xl">
+      <div class="col-xl scrollable">
         <h1><span class="badge badge-light">News</span></h1>
         <ul class="list-group">
           <div class="card list-group-item mb-2" *ngFor="let news of newsList; let index = index">
