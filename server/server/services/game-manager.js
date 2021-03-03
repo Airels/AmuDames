@@ -52,15 +52,10 @@ const addPlayerWaiting = (user, callback) => {
 const removePlayerWaiting = (user) => {
     let index = waitingList.indexOf(user);
 
-    console.log("index: " + index);
-    console.log("length: " + waitingList.length);
-
     if (index > -1)
         waitingList.splice(index);
     else
         return -1;
-
-    console.log("new length: " + waitingList.length);
 }
 
 async function matchPlayers(p1, p2) {
@@ -69,8 +64,8 @@ async function matchPlayers(p1, p2) {
 
     let res = await createGame(p1, p2);
 
-    p1.callback({ status: 201, id: res.id, playerID: 0, cases: res.cases });
-    p2.callback({ status: 201, id: res.id, playerID: 1, cases: res.cases });
+    p1.callback({ status: 201, id: res.id, playerID: 0, game: res.game });
+    p2.callback({ status: 201, id: res.id, playerID: 1, game: res.game });
 }
 
 const createGame = async (whitePlayer, blackPlayer) => {
@@ -81,12 +76,12 @@ const createGame = async (whitePlayer, blackPlayer) => {
     gamesList.push(game);
     return {
         id: id,
-        cases: cases
+        game: game
     };
 }
 
 const getGame = async (gameID) => {
-    let game = gamesList.find(game => game.id = gameID)
+    let game = gamesList.find(game => game.id == gameID);
 
     if (game === undefined) {
         return undefined;

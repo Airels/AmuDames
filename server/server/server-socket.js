@@ -14,7 +14,7 @@ serverSocket.on('connection', (ws) => {
             args = message.split(' ');
 
             if (args.length != 4) {
-                ws.send("Missing arguments.")
+                ws.send("Invalid syntax.")
                 return;
             }
 
@@ -34,19 +34,19 @@ serverSocket.on('connection', (ws) => {
                     answer = jsn;
                 }
             }
-            // usersHandler.login(req, res);
+            // usersHandler.login(req, res).then();
 
             if (answer.status == 200) {
                 ws.send('OK');
                 ws.send('CONNECTING TO GAME...')
                 
-                let game = gameManager.getGame(gameID);
-                
-                if (game === undefined) ws.send('ERR: GAME (' + gameID + ') UNKNOWN');
-                else {
-                    connected = true;
-                    ws.send('CONNECTED');
-                }
+                gameManager.getGame(gameID).then((game) => {
+                    if (game === undefined) ws.send('ERR: GAME (' + gameID + ') UNKNOWN');
+                    else {
+                        connected = true;
+                        ws.send('CONNECTED');
+                    }
+                });
             }
             else ws.send('ERR: CONNECTION DENIED');
         } else if (message.startsWith('MOVE')) {
