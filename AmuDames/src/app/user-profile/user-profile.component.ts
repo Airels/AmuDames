@@ -17,7 +17,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.userObservable = this.http.getCurrentUser();
-    this.user = this.userService.user;
+    //this.user = this.userService.user;
     //this.userSubscription = this;
       
     
