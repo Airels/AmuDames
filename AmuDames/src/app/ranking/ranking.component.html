@@ -1,25 +1,27 @@
 <div class="jumbotron bg-dark p-5 rounded-lg m-3">
-    <h1 class="display-4 text-white">AMU Dames's Ranking</h1>
-    <p class="lead text-white">We can see the best players</p>
+    <h1 class="display-4 text-white">AMU Dames' Ranking</h1>
+    <p class="lead text-white">Check out the best players of Amu Dames!</p>
     <hr>
     <div *ngFor="let user of ranking; let index = index">
         <div class="card-body">
             <div class="row">
                 <div class="col-xl">
-                    <div class="d-flex flex-column"><h5>
-                        <div class="m-0"><span class="badge badge-light mr-3">{{ index }}</span></div>
-                        <div class="m-0">{{ user.username }} - {{ user.elo }}</div>
-                    </h5></div>
+                    <ul class="navbar-nav  flex-row">
+                        <li>
+                            <img class="user-img user-img player1" src="../assets/images/user/user_blank.png">
+                        </li>
+                        <li>
+                            <div>
+                                <img src="https://www.countryflags.io/[[ user.country }}/flat/24.png"> <br>
+                                {{ user.username }} <span class="badge badge-light mr-3">{{ index }}</span><br>
+                                {{ user.elo }} <br>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <ul>
-        <li></li>
-    </ul>
-    <!--<div class="user" *ngFor="the best players | orderBy "></div>-->
-    
-    
-   
+    <br>
 </div>
 
