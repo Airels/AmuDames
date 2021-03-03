@@ -10,20 +10,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ranking.component.scss']
 })
 export class RankingComponent implements OnInit {
+  ranking!: User[];
+  rankingSubscription!: Subscription;
 
-  users!: User;
-  userList!: Subscription;
-
-  constructor(private http:HttpService) {
+  constructor(private http: HttpService) {
     
   }
     
 
   ngOnInit(): any {
-    this.userList = this.http.getCurrentUser().subscribe((users : User) => {
-      this.users= users;
+    this.rankingSubscription = this.http.getRanking().subscribe((user) => {
+      this.ranking.push(user);
     });
-    
   }
 
 }
