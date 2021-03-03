@@ -9,14 +9,15 @@ import { User } from '../models/user.models';
 export class GameComponent implements OnInit {
   @ViewChild('canvas', {static: true}) canvas?: ElementRef<HTMLCanvasElement>;
   ctx?: CanvasRenderingContext2D | null;
-  isPlaying: boolean = false;
   bound: any;
+  x: number = 0; y: number = 0;
+  nRow: number =  10;
   board?: number[][] =
   [
-    [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-    [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-    [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-    [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+    [0, 3, 0, 3, 0, 3, 0, 3, 0, 3],
+    [3, 0, 3, 0, 3, 0, 3, 0, 3, 0],
+    [0, 3, 0, 3, 0, 3, 0, 3, 0, 3],
+    [3, 0, 3, 0, 3, 0, 3, 0, 3, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -24,11 +25,14 @@ export class GameComponent implements OnInit {
     [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
   ];
+  sizeMen: number = 10;
+  sizeDame: number = 20;
+  selected?: number[] = [0, 0];
 
   user!: User | null;
   opponent!: User | null;
-
-  x: number = 0; y: number = 0;
+  isWhite: boolean = false;
+  isPlaying: boolean = false;
 
   constructor() { }
 
@@ -38,25 +42,32 @@ export class GameComponent implements OnInit {
       this.initCanvas();
       this.bound = this.canvas.nativeElement.getBoundingClientRect();
 
-      this.board = [
-        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-      ]
-
-      //event listener : drawing
+      //event listener : drawing for test
       this.canvas.nativeElement.addEventListener('mousemove', e => {
-        if (this.isPlaying === true && this.ctx != null && this.canvas != null) {
+        if (this.ctx != null && this.canvas != null) {
           this.x = e.clientX - this.bound.left;
           this.y = e.clientY - this.bound.top;
+          this.ctx.fillStyle = 'gold';
           this.ctx.fillRect(this.x, this.y, 10, 10);
+        }
+      });
+
+      //event listener: select a paws
+      this.canvas.nativeElement.addEventListener('click', e => {
+        if (this.isPlaying === true && this.ctx != null && this.canvas != null && this.board != null) {
+          this.x = e.clientX - this.bound.left;
+          this.y = e.clientY - this.bound.top;
+          let w = this.canvas.nativeElement.width/this.nRow;
+          let pos = this.getPosition();
+          if((this.board[pos[0]][pos[1]] == 1 || this.board[pos[0]][pos[1]] == 2) && this.isWhite) {
+            this.initCanvas();
+            this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.selected = [pos[0], pos[1]];
+          } else if((this.board[pos[0]][pos[1]] == 3 || this.board[pos[0]][pos[1]] == 4) && !this.isWhite) {
+            this.initCanvas();
+            this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.selected = [pos[0], pos[1]];
+          }
         }
       });
     }
@@ -64,18 +75,15 @@ export class GameComponent implements OnInit {
 
   initCanvas(): void {
     if (this.ctx != null && this.canvas != null) {
-      let nRow =  10;
-      let nCol = 10;
-      let w = this.canvas.nativeElement.width/nRow;
-      let h = this.canvas.nativeElement.height/nCol;
+      let w = this.canvas.nativeElement.width/this.nRow;
 
       this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       this.ctx.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-      for (var i = 0; i<nRow; i++) {
-          for (var j = 0, col = nCol/2; j < col; j++) {
-              this.ctx.rect(2 * j * w + (i % 2 ? 0 : w), i * h, w, h);
+      for (var i = 0; i<this.nRow; i++) {
+          for (var j = 0, col = this.nRow/2; j < col; j++) {
+              this.ctx.rect(2 * j * w + (i % 2 ? 0 : w), i * w, w, w);
           }
       }
       this.ctx.fill();
@@ -83,37 +91,48 @@ export class GameComponent implements OnInit {
     }
   }
 
-  drawProps() {
+  getPosition(): number[] {
     if (this.ctx != null && this.canvas != null && this.board != null) {
-      let nRow =  10;
-      let nCol = nRow;
-      let sizeMen = 10;
-      let sizeDame = 20;
-      let w = this.canvas.nativeElement.width/nRow;
-      let h = this.canvas.nativeElement.height/nCol;
+      let w = this.canvas.nativeElement.width/this.nRow;
+      for (var i = 0; i<this.nRow; i++) {
+        for (var j = 0; j<this.nRow; j++) {
+          if((this.x > j*w && this.x < (j+1)*w) && (this.y > i*w && this.y < (i+1)*w)) {
+            return [i, j];
+          }
+        }
+      }
+    }
+    return [0, 0];
+  }
+
+  drawProps(): void {
+    if (this.ctx != null && this.canvas != null && this.board != null) {
+      let w = this.canvas.nativeElement.width/this.nRow;
+      let h = this.canvas.nativeElement.height/this.nRow;
 
       this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
       this.ctx.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-      for (var i = 0; i<nRow; i++) {
-          for (var j = 0, col = nCol/2; j < col; j++) {
+      for (var i = 0; i<this.nRow; i++) {
+          for (var j = 0, col = this.nRow/2; j < col; j++) {
               this.ctx.rect(2 * j * w + (i % 2 ? 0 : w), i * h, w, h);
           }
       }
       this.ctx.fill();
 
-      for (var i = 0; i<nRow; i++) {
-        for (var j = 0; j<nCol; j++) {
-          if(this.board[i][j] == 1) {this.drawWhiteMen(i, j, w, sizeMen); }
-          if(this.board[i][j] == 2) {this.drawBlackMen(i, j, w, sizeMen); }
+      for (var i = 0; i<this.nRow; i++) {
+        for (var j = 0; j<this.nRow; j++) {
+          if(this.board[j][i] == 1) {this.drawWhiteMen(i, j, w, this.sizeMen, false); }
+          if(this.board[j][i] == 3) {this.drawBlackMen(i, j, w, this.sizeMen, false); }
+          //todo les dames
         }
       }
 
     }
   }
 
-  drawWhiteMen(x: number, y: number, pos: number, radius: number) {
+  drawWhiteMen(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
     let centerX = x*pos + pos/2;
     let centerY = y*pos + pos/2;
     if (this.ctx != null && this.canvas != null) {
@@ -122,12 +141,12 @@ export class GameComponent implements OnInit {
       this.ctx.fillStyle = 'white';
       this.ctx.fill();
       this.ctx.lineWidth = 1;
-      this.ctx.strokeStyle = 'black';
+      (isSelected)? this.ctx.strokeStyle = 'green' : this.ctx.strokeStyle = 'black';
       this.ctx.stroke();
     }
   }
 
-  drawBlackMen(x: number, y: number, pos: number, radius: number) {
+  drawBlackMen(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
     let centerX = x*pos + pos/2;
     let centerY = y*pos + pos/2;
     if (this.ctx != null && this.canvas != null) {
@@ -136,11 +155,8 @@ export class GameComponent implements OnInit {
       this.ctx.fillStyle = 'black';
       this.ctx.fill();
       this.ctx.lineWidth = 1;
-      this.ctx.strokeStyle = 'white';
+      (isSelected)? this.ctx.strokeStyle = 'green' : this.ctx.strokeStyle = 'white';
       this.ctx.stroke();
     }
   }
-
-
-
 }
