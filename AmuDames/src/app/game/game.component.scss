@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.user-img { 
+    border-radius: 50%;
+    border-width: 0.3em;
+    border-style: solid;
+    width: 64px;
+    height: 64px;
+}
+
+.player1 {
+    border-color: white;
+}
+
+.player1 {
+    border-color: black;
+}

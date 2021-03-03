@@ -21,6 +21,7 @@ import { UserService } from './services/user.service';
 import { NewsService } from './services/news.service';
 import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
 import { GameLobbyComponent } from './game-lobby/game-lobby.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { GameLobbyComponent } from './game-lobby/game-lobby.component';
     GuideComponent,
     UserProfileComponent,
     NewsEditModalComponent,
-    GameLobbyComponent
+    GameLobbyComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
