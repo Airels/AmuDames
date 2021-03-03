@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../models/user.models';
 
 @Component({
@@ -32,9 +33,12 @@ export class GameComponent implements OnInit {
   user!: User | null;
   opponent!: User | null;
   isWhite: boolean = false;
-  isPlaying: boolean = false;
+  isPlaying: boolean = true;
 
-  constructor() { }
+  constructor(private router: Router) { }
+
+  //alert if reload
+
 
   ngOnInit(): void {
     if(this.canvas != undefined) {
@@ -48,7 +52,7 @@ export class GameComponent implements OnInit {
           this.x = e.clientX - this.bound.left;
           this.y = e.clientY - this.bound.top;
           this.ctx.fillStyle = 'gold';
-          this.ctx.fillRect(this.x, this.y, 10, 10);
+          this.ctx.fillRect(this.x, this.y, 4, 4);
         }
       });
 
@@ -59,14 +63,14 @@ export class GameComponent implements OnInit {
           this.y = e.clientY - this.bound.top;
           let w = this.canvas.nativeElement.width/this.nRow;
           let pos = this.getPosition();
-          if((this.board[pos[0]][pos[1]] == 1 || this.board[pos[0]][pos[1]] == 2) && this.isWhite) {
+          if((this.board[pos[0]][pos[1]] == 1) && this.isWhite) {
             this.initCanvas();
             this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
-            this.selected = [pos[0], pos[1]];
-          } else if((this.board[pos[0]][pos[1]] == 3 || this.board[pos[0]][pos[1]] == 4) && !this.isWhite) {
+            this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, true);
+          } else if((this.board[pos[0]][pos[1]] == 3) && !this.isWhite) {
             this.initCanvas();
             this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
-            this.selected = [pos[0], pos[1]];
+            this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, false);
           }
         }
       });
@@ -103,6 +107,10 @@ export class GameComponent implements OnInit {
       }
     }
     return [0, 0];
+  }
+
+  drawOracle(x: number, y: number, isDame: boolean, isWhite: boolean): void {
+    //todo draw position reachable
   }
 
   drawProps(): void {
