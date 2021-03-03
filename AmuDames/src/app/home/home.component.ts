@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   newsEditForm!: FormGroup;
   closeResult: string = "";
 
+  public isCollapsed = true;
+
   constructor(private auth: AuthGuard, private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
     newsService.newsSubject.subscribe((newsList) => {
       this.newsList = newsList;

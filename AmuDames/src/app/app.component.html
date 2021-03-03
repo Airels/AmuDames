@@ -57,8 +57,12 @@
       </div>
     </nav>
 
+    <!--ROUTER-->
+    <main role="main" class="container">
+      <router-outlet></router-outlet>
+    </main>
+
     <!-- MODALS BEGIN -->
-    <!--modal pas connecter-->
     <ng-template #modalConnexion let-modal>
       <div class="modal-header">
         <h5 class="modal-title">Connect or Register</h5>
@@ -138,12 +142,6 @@
       <div class="modal-footer text-center d-flex" ></div>
     </ng-template>
     <!-- MODALS END -->
-
-    <!--ROUTER-->
-    <main role="main" class="container">
-      <router-outlet></router-outlet>
-    </main>
-    <!--ROUTER END-->
     <footer class="footer bg-dark">
         <p>© PIERRARD KEVIN, VIZCAINO YOHAN, YUN EUNSUN, IKHLEF EDDY</p>
     </footer>
