@@ -54,6 +54,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.newsSubscription.unsubscribe();
   }
 
+  goTo(url: String) { this.router.navigate([url]); }
+
   onSubmitNews() {
     var formValue = this.newsForm.value;
     let news = new News(formValue['title'], formValue['type'], undefined, undefined, formValue['content']);

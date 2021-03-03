@@ -12,11 +12,11 @@
           dames, as we call checkers in, cocorico, french (baguette)
           <br><br>
           To navigate you can use the navbar on the top of the screen or the following links:<br>
-          <a class="sub-link" routerLinkActive="active" routerLink="search">     Play</a><br>
+          <a class="sub-link" (click)="goTo('/search')">Play</a><br>
           <i>To start seeking for an opponent and fight in a feroce and wild game to climb the rankings!</i><br>
-          <a class="sub-link" routerLinkActive="active" routerLink="ranking">Ranking</a><br>
+          <a class="sub-link" (click)="goTo('/ranking')">Ranking</a><br>
           <i>Check out the best players and check if you are among them!</i><br>
-          <a class="sub-link" routerLinkActive="active" routerLink="guide">Guide</a><br>
+          <a class="sub-link" (click)="goTo('/guide')">Guide</a><br>
           <i>Are you a newcomer or you forgot the rules? A quick guide will help you!</i><br>
         </p>
         <hr class="my-4">

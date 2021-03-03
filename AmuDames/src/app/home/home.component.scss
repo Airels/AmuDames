@@ -12,6 +12,14 @@ hr {
     padding-left: 0.5em;
 }
 
+.sub-link {
+    color: goldenrod !important;
+}
+.sub-link:hover {
+    color: gold !important;
+    text-decoration: underline !important;
+}
+
 .card {
     background-color: rgba($color: white, $alpha: 0.5);
 }
