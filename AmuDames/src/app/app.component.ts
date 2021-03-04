@@ -1,3 +1,4 @@
+import { templateJitUrl } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -164,5 +165,4 @@ export class AppComponent implements OnInit {
     this.isAuth = this.auth.isAuth;
     this.router.navigate(['/home']);
   }
-
 }
