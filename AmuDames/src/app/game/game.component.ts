@@ -74,6 +74,7 @@ export class GameComponent implements OnInit {
       //event listener : drawing for test
       this.canvas.nativeElement.addEventListener('mousemove', e => {
         if (this.ctx != null && this.canvas != null) {
+          this.bound = this.canvas.nativeElement.getBoundingClientRect();
           this.x = e.clientX - this.bound.left;
           this.y = e.clientY - this.bound.top;
           this.ctx.fillStyle = 'gold';
@@ -84,6 +85,7 @@ export class GameComponent implements OnInit {
       //event listener: select a paws
       this.canvas.nativeElement.addEventListener('click', e => {
         if (this.isPlaying === true && this.ctx != null && this.canvas != null && this.board != null) {
+          this.bound = this.canvas.nativeElement.getBoundingClientRect();
           this.x = e.clientX - this.bound.left;
           this.y = e.clientY - this.bound.top;
           let w = this.canvas.nativeElement.width/this.nRow;
@@ -102,16 +104,14 @@ export class GameComponent implements OnInit {
       //event listener: move if selected
       this.canvas.nativeElement.addEventListener('click', e => {
         if (this.isPlaying === true && this.ctx != null && this.canvas != null && this.board != null) {
+          this.bound = this.canvas.nativeElement.getBoundingClientRect();
           this.x = e.clientX - this.bound.left;
           this.y = e.clientY - this.bound.top;
           let w = this.canvas.nativeElement.width/this.nRow;
           let pos = this.getPosition();
-          if(this.selected?.length == 2 && this.isWhite) {
-            this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
+          if(this.selected?.length == 2) {
             this.gameService.movePawn(this.selected, pos);
-          } else if(this.selected?.length == 2 && !this.isWhite) {
-            this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
-            this.gameService.movePawn(this.selected, pos);
+            console.log("DEBUG: "+this.selected+" "+pos);
           }
         }
       });
