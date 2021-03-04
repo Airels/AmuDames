@@ -47,9 +47,9 @@ export class AppComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       country: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      passwordConfirm: ['', [Validators.required, validatePassword]],
+      passwordConfirm: ['', [Validators.required]],
       options: this.formBuilder.array([])
-    });
+    }, { validator: [validatePassword, validateCountry] });
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
