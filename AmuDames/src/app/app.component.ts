@@ -1,13 +1,12 @@
-import { templateJitUrl } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
 import { User } from './models/user.models'
 import { AuthService } from './services/auth.service';
 import { HttpService } from './services/http.service';
 import { UserService } from './services/user.service';
-
+import { validatePassword, validateCountry } from './customValidators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -46,8 +45,9 @@ export class AppComponent implements OnInit {
     this.signUpForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      country: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      passwordConfirm: ['', [Validators.required]],
+      passwordConfirm: ['', [Validators.required, validatePassword]],
       options: this.formBuilder.array([])
     });
     this.signInForm = this.formBuilder.group({
@@ -56,6 +56,7 @@ export class AppComponent implements OnInit {
       options: this.formBuilder.array([])
     });
   }
+
 
   checkPasswords(group: FormGroup) {
     let password; let passwordConfirm;
@@ -89,7 +90,7 @@ export class AppComponent implements OnInit {
         formValue['username'],
         formValue['password'],
         formValue['email'],
-        undefined,
+        formValue['country'],
         "../assets/images/user/user_blank.png",
         "fr",
         undefined,
