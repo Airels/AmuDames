@@ -11,7 +11,9 @@ import { WebSocketService } from '../services/web-socket.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
+
 export class GameComponent implements OnInit {
+  //Canvas variables
   @ViewChild('canvas', {static: true}) canvas?: ElementRef<HTMLCanvasElement>;
   ctx?: CanvasRenderingContext2D | null;
   bound: any;
@@ -19,11 +21,10 @@ export class GameComponent implements OnInit {
   nRow: number =  10;
   sizeMen: number = 10;
   sizeDame: number = 20;
-  selected?: number[] = [0, 0];
+  selected?: number[] = [];
 
+  //Game variables
   user!: User;
-
-  //Game Subscription
   opponent!: User;
   isWhite: boolean = true;
   isPlaying: boolean = true;
@@ -33,12 +34,12 @@ export class GameComponent implements OnInit {
   gameSubscription!: Subscription;
 
   constructor(private router: Router, private gameService : GameManagerService, private webSocket : WebSocketService) { 
+      //alert if reload
+
     //todo service board to convert
 
     //todo convert function of game manager service to subscribable item or one that return all game
   }
-
-  //alert if reload
 
 
   ngOnInit(): void {
@@ -93,6 +94,24 @@ export class GameComponent implements OnInit {
             this.initCanvas();
             this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
             this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, false);
+          }
+        }
+      });
+      //event listener: move if selected
+      this.canvas.nativeElement.addEventListener('click', e => {
+        if (this.isPlaying === true && this.ctx != null && this.canvas != null && this.board != null) {
+          this.x = e.clientX - this.bound.left;
+          this.y = e.clientY - this.bound.top;
+          let w = this.canvas.nativeElement.width/this.nRow;
+          let pos = this.getPosition();
+          if(this.selected?.length == 2 && this.isWhite) {
+            this.initCanvas();
+            this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.gameService.movePawn(this.selected, pos);
+          } else if(this.selected?.length == 2 && !this.isWhite) {
+            this.initCanvas();
+            this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.gameService.movePawn(this.selected, pos);
           }
         }
       });

@@ -5,8 +5,8 @@
                 <div class="d-inline-flex p-2">
                     <ul class="navbar-nav  flex-row">
                         <li>
-                            <img class="user-img user-img playerWhite" *ngIf="isWhite" src="../assets/images/user/user_blank.png">
-                            <img class="user-img user-img playerBlack" *ngIf="!isWhite" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerWhite" *ngIf="isWhite" src="{{ user.profileImageURL }}">
+                            <img class="user-img user-img playerBlack" *ngIf="!isWhite" src="{{ user.profileImageURL }}">
                         </li>
                         <li>
                             <div>
@@ -31,8 +31,8 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <img class="user-img user-img playerWhite" *ngIf="!isWhite" src="../assets/images/user/user_blank.png">
-                            <img class="user-img user-img playerBlack" *ngIf="isWhite" src="../assets/images/user/user_blank.png">
+                            <img class="user-img user-img playerWhite" *ngIf="!isWhite" src="{{ opponent.profileImageURL }}">
+                            <img class="user-img user-img playerBlack" *ngIf="isWhite" src="{{ opponent.profileImageURL }}">
                         </li>
                     </ul>
                 </div>
@@ -44,16 +44,3 @@
     </div>
   </div>
   <br><br><br>
-  <!--
-                      <div class="w-100"></div>
-                <div class="col board odd" id="1"></div>
-                <div class="col board even" id="2"></div>
-                <div class="col board odd" id="3"></div>
-                <div class="col board even" id="4"></div>
-                <div class="col board odd" id="5"></div>
-                <div class="col board even" id="6"></div>
-                <div class="col board odd" id="7"></div>
-                <div class="col board even" id="8"></div>
-                <div class="col board odd" id="9"></div>
-                <div class="col board even" id="10"></div>
-  -->
