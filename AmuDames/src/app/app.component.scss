@@ -21,8 +21,10 @@ body {
 }
 .navbar {
     background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+    z-index: 1 !important;
+    position: fixed; top: 0; left: 0;
+    width: 100%;
 }
-
 .info-navbar {
     color: white;
     text-align: right;
@@ -32,11 +34,10 @@ body {
     position: fixed; top: 0; right: 0; border: 0;
 }
 
-.collapse-menu {
-    position: absolute;
-    left: 15%;
+.user-div {
+    position: fixed; top: 1%; right: 20%;
+    z-index: 2 !important;
 }
-
 .user-img {
     border-color: white;
     border-radius: 50%;
