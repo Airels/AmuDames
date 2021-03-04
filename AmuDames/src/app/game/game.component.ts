@@ -107,11 +107,9 @@ export class GameComponent implements OnInit {
           let w = this.canvas.nativeElement.width/this.nRow;
           let pos = this.getPosition();
           if(this.selected?.length == 2 && this.isWhite) {
-            this.initCanvas();
             this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
             this.gameService.movePawn(this.selected, pos);
           } else if(this.selected?.length == 2 && !this.isWhite) {
-            this.initCanvas();
             this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
             this.gameService.movePawn(this.selected, pos);
           }
