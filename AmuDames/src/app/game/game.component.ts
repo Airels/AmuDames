@@ -112,9 +112,8 @@ export class GameComponent implements OnInit {
           this.y = e.clientY - this.bound.top;
           let w = this.canvas.nativeElement.width/this.nRow;
           let pos = this.getPosition();
-          if(this.selected?.length == 2) {
+          if(this.selected?.length == 2 && this.selected[0] != pos[0] && this.selected[1] != pos[1]) {
             this.gameService.movePawn(this.selected, pos);
-            console.log("DEBUG: "+this.selected+" "+pos);
           }
         }
       });
