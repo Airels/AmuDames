@@ -9,7 +9,7 @@ import { WebSocketService } from './web-socket.service';
 
 @Injectable({providedIn: 'root'})
 export class GameManagerService {
-    private game!: Game;
+    game!: Game;
     gameSubject: Subject<Game> = new Subject<Game>();
     gameID!: string;
     playerID!: number;
@@ -74,9 +74,13 @@ export class GameManagerService {
     }
 
     public movePawn(source: any, target: any): void {
+        /*
         if (this.connected) {
             let command = "MOVE " + source + " " + target;
             this.ws.sendMessage(command); 
-        }
+        } */
+
+        console.log("SOURCE: " + source);
+        console.log("TARGET: " + target);
     }
 }

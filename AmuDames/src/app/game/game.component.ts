@@ -45,11 +45,14 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.gameService.gameSubject.subscribe((game) => {
       this.game = game;
+      this.isPlaying = (game.playerTurn == this.gameService.playerID);
     });
     this.isWhite = (this.gameService.playerID == 0);
 
-    this.user = (this.isWhite) ? this.game.whiteUser : this.game.blackUser;
-    this.opponent = (this.isWhite) ? this.game.blackUser : this.game.whiteUser;
+    this.user = (this.isWhite) ? this.gameService.game.whiteUser : this.gameService.game.blackUser;
+    this.opponent = (this.isWhite) ? this.gameService.game.blackUser : this.gameService.game.whiteUser;
+
+    this.isPlaying = this.isWhite;
 
     if(this.canvas != undefined) {
       this.board = [

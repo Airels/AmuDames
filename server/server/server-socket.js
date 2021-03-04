@@ -76,5 +76,5 @@ serverSocket.on('connection', (ws) => {
     });
 
     ws.send("AmuDames Game Manager");
-    console.log("A client has connect");
+    console.log("A client connected");
 });
