@@ -16,7 +16,7 @@ export class Game {
         public whiteUser: User,
         public blackUser: User,
         public startTime: string,
-        public cases: {}
+        public cases: any
     ) { }
 
     /*

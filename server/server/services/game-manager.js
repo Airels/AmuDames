@@ -137,10 +137,9 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
     let cols = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     
     let possibilities = [];
+    source.col = cols.indexOf(source.col);
 
     if (playerID == 0) {
-        source.col = cols.indexOf(source.col);
-
         if (source.col == 1) {
             possibilities.add({
                 row: source.row+1, 

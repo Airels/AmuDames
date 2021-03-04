@@ -21,10 +21,10 @@ export class GameComponent implements OnInit {
   sizeDame: number = 20;
   selected?: number[] = [0, 0];
 
-  user!: User | null;
+  user!: User;
 
   //Game Subscription
-  opponent!: User | null;
+  opponent!: User;
   isWhite: boolean = true;
   isPlaying: boolean = true;
   game!: Game;
@@ -42,6 +42,12 @@ export class GameComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.game = this.gameService.game;
+    this.isWhite = (this.gameService.playerID == 0);
+
+    this.user = (this.isWhite) ? this.game.whiteUser : this.game.blackUser;
+    this.opponent = (this.isWhite) ? this.game.blackUser : this.game.whiteUser;
+
     if(this.canvas != undefined) {
       this.board = [
         [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],

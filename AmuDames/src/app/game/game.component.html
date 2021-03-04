@@ -10,9 +10,9 @@
                         </li>
                         <li>
                             <div>
-                                <img src="https://www.countryflags.io/fr/flat/24.png"> <br>
-                                moka <br>
-                                666 <br>
+                                <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
+                                {{ user.username }} <br>
+                                {{ user.elo }} <br>
                             </div>
                         </li>
                     </ul>
@@ -25,9 +25,9 @@
                     <ul class="navbar-nav  flex-row">
                         <li>
                             <div>
-                                <img src="https://www.countryflags.io/kr/flat/24.png"> <br>
-                                eunsun <br>
-                                1000 <br>
+                                <img src="https://www.countryflags.io/{{ opponent.country }}/flat/24.png"> <br>
+                                {{ opponent.username }} <br>
+                                {{ opponent.elo }} <br>
                             </div>
                         </li>
                         <li class="nav-item">

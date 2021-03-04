@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import * as G from 'glob';
 import { Observable, Subject } from 'rxjs';
 import { Game } from '../models/game.models';
 import { User } from '../models/user.models';
@@ -13,7 +12,6 @@ export class GameManagerService {
     game!: Game;
     gameID!: string;
     playerID!: number;
-    cases!: any;
     user!: User;
     connected: boolean = false;
 
@@ -27,7 +25,6 @@ export class GameManagerService {
             } else if (res.status == 201) {
                 alert("MATCH FOUND! PREPARE TO BATTLE! BAYBLADE!");
                 this.createGame(res);
-                // this.router.navigate(['/game']);
             } else {
                 alert("An error occured. Please try again later.");
                 console.log(res);
@@ -45,21 +42,29 @@ export class GameManagerService {
         this.game = res.game;
         this.gameID = res.id;
         this.playerID = res.playerID;
-        this.cases = res.cases;
 
         this.user = <User>this.userService.getUser(this);
 
+        this.serverConnection();
+    }
+
+    public serverConnection() {
         this.ws.createObservableSocket('ws://localhost:8085').subscribe((data) => {
             console.log(data);
 
             if (data == "AmuDames Game Manager") {
                 let command = "CONNECT " + this.gameID + " " + this.user.email + " password";
                 this.ws.sendMessage(command);
-            }
-
-            if (data == "CONNECTED") {
+            } else if (data == "CONNECTED") {
                 this.router.navigate(['/game']);
                 this.connected = true;
+            } else if (data.startsWith("UPDATE")) {
+                let moves = JSON.parse(data.split(' ')[1]);
+
+                for (let grid in moves) {
+                    console.log(grid);
+                    // this.game.cases[grid] = grid;
+                }
             }
         });
     }

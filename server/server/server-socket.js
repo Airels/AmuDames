@@ -14,7 +14,7 @@ serverSocket.on('connection', (ws) => {
             args = message.split(' ');
 
             if (args.length != 4) {
-                ws.send("Invalid syntax.")
+                ws.send('Invalid syntax.');
                 return;
             }
 
@@ -46,12 +46,20 @@ serverSocket.on('connection', (ws) => {
             }
 
             args = message.split(' ');
+
+            if (args.length != 3) {
+                ws.send('Invalid syntax.');
+                return;
+            }
+
             source = args[1];
             target = args[2];
 
             gameManager.checkMoveIsValid(gameID, username, source, target).then(result => {
-                if (result == 1) {
+                if (result !== 0) {
                     // Broadcast nouveaux états de la case source et la case target + autres possibles cases (mangeage etc...)
+                    // let msg = result.split(' ')
+                    ws.broadcast('UPDATE {{1}, {2}, {3}}');
                 }
             });
         } else if (message = 'INFO') {
