@@ -37,12 +37,18 @@ const userLogin = (mail, passwd) => es.search({
                 "must": [
                     {
                         "match": {
-                            "email": mail
+                            "email": {
+                                "query": mail,
+                                "operator": "and"
+                            }
                         }
                     },
                     {
                         "match": {
-                            "password": passwd
+                            "password": {
+                                "query": passwd,
+                                "operator": "and"
+                            }
                         }
                     }
                 ]
@@ -74,7 +80,8 @@ const getUser = {
             "query": {
                 "match": {
                     "email": {
-                        "query": mail
+                        "query": mail,
+                        "operator": "and"
                     }
                 }
             }

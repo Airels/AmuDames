@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { User } from '../models/user.models';
 import { AuthGuard } from './auth-guard.service';
+import { GameManagerService } from './game-manager.service';
 import { HttpService } from './http.service';
 
 @Injectable()
@@ -31,8 +32,8 @@ export class UserService {
         });
     }
 
-    // Limit the method to AuthGuard only with method signature (no need subscription for this service)
-    public getUser(authorizedService: AuthGuard): User | null {
+    // Limit the method to few services only with method signature (no need subscription for this service)
+    public getUser(authorizedService: AuthGuard | GameManagerService): User | null {
         return this.user;
     }
 }

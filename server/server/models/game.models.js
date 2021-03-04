@@ -1,4 +1,4 @@
-class Game {
+export default class Game {
     constructor(id, whiteUser, blackUser, startTime, cases) { 
         this.id = id;
         this.whiteUser = whiteUser;
