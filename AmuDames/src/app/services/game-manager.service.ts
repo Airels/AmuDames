@@ -9,7 +9,8 @@ import { WebSocketService } from './web-socket.service';
 
 @Injectable({providedIn: 'root'})
 export class GameManagerService {
-    game!: Game;
+    private game!: Game;
+    gameSubject: Subject<Game> = new Subject<Game>();
     gameID!: string;
     playerID!: number;
     user!: User;
@@ -27,7 +28,6 @@ export class GameManagerService {
                 this.createGame(res);
             } else {
                 alert("An error occured. Please try again later.");
-                console.log(res);
             }
         });
     }
