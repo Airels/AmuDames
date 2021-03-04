@@ -1,6 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Game } from '../models/game.models';
 import { User } from '../models/user.models';
+import { GameManagerService } from '../services/game-manager.service';
+import { WebSocketService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-game',
@@ -13,52 +17,45 @@ export class GameComponent implements OnInit {
   bound: any;
   x: number = 0; y: number = 0;
   nRow: number =  10;
-  board?: number[][] = [];
   sizeMen: number = 10;
   sizeDame: number = 20;
   selected?: number[] = [0, 0];
 
   user!: User | null;
-  opponent!: User | null;
 
+  //Game Subscription
+  opponent!: User | null;
   isWhite: boolean = true;
   isPlaying: boolean = true;
+  game!: Game;
+  board?: number[][] = [];
 
-  constructor(private router: Router) { }
+  gameSubscription!: Subscription;
+
+  constructor(private router: Router, private gameService : GameManagerService, private webSocket : WebSocketService) { 
+    //todo service board to convert
+
+    //todo convert function of game manager service to subscribable item or one that return all game
+  }
 
   //alert if reload
 
 
   ngOnInit(): void {
     if(this.canvas != undefined) {
-      //if white: this board
-      if(this.isWhite) {
-        this.board = [
-          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-        ];
-      } else {
-        this.board = [
-          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-          [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-          [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-          [2, 0, 2, 0, 2, 0, 2, 0, 2, 0]
-        ];
-      }
+      this.board = [
+        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+      ];
+      if(!this.isWhite) { this.reverseBoard(); } 
 
       //draw canvas
       this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -93,6 +90,15 @@ export class GameComponent implements OnInit {
           }
         }
       });
+    }
+  }
+
+  reverseBoard(): void {
+    if(this.board != null) {
+      for(let i = 0; i<this.board?.length; i++) {
+        this.board[i] = this.board[i].reverse();
+      }
+      this.board = this.board.reverse();
     }
   }
 
