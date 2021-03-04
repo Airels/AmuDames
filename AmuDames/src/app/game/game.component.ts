@@ -43,7 +43,9 @@ export class GameComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.game = this.gameService.game;
+    this.gameService.gameSubject.subscribe((game) => {
+      this.game = game;
+    });
     this.isWhite = (this.gameService.playerID == 0);
 
     this.user = (this.isWhite) ? this.game.whiteUser : this.game.blackUser;
