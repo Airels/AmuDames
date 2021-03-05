@@ -32,8 +32,12 @@ body {
     position: fixed; top: 0; right: 0; border: 0;
 }
 
-.user-div {
+.user-button {
     position: fixed; top: 1%; right: 80px;
+    z-index: 2 !important;
+}
+.user-text {
+    position: fixed; top: 1%; right: 150px;
     z-index: 2 !important;
 }
 .user-img {
