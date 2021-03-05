@@ -13,17 +13,19 @@
                                     <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
                                 </li>
                                 <li>
-                                    <div>
-                                        <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
-                                        {{ user.username }} 
-                                        <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
-                                        <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
-                                        <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
-                                        <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
-                                        <br>
-                                        {{ user.elo }} <br>
-                                        <i class="desc">" {{ user.description }} "</i>
-                                    </div>
+                                    <a (click)="goToUserProfile(user.email)">
+                                        <div>
+                                            <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
+                                            {{ user.username }} 
+                                            <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
+                                            <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
+                                            <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
+                                            <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
+                                            <br>
+                                            {{ user.elo }} <br>
+                                            <i class="desc">" {{ user.description }} "</i>
+                                        </div>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

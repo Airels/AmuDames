@@ -5,12 +5,14 @@ import { User } from '../models/user.models';
 import { HttpService } from '../services/http.service';
 import {UserService} from '../services/user.service';
 import { validatePassword, validateCountry } from '../customValidators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
+
 export class UserProfileComponent implements OnInit {
   activeUser !: User;
   viewUser !: User;
