@@ -26,14 +26,17 @@ function tryMatch() {
         }
 
         if (p2 !== undefined) {
-            removePlayerWaiting(p2)
+            removePlayerWaiting(p2);
             semaphore.leave();
             matchPlayers(p1, p2);
+        } else { 
+            semaphore.leave();
         }
     });
 }
 
 const addPlayerWaiting = (user, callback) => {
+    console.log("ADD: " + waitingList.length);
     semaphore.take(() => {
         if (waitingList.find(u => u.username == user.username)) {
             callback({ status: 409 });
