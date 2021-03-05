@@ -12,13 +12,12 @@ import { validatePassword, validateCountry } from '../customValidators';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  userObservable !: Observable<User>;
   activeUser !: User;
   viewUser !: User;
   editForm!: FormGroup;
   isCollapsed = true;
 
-  constructor(private formBuilder: FormBuilder, private http : HttpService, public userService : UserService, public userSubscription : User) { 
+  constructor(private formBuilder: FormBuilder, private http : HttpService, public userService : UserService, public userSubscription : User, private router: Router) { 
     
   }
 
@@ -34,7 +33,9 @@ export class UserProfileComponent implements OnInit {
       options: this.formBuilder.array([])
     }, { validator: [validatePassword, validateCountry] });
 
-    this.userObservable = this.http.getCurrentUser();
+    this.userService.viewUserSubject.subscribe((user: User) => {
+      this.viewUser = user;
+    });
 
     this.userService.userSubject.subscribe((user) => {
       this.activeUser = user;

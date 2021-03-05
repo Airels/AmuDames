@@ -9,7 +9,9 @@ import { HttpService } from './http.service';
 export class UserService {
 
     private user!: User | null;
+    private viewUser!: User | null;
     public userSubject: Subject<any> = new Subject<any>();
+    public viewUserSubject: Subject<any> = new Subject<any>();
 
     constructor(private httpService: HttpService) {
         this.userSubject.next(this.user);
@@ -35,5 +37,14 @@ export class UserService {
     // Limit the method to few services only with method signature (no need subscription for this service)
     public getUser(authorizedService: AuthGuard | GameManagerService): User | null {
         return this.user;
+    }
+
+    public addViewUser(user: User): void {
+        this.viewUser = user;
+        this.viewUserSubject.next(user);
+    }
+
+    public getViewUser(): User | null {
+        return this.viewUser;
     }
 }

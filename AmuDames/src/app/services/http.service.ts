@@ -47,6 +47,10 @@ export class HttpService {
         return this.http.get<User>(this.serverURL + `/users/username/${username}`);
     }
 
+    public getUserByEmail(email: string): Observable<any> {
+        return this.http.get<User>(this.serverURL + `/users/email/${email}`);
+    }
+
     public updateUser(user: User): Observable<any> {
         return this.http.put(this.serverURL + '/users', user, this.httpOptions);
     }
