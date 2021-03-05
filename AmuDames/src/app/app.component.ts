@@ -166,4 +166,9 @@ export class AppComponent implements OnInit {
     this.isAuth = this.auth.isAuth;
     this.router.navigate(['/home']);
   }
+
+  public goToUserProfile(email: string) {
+    this.userService.addViewUser(email);
+    this.router.navigate(['/user-profile', { email: this.user?.email }]);
+  }
 }

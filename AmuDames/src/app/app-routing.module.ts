@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'play', canActivate: [AuthGuard], component:  PlayComponent },
   { path: 'ranking', component: RankingComponent },
   { path: 'guide', component: GuideComponent },
-  { path: 'user-profile', canActivate: [AuthGuard], component: UserProfileComponent },
+  { path: 'user-profile/:email', canActivate: [AuthGuard], component: UserProfileComponent },
   { path: 'game', component: GameComponent },
   { path: '**', redirectTo: 'home' }
 ];

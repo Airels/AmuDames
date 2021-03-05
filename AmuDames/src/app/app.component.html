@@ -37,7 +37,7 @@
         <ul class="navbar-nav">
           <li class="nav-item" >
             <div class="info-navbar">
-              <a class="user-profile" routerLinkActive="active" routerLink="user-profile">
+              <a class="user-profile" (click)="goToUserProfile()">
                 <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
                 {{ user.username }} <br>
                 {{ user.elo }} <br>

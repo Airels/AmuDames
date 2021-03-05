@@ -39,9 +39,21 @@ export class UserService {
         return this.user;
     }
 
-    public addViewUser(user: User): void {
-        this.viewUser = user;
-        this.viewUserSubject.next(user);
+    public addViewUser(email: string): void {
+        this.httpService.getUserByEmail(email).subscribe({
+            next: res => {
+              if (res.status == 200) {
+                this.viewUser = res.user; //todo ??
+              }
+              else {
+                alert("Error getting user");
+              }
+            },
+            error: e => {
+              alert("Error sending the news");
+            },
+          });
+        this.viewUserSubject.next(this.viewUser);
     }
 
     public getViewUser(): User | null {
