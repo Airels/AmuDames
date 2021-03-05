@@ -90,12 +90,13 @@ const getGame = async (gameID) => {
     return game;
 }
 
-const checkMoveIsValid = async (gameID, email, sourceCase, targetCase) => {
+const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
+    return 1;
+
     var game = game[gameID];
     
     if (game == undefined)  return 0;
-    if (game.playerTurn == 0 && game.whiteUser.email != email) return 0;
-    if (game.playerTurn == 1 && game.blackUser.email != email) return 0;
+    if (game.playerTurn != playerID) return 0;
 
     var cases = game.cases;
 
