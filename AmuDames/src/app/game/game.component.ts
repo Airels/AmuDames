@@ -112,8 +112,17 @@ export class GameComponent implements OnInit {
           this.y = e.clientY - this.bound.top;
           let w = this.canvas.nativeElement.width/this.nRow;
           let pos = this.getPosition();
-          if(this.selected?.length == 2 && this.selected[0] != pos[0] && this.selected[1] != pos[1]) {
-            this.gameService.movePawn(this.selected, pos);
+          //convert from computer value to math value (change start 0 to start 1)
+          if(this.selected?.length == 2 && this.selected[0] != pos[0] && this.selected[1] != pos[1] && this.isPlaying) {
+            if(this.isWhite) {
+              this.selected[0] += 1;  this.selected[1] += 1;
+              pos[0] += 1;  pos[1] += 1;
+              this.gameService.movePawn(this.selected, pos);
+            } else {
+              this.selected[0] = (9-this.selected[0])+1;  this.selected[1] = (9-this.selected[1])+1;
+              pos[0] = (9-pos[0])+1;  pos[1] = (9-pos[1])+1;
+              this.gameService.movePawn(this.selected, pos);
+            }
           }
         }
       });

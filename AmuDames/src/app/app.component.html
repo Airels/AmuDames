@@ -31,9 +31,9 @@
         </ul>
       </div>
     </nav>
-    <div class="ml-auto mr-1 user-div">
-      <!-- USER-->
-      <div *ngIf="user != null; else elseBlock">
+    <!-- USER-->
+    <div class="ml-auto mr-1 user-text">
+      <div *ngIf="user != null;">
         <ul class="navbar-nav">
           <li class="nav-item" >
             <div class="info-navbar">
@@ -44,6 +44,12 @@
               </a>
             </div>
           </li>
+      </ul>
+      </div>
+    </div>
+    <div class="ml-auto mr-1 user-button">
+      <div *ngIf="user != null; else elseBlock">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a (click)="open(modalDisconnect)">
               <img class="user-img user-img-connected" src="{{ user.profileImageURL }}">
@@ -60,9 +66,8 @@
           </li>
         </ul>
       </ng-template>
-      <!-- END USER-->
     </div>
-
+    <!-- END USER-->
     <!--ROUTER-->
     <main role="main" class="container">
       <br><br><br>

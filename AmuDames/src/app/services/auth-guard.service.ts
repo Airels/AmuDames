@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import { User } from '../models/user.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -14,16 +13,6 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         let user = this.userService.getUser(this);
-
         return !(user === null || user === undefined);
-
-        if(user === null || user === undefined) {
-            alert('GUARD: not connected');
-            // this.router.navigate(['home']);
-            return false;
-        } else {
-            alert('GUARD: connected');
-            return true;
-        }
     }
 }
