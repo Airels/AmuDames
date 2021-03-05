@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Game } from '../models/game.models';
@@ -41,6 +41,10 @@ export class GameComponent implements OnInit {
     //todo convert function of game manager service to subscribable item or one that return all game
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    window.opener.location.reload();
+  }
 
   ngOnInit(): void {
     this.gameService.gameSubject.subscribe((game) => {
