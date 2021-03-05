@@ -52,14 +52,17 @@ serverSocket.on('connection', (ws) => {
                 return;
             }
 
-            source = args[1];
-            target = args[2];
+            let source = args[1];
+            let target = args[2];
 
-            gameManager.checkMoveIsValid(gameID, username, source, target).then(result => {
+            gameManager.checkMoveIsValid(gameID, playerID, source, target).then(result => {
                 if (result !== 0) {
                     // Broadcast nouveaux états de la case source et la case target + autres possibles cases (mangeage etc...)
                     // let msg = result.split(' ')
-                    ws.broadcast('UPDATE {{1}, {2}, {3}}');
+
+                    // ws.broadcast('UPDATE {{1}, {2}, {3}}');
+                    serverSocket.broadcast(gameID);
+                    console.log('VALID');
                 }
             });
         } else if (message = 'INFO') {
@@ -76,5 +79,11 @@ serverSocket.on('connection', (ws) => {
     });
 
     ws.send("AmuDames Game Manager");
-    console.log("A client has connect");
+    console.log("A client connected");
 });
+
+serverSocket.broadcast = function broadcast(id) {
+    serverSocket.clients.forEach(function each(client) {
+        console.log(client);
+    });
+};

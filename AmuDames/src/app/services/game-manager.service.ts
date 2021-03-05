@@ -9,12 +9,13 @@ import { WebSocketService } from './web-socket.service';
 
 @Injectable({providedIn: 'root'})
 export class GameManagerService {
-    private game!: Game;
+    game!: Game;
     gameSubject: Subject<Game> = new Subject<Game>();
     gameID!: string;
     playerID!: number;
     user!: User;
     connected: boolean = false;
+    cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
@@ -74,6 +75,9 @@ export class GameManagerService {
     }
 
     public movePawn(source: any, target: any): void {
+        console.log("SOURCE: " + source);
+        console.log("TARGET: " + target);
+
         if (this.connected) {
             let command = "MOVE " + source + " " + target;
             this.ws.sendMessage(command); 
