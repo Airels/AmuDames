@@ -119,11 +119,13 @@ export class GameComponent implements OnInit, OnDestroy {
           let pos = this.getPosition();
           //convert from computer value to math value (change start 0 to start 1)
           if(this.selected?.length == 2 && this.selected[0] != pos[0] && this.selected[1] != pos[1] && this.isPlaying) {
-            if(!this.isWhite) {
-              this.gameService.movePawn(this.selected, pos);
-            } else {
+            if(this.isWhite) {
               this.selected[0] = (9-this.selected[0]);
               pos[0] = (9-pos[0]);
+              this.gameService.movePawn(this.selected, pos);
+            } else {
+              this.selected[0] = (9-this.selected[0]);  this.selected[1] = (9-this.selected[1]);
+              pos[0] = (9-pos[0]);  pos[1] = (9-pos[1]);
               this.gameService.movePawn(this.selected, pos);
             }
           }
