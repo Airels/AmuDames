@@ -171,7 +171,7 @@ export class GameComponent implements OnInit, OnDestroy {
       for (var i = 0; i<this.nRow; i++) {
         for (var j = 0; j<this.nRow; j++) {
           if((this.x > j*w && this.x < (j+1)*w) && (this.y > i*w && this.y < (i+1)*w)) {
-            return [i, j];
+            return [j, i];
           }
         }
       }
