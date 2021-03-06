@@ -59,7 +59,7 @@ export class UserProfileComponent implements OnInit {
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
-      (this.viewUser == null) ? false : this.viewUser.isAdmin;
+      (this.viewUser == null) ? false : this.viewUser.isAdmin
     );
     this.http.updateUser(updateUser);
   }
