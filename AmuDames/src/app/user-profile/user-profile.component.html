@@ -260,6 +260,14 @@
           </div>
           <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Edit</button>
         </form>
+        <hr>
+        <p>Delete this account: Please type the account username to delete it. All datas will be deleted from the server, a recovery is not possible. Be carefull.</p>
+        <form [formGroup]="deleteForm" (ngSubmit)="deleteUser()">
+            <div class="form-group">
+                <input type="text" id="username" class="form-control" formControlName="username" autocomplete="off">
+            </div>
+            <button type="submit" class="btn btn-danger" [disabled]="deleteForm.get('username')?.invalid">Delete</button>
+        </form>
       </div>
     </div>
 </div>
