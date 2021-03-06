@@ -95,7 +95,6 @@ const getGame = async (gameID) => {
 }
 
 const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
-
     let result = [];
     let game = await gamesList.find((game) => game.id == gameID);
     
@@ -104,39 +103,106 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
 
     let cases = game.cases;
 
-    console.log(cases[targetCase.col + targetCase.row]);
-    console.log(cases[sourceCase.col + sourceCase.row]);
-
     if (cases[targetCase.col + targetCase.row] != 0) return 0;
     if (cases[sourceCase.col + sourceCase.row] == 0) return 0;
 
-    let possibleMoves = await getPossibleMoves(sourceCase);
+    let possibleMoves = await getPossibleMoves(sourceCase, playerID);
 
-    console.log(possibleMoves);
+    console.log("POSSIBLE MOVES: " + JSON.stringify(possibleMoves));
 
-    if (possibleMoves.includes(targetCase)) {
-        sourceCase.value = 0;
-        cases[sourceCase.col + sourceCase.row] = 0;
+    // if (!possibleMoves.includes(targetCase)) return 0;
+    if (!containsMove(possibleMoves, targetCase)) return 0;
 
-        if (targetCase.row == 10) {
-            targetCase.value = 3;
-            cases[targetCase.col + targetCase.row] = 3;
-        } else if (targetCase.row == 1) {
-            targetCase.value = 4;
-            cases[targetCase.col + targetCase.row] = 4;
-        } else {
-            targetCase.value = playerID+1;
-            cases[targetCase.col + targetCase.row] = playerID+1;
-        }
+    sourceCase.value = 0;
+    cases[sourceCase.col + sourceCase.row] = 0;
+
+    if (targetCase.row == 10) {
+        targetCase.value = 3;
+        cases[targetCase.col + targetCase.row] = 3;
+    } else if (targetCase.row == 1) {
+        targetCase.value = 4;
+        cases[targetCase.col + targetCase.row] = 4;
+    } else {
+        targetCase.value = playerID+1;
+        cases[targetCase.col + targetCase.row] = playerID+1;
     }
 
     result.push(sourceCase, targetCase);
+    game.playerTurn = (game.playerTurn+1) % 2;
     return result;
 }
 
+async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, PlayerID = 1 -> black
+    let possibilities = [];
+    source.col = cols.indexOf(source.col);
+
+    if (playerID == 0) {
+        if (source.col == 0) {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col+1]
+            });
+        } else if (source.col == 9) {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col-1]
+            });
+        } else {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col+1]
+            });
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col-1]
+            });
+        }
+    } else if (playerID == 1) {
+        if (source.col == 0) {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col+1]
+            });
+        } else if (source.col == 9) {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col-1]
+            });
+        } else {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col+1]
+            });
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col-1]
+            });
+        }
+    } else {
+        console.log("MITROGLOU");
+        return [];
+    }
+
+    console.log(possibilities.length);
+
+    return possibilities;
+}
+
+function containsMove(possibleMoves, targetCase) {
+    let found = false;
+    possibleMoves.forEach((move) => {
+        if (move.row == targetCase.row && move.col == targetCase.col) {
+            found = true;
+            return;
+        }
+    });
+
+    return found;
+}
+
 function createCases() {
-    var cases = {};
-    let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    var cases = [];
+    let rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
     let colIndex;
 
     rows.forEach(row => {
@@ -157,59 +223,6 @@ function createCases() {
     });
 
     return cases;
-}
-
-async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, PlayerID = 1 -> black
-    let possibilities = [];
-    source.col = cols.indexOf(source.col);
-
-    if (playerID == 0) {
-        if (source.col == 0) {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col+1]
-            });
-        } else if (source.col == 9) {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col-1]
-            });
-        } else {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col+1]
-            });
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col-1]
-            });
-        }
-    } else if (playerID == 1) {
-        if (source.col == 0) {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col+1]
-            });
-        } else if (source.col == 9) {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col-1]
-            });
-        } else {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col+1]
-            });
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col-1]
-            });
-        }
-    } else {
-        return [];
-    }
-
-    return possibilities;
 }
 
 export default {

@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("DESTROY");
     this.newsSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     // this.userService.userSubject.unsubscribe();

@@ -9,13 +9,13 @@ import { WebSocketService } from './web-socket.service';
 
 @Injectable({providedIn: 'root'})
 export class GameManagerService {
-    game!: Game;
+    private game!: Game;
     gameSubject: Subject<Game> = new Subject<Game>();
     gameID!: string;
     playerID!: number;
     user!: User;
     connected: boolean = false;
-    cols = ['ERR', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
@@ -40,7 +40,8 @@ export class GameManagerService {
     }
 
     public createGame(res: any): void {
-        this.game = res.game;
+        console.log(res.game)
+        this.game = new Game(res.game.id, res.game.whiteUser, res.game.blackUser, res.game.startTime, res.game.cases);
         this.gameID = res.id;
         this.playerID = res.playerID;
 
@@ -62,10 +63,15 @@ export class GameManagerService {
             } else if (data.startsWith("UPDATE")) {
                 let moves = JSON.parse(data.split(' ')[1]);
 
-                for (let grid in moves) {
-                    console.log(grid);
-                    // this.game.cases[grid] = grid;
+                console.log(moves);
+
+                for (let move in moves) {
+                    let grid = moves[move];
+                    this.game.cases[grid.col+grid.row] = grid.value;
                 }
+
+                this.game.setPlayerTurn();
+                this.emitGame();
             } else if (data == "WIN") {
                 // Player win
             }
@@ -77,19 +83,25 @@ export class GameManagerService {
     }
 
     public movePawn(source: any, target: any): void {
-        console.log("SOURCE: " + source);
-        console.log("TARGET: " + target);
-
         let aSource = source.splice(',');
         let aTarget = target.splice(',');
 
         let jSource = {
-            row: aSource[0],
+            row: aSource[0]+1,
             col: this.cols[aSource[1]]
         }
         let jTarget = {
-            row: aTarget[0],
+            row: aTarget[0]+1,
             col: this.cols[aTarget[1]]
+        }
+
+        if (jSource.col == 'ERR') {
+            console.error("ERROR: Wrong column coordinates")
+            return;
+        }
+        if (jTarget.col == 'ERR') {
+            console.error("ERROR: Wrong column coordinates")
+            return;
         }
 
         if (this.connected) {
@@ -101,5 +113,9 @@ export class GameManagerService {
     public quit() {
         let command = "QUIT";
         this.ws.sendMessage(command);
+    }
+
+    public emitGame() {
+        this.gameSubject.next(this.game);
     }
 }
