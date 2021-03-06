@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, from } from 'rxjs';
 import { User } from '../models/user.models';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-profile.component.scss']
 })
 
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   activeUser !: User | null;
   viewUser !: User | null;
   editForm !: FormGroup;
@@ -47,6 +47,10 @@ export class UserProfileComponent implements OnInit {
     this.userService.userSubject.subscribe((user) => {
       this.activeUser = user;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userService.viewUserSubject.unsubscribe();
   }
 
   onSubmitEditUser(): void {

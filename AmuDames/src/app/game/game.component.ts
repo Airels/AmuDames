@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Game } from '../models/game.models';
@@ -12,7 +12,7 @@ import { WebSocketService } from '../services/web-socket.service';
   styleUrls: ['./game.component.scss']
 })
 
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   //Canvas variables
   @ViewChild('canvas', {static: true}) canvas?: ElementRef<HTMLCanvasElement>;
   ctx?: CanvasRenderingContext2D | null;
@@ -51,6 +51,7 @@ export class GameComponent implements OnInit {
       this.game = game;
       this.isPlaying = (game.playerTurn == this.gameService.playerID);
     });
+    
     this.isWhite = (this.gameService.playerID == 0);
 
     this.user = (this.isWhite) ? this.gameService.game.whiteUser : this.gameService.game.blackUser;
@@ -131,6 +132,10 @@ export class GameComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.gameService.gameSubject.unsubscribe();
   }
 
   reverseBoard(): void {
