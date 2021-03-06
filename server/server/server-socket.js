@@ -16,7 +16,7 @@ serverSocket.on('connection', (ws) => {
         if (message.startsWith('CONNECT')) {
             args = message.split(' ');
 
-            if (args.length != 4) {
+            if (args.length != 3) {
                 ws.send('Invalid syntax.');
                 return;
             }
@@ -51,23 +51,20 @@ serverSocket.on('connection', (ws) => {
             }
 
             args = message.split(' ');
+            console.log(args);
 
             if (args.length != 3) {
                 ws.send('Invalid syntax.');
                 return;
             }
 
-            let source = args[1];
-            let target = args[2];
+            let source = JSON.parse(args[1]);
+            let target = JSON.parse(args[2]);
 
             gameManager.checkMoveIsValid(gameID, playerID, source, target).then(result => {
+                console.log(result);
                 if (result !== 0) {
-                    // Broadcast nouveaux états de la case source et la case target + autres possibles cases (mangeage etc...)
-                    // let msg = result.split(' ')
-
-                    // ws.broadcast('UPDATE {{1}, {2}, {3}}');
-                    serverSocket.broadcast(gameID, undefined);
-                    console.log('VALID');
+                    serverSocket.broadcast(gameID, JSON.stringify(result));
                 }
             });
         } else if (message = 'INFO') {
@@ -103,7 +100,7 @@ serverSocket.broadcast = function broadcast(gameID, moves) {
         if (i >= 2) return;
 
         if (clientSocket.gameID == gameID) {
-            clientSocket.socket.send('UPDATE');
+            clientSocket.socket.send(`UPDATE ${moves}`);
             i++;
         }
     });

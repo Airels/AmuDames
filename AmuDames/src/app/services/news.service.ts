@@ -1,14 +1,21 @@
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { News } from '../models/news.models';
+import { HttpService } from './http.service';
 
+@Injectable({ providedIn: 'root' })
 export class NewsService {
 
     private newsList: News[] = [];
     public newsSubject: Subject<any> = new Subject<any>();
     public newsBuffer!: News;
 
-    constructor() {
-        this.newsSubject.next(this.newsList);
+    constructor(private http: HttpService) {
+        this.http.getNews(10).subscribe(
+            (newsList: News[]) => {
+                this.initNews(newsList);
+            }
+        );
     }
 
     public initNews(newsArray: News[]) {
@@ -17,16 +24,21 @@ export class NewsService {
             news.date = new Date(<number>news.timestamp).toLocaleString();
             this.newsList.push(news);
         });
+
+        this.emitNews()
+    }
+
+    public emitNews() {
         this.newsSubject.next(this.newsList);
     }
 
     public addNews(news: News) {
         this.newsList.unshift(news);
-        this.newsSubject.next(this.newsList);
+        this.emitNews()
     }
 
-    public updateNews(news: News) {
-        this.newsSubject.next(this.newsList);
+    public updateNews(news: News) { // TODO
+        this.emitNews()
     }
 
     public deleteNews(news: News) {
@@ -35,6 +47,6 @@ export class NewsService {
             this.newsList.splice(index);
         }
 
-        this.newsSubject.next(this.newsList);
+        this.emitNews()
     }
 }

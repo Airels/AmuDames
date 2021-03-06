@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { News } from '../models/news.models';
 import { User } from '../models/user.models';
 import { HttpService } from '../services/http.service';
@@ -19,6 +19,7 @@ import { AuthGuard } from '../services/auth-guard.service';
 export class HomeComponent implements OnInit, OnDestroy {
   newsList: News[] = [];
   newsSubscription!: Subscription;
+  userSubscription!: Subscription;
   user!: User | null;
   newsForm!: FormGroup;
   newsEditForm!: FormGroup;
@@ -26,22 +27,20 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public isCollapsed = true;
 
-  constructor(private auth: AuthGuard, private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
-    newsService.newsSubject.subscribe((newsList) => {
-      this.newsList = newsList;
-    });
+  constructor(private modalService: NgbModal, private changeDetection: ChangeDetectorRef ,private http: HttpService, public newsService: NewsService, public userService : UserService, private formBuilder : FormBuilder, private router : Router) { 
+    
   }
 
   ngOnInit(): void {
-    this.userService.userSubject.subscribe((user) => {
+    this.newsSubscription = this.newsService.newsSubject.subscribe((newsList) => {
+      this.newsList = newsList;
+    });
+    this.newsService.emitNews();
+
+    this.userSubscription = this.userService.userSubject.subscribe((user) => {
       this.user = user;
     });
-
-    this.newsSubscription = this.http.getNews(10).subscribe(
-      (newsList: News[]) => {
-        this.newsService.initNews(newsList);
-      }
-    );
+    this.userService.emitUser();
 
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -51,7 +50,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log("DESTROY");
     this.newsSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    // this.userService.userSubject.unsubscribe();
+    // this.newsList = [];
   }
 
   goTo(url: String) { this.router.navigate([url]); }

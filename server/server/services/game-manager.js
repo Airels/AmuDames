@@ -4,6 +4,7 @@ const semaphore = require('semaphore')(1);
 
 const waitingList = new Array();
 const gamesList = new Array();
+const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; 
 
 function tryMatch() {
     if (waitingList.length < 2) return;
@@ -94,28 +95,49 @@ const getGame = async (gameID) => {
 }
 
 const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
-    return 1;
 
-    var game = game[gameID];
+    let result = [];
+    let game = await gamesList.find((game) => game.id == gameID);
     
-    if (game == undefined)  return 0;
+    if (game === undefined)  return 0;
     if (game.playerTurn != playerID) return 0;
 
-    var cases = game.cases;
+    let cases = game.cases;
 
-    if (cases[targetCase] != 0) return 0;
-    if (cases[sourceCase] == 0) return 0;
+    console.log(cases[targetCase.col + targetCase.row]);
+    console.log(cases[sourceCase.col + sourceCase.row]);
+
+    if (cases[targetCase.col + targetCase.row] != 0) return 0;
+    if (cases[sourceCase.col + sourceCase.row] == 0) return 0;
 
     let possibleMoves = await getPossibleMoves(sourceCase);
 
-    if (possibleMoves.includes(targetCase))
-        return 1;
+    console.log(possibleMoves);
+
+    if (possibleMoves.includes(targetCase)) {
+        sourceCase.value = 0;
+        cases[sourceCase.col + sourceCase.row] = 0;
+
+        if (targetCase.row == 10) {
+            targetCase.value = 3;
+            cases[targetCase.col + targetCase.row] = 3;
+        } else if (targetCase.row == 1) {
+            targetCase.value = 4;
+            cases[targetCase.col + targetCase.row] = 4;
+        } else {
+            targetCase.value = playerID+1;
+            cases[targetCase.col + targetCase.row] = playerID+1;
+        }
+    }
+
+    result.push(sourceCase, targetCase);
+    return result;
 }
 
 function createCases() {
     var cases = {};
-    let rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; let colIndex = 1;
+    let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let colIndex;
 
     rows.forEach(row => {
         colIndex = 1;
@@ -138,18 +160,16 @@ function createCases() {
 }
 
 async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, PlayerID = 1 -> black
-    let cols = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    
     let possibilities = [];
     source.col = cols.indexOf(source.col);
 
     if (playerID == 0) {
-        if (source.col == 1) {
+        if (source.col == 0) {
             possibilities.add({
                 row: source.row+1, 
                 col: cols[source.col+1]
             });
-        } else if (source.col == 10) {
+        } else if (source.col == 9) {
             possibilities.add({
                 row: source.row+1, 
                 col: cols[source.col-1]
@@ -165,12 +185,12 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
             });
         }
     } else if (playerID == 1) {
-        if (source.col == 1) {
+        if (source.col == 0) {
             possibilities.add({
                 row: source.row-1, 
                 col: cols[source.col+1]
             });
-        } else if (source.col == 10) {
+        } else if (source.col == 9) {
             possibilities.add({
                 row: source.row-1, 
                 col: cols[source.col-1]
