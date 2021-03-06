@@ -19,10 +19,17 @@ body {
 }
 .navbar {
     background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-    z-index: 1 !important;
+    z-index: 0 !important;
     position: fixed; top: 0; left: 0;
     width: 100%;
 }
+
+.credit {
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+    z-index: 0 !important;
+    width: 100%;
+}
+
 .info-navbar {
     color: white;
     text-align: right;
