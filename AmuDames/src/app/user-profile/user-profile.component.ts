@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 
 export class UserProfileComponent implements OnInit, OnDestroy {
   activeUser !: User | null;
-  viewUser !: User | null;
+  viewUser !: User;
   editForm !: FormGroup;
   deleteForm !: FormGroup;
   isCollapsed = true;
@@ -26,18 +26,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editForm = this.formBuilder.group({
-      username: [this.viewUser?.username, [Validators.required]],
-      email: [this.viewUser?.email, [Validators.required, Validators.email]],
-      country: [this.viewUser?.country, [Validators.required]],
-      profilePicture: [this.viewUser?.profileImageURL, [Validators.required]],
-      description: [this.viewUser?.description, [Validators.required, Validators.maxLength(25)]],
+      username: [this.viewUser.username, [Validators.required]],
+      email: [this.viewUser.email, [Validators.required, Validators.email]],
+      country: [this.viewUser.country, [Validators.required]],
+      profilePicture: [this.viewUser.profileImageURL, [Validators.required]],
+      description: [this.viewUser.description, [Validators.required, Validators.maxLength(25)]],
       password: ['', []],
       passwordConfirm: ['', []],
       options: this.formBuilder.array([])
     }, { validator: [validatePassword, validateCountry] });
 
     this.deleteForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.pattern(`^${this.viewUser?.username}$`)]]
+      username: ['', [Validators.required, Validators.pattern(`^${this.viewUser.username}$`)]]
     });
 
     this.userService.viewUserSubject.subscribe((user: User) => {
@@ -51,6 +51,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userService.viewUserSubject.unsubscribe();
+    //this.viewUser = undefined;
   }
 
   onSubmitEditUser(): void {
@@ -59,11 +60,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       formValue['username'],
       formValue['password'],
       formValue['email'],
-      this.viewUser?.elo,
+      this.viewUser.elo,
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
-      (this.viewUser == null) ? false : this.viewUser.isAdmin
+      this.viewUser.isAdmin
     );
     this.http.updateUser(updateUser);
   }
@@ -76,7 +77,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         }
         else {
           alert("user sucesfully deleted");
-          if(this.viewUser?.email == this.activeUser?.email) {
+          if(this.viewUser.email == this.activeUser?.email) {
             this.activeUser = null;
           }
         }
