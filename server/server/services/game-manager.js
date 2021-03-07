@@ -101,19 +101,25 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
     let result = [];
     let game = await gamesList.find((game) => game.id == gameID);
     
+    console.log(game === undefined);
+    console.log(game.playerTurn != playerID);
+
     if (game === undefined)  return 0;
     if (game.playerTurn != playerID) return 0;
 
     let cases = game.cases;
+
+    console.log(cases[targetCase.col + targetCase.row] != 0);
+    console.log(cases[sourceCase.col + sourceCase.row] == 0);
+
+    console.log(sourceCase.col + "" + sourceCase.row);
+    console.log(cases[sourceCase.col + sourceCase.row]);
 
     if (cases[targetCase.col + targetCase.row] != 0) return 0;
     if (cases[sourceCase.col + sourceCase.row] == 0) return 0;
 
     let possibleMoves = await getPossibleMoves(sourceCase, playerID);
 
-    console.log("POSSIBLE MOVES: " + JSON.stringify(possibleMoves));
-
-    // if (!possibleMoves.includes(targetCase)) return 0;
     if (!containsMove(possibleMoves, targetCase)) return 0;
 
     sourceCase.value = 0;
@@ -182,12 +188,12 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
             });
         }
     } else {
-        console.log("MITROGLOU");
         return [];
     }
 
     console.log(possibilities.length);
 
+    source.col = cols[source.col];
     return possibilities;
 }
 
@@ -205,27 +211,27 @@ async function containsMove(possibleMoves, targetCase) {
 
 async function createCases() {
     var cases = [];
-    let rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let colIndex;
-
-    rows.forEach(row => {
-        colIndex = 1;
-
-        cols.forEach(col => {
-            if (row < 5) { // Blancs
-                if (row % 2 == colIndex % 2)    cases[col+row] = 1;
-                else                            cases[col+row] = 0;
-            } else if (row > 6) { // Noirs
-                if (row % 2 == colIndex % 2)    cases[col+row] = 2;
-                else                            cases[col+row] = 0;
-            } else 
-                cases[col+row] = 0;
-
-            colIndex++;
+        let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        let colIndex;
+    
+        rows.forEach(row => {
+            colIndex = 0;
+    
+            cols.forEach(col => {
+                if (row < 4) { // Blancs
+                    if (row % 2 == colIndex % 2)    cases[col+row] = 1;
+                    else                            cases[col+row] = 0;
+                } else if (row > 5) { // Noirs
+                    if (row % 2 == colIndex % 2)    cases[col+row] = 2;
+                    else                            cases[col+row] = 0;
+                } else 
+                    cases[col+row] = 0;
+    
+                colIndex++;
+            });
         });
-    });
-
-    return cases;
+    
+        return cases;
 }
 
 const endGame = async (gameID) => {

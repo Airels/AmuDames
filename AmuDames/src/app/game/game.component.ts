@@ -82,6 +82,8 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         board[i] = board[i].reverse();
       }
+
+      this.drawProps();
     });
     this.gameService.emitGame();
     

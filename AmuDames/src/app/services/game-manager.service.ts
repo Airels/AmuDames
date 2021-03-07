@@ -51,13 +51,11 @@ export class GameManagerService {
     }
 
     public createGame(res: any): void {
-        this.game = res.game;
+        this.game = new Game(res.id, res.game.whiteUser, res.game.blackUser, res.game.startTime, this.createCases());
         this.gameID = res.id;
         this.playerID = res.playerID;
 
         this.user = <User>this.userService.getUser(this);
-
-        this.game.cases = this.createCases();
 
         console.log(res.game.cases);
 
@@ -99,11 +97,11 @@ export class GameManagerService {
         let aTarget = target.splice(',');
 
         let jSource = {
-            row: aSource[0]+1,
+            row: aSource[0],
             col: this.cols[aSource[1]]
         }
         let jTarget = {
-            row: aTarget[0]+1,
+            row: aTarget[0],
             col: this.cols[aTarget[1]]
         }
 
