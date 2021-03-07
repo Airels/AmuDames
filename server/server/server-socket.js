@@ -71,9 +71,9 @@ serverSocket.on('connection', (ws) => {
             clients.forEach((clientSocket) => {
                 if (clientSocket.socket == ws) {
                     if (gameID != undefined) {
-                        // Déclarer forfait
+                        gameManager.endGame(gameID);
                     }
-                    
+
                     clients.splice(clientSocket);
                     ws.send('GOODBYE');
                     ws.close('Closed by client.');
