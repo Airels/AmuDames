@@ -62,7 +62,7 @@ serverSocket.on('connection', (ws) => {
             let target = JSON.parse(args[2]);
 
             gameManager.checkMoveIsValid(gameID, playerID, source, target).then(result => {
-                console.log(result);
+                console.log("MOVE: " + JSON.stringify(result));
                 if (result !== 0) {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
                 }

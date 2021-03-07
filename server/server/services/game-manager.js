@@ -27,10 +27,9 @@ function tryMatch() {
         }
 
         if (p2 !== undefined) {
-            removePlayerWaiting(p2, () => {
-                semaphore.leave();
-                matchPlayers(p1, p2);
-            }, true);
+            removePlayerForMatch(p2);
+            semaphore.leave();
+            matchPlayers(p1, p2);
         } else { 
             semaphore.leave();
         }
@@ -54,11 +53,16 @@ const addPlayerWaiting = (user, callback) => {
     });
 }
 
-const removePlayerWaiting = (user, callback, forMatch) => {
+const removePlayerWaiting = (user, callback) => {
     console.log("REMOVE");
     let p = waitingList.splice(user)[0];
-    if (forMatch === undefined) p.callback({ status: 205 }); // Answer to add request
+    p.callback({ status: 205 }); // Answer to add request
     callback();
+}
+
+function removePlayerForMatch(user) {
+    console.log("REMOVE FOR MATCH");
+    waitingList.splice(user);
 }
 
 async function matchPlayers(p1, p2) {

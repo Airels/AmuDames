@@ -20,10 +20,10 @@ export class GameManagerService {
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
     public searchGame(): void {
-        console.log(this.game !== undefined);
-        if (this.game !== undefined) return;
-
-        console.log("ADD");
+        if (this.game !== undefined) {
+            this.router.navigate(['/game']);
+            return;
+        }
 
         this.httpService.gameFinderStart().subscribe((res) => {
             switch (res.status) {
@@ -44,18 +44,22 @@ export class GameManagerService {
     }
 
     public stopSearch(): void {
-        console.log("STOP");
+        if (this.game !== undefined) return;
         this.httpService.gameFinderStop().subscribe((res) => {
             console.log(res);
         });
     }
 
     public createGame(res: any): void {
-        this.game = new Game(res.game.id, res.game.whiteUser, res.game.blackUser, res.game.startTime, res.game.cases);
+        this.game = res.game;
         this.gameID = res.id;
         this.playerID = res.playerID;
 
         this.user = <User>this.userService.getUser(this);
+
+        this.game.cases = this.createCases();
+
+        console.log(res.game.cases);
 
         this.serverConnection();
     }
@@ -72,8 +76,6 @@ export class GameManagerService {
                 this.connected = true;
             } else if (data.startsWith("UPDATE")) {
                 let moves = JSON.parse(data.split(' ')[1]);
-
-                console.log(moves);
 
                 for (let move in moves) {
                     let grid = moves[move];
@@ -127,5 +129,30 @@ export class GameManagerService {
 
     public emitGame() {
         this.gameSubject.next(this.game);
+    }
+
+    private createCases(): any[] {
+        var cases:any = [];
+        let rows:number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let colIndex: number;
+    
+        rows.forEach(row => {
+            colIndex = 0;
+    
+            this.cols.forEach(col => {
+                if (row < 4) { // Blancs
+                    if (row % 2 == colIndex % 2)    cases[col+row] = 1;
+                    else                            cases[col+row] = 0;
+                } else if (row > 5) { // Noirs
+                    if (row % 2 == colIndex % 2)    cases[col+row] = 2;
+                    else                            cases[col+row] = 0;
+                } else 
+                    cases[col+row] = 0;
+    
+                colIndex++;
+            });
+        });
+    
+        return cases;
     }
 }

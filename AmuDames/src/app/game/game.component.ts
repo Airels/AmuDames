@@ -34,7 +34,20 @@ export class GameComponent implements OnInit, OnDestroy {
   gameSubscription!: Subscription;
 
   constructor(private router: Router, private gameService : GameManagerService, private webSocket : WebSocketService) { 
-      //alert if reload
+    this.board = [
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+      [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+      [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+      [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    ];
+
+    //alert if reload
 
     //todo service board to convert
 
@@ -47,10 +60,20 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.gameService.gameSubject.subscribe((game) => {
-      console.log("UPDATE");
+    this.gameSubscription = this.gameService.gameSubject.subscribe((game) => {
+      console.log("EMIT");
       this.game = game;
       this.isPlaying = (game.playerTurn == this.gameService.playerID);
+      
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          let pos = this.gameService.cols[j] + i;
+          let board:any = this.board;
+          board[i][j] = game.cases[pos];
+
+          console.log(pos + ": " + game.cases[pos]);
+        }
+      }
     });
     this.gameService.emitGame();
     
@@ -59,21 +82,8 @@ export class GameComponent implements OnInit, OnDestroy {
     this.user = (this.isWhite) ? this.game.whiteUser : this.game.blackUser;
     this.opponent = (this.isWhite) ? this.game.blackUser : this.game.whiteUser;
 
-    this.isPlaying = this.isWhite;
 
     if(this.canvas != undefined) {
-      this.board = [
-        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-        [0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
-        [2, 0, 2, 0, 2, 0, 2, 0, 2, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-      ];
       if(!this.isWhite) { this.reverseBoard(); } 
 
       //draw canvas
@@ -137,7 +147,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.gameService.gameSubject.unsubscribe();
+    this.gameSubscription.unsubscribe();
   }
 
   reverseBoard(): void {
