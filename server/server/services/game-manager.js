@@ -228,12 +228,15 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
 }
 
 async function containsMove(possibleMoves, targetCase) {
+    let found = false;
     possibleMoves.forEach((move) => {
         if (move.row == targetCase.row && move.col == targetCase.col) {
-            return true;
+            found = true;
+            return;
         }
     });
-    return false;
+
+    return found;
 }
 
 async function createCases() {
