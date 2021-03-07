@@ -71,13 +71,14 @@ export class GameComponent implements OnInit, OnDestroy {
       this.isPlaying = (game.playerTurn == this.gameService.playerID);
       
       for (let i = 0; i < 10; i++) {
+        let board:any = this.board;
         for (let j = 0; j < 10; j++) {
           let pos = this.gameService.cols[j] + i;
-          let board:any = this.board;
           board[i][j] = game.cases[pos];
 
           console.log(pos + ": " + game.cases[pos]);
         }
+        board[i] = board[i].reverse();
       }
     });
     this.gameService.emitGame();
