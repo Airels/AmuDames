@@ -59,10 +59,12 @@ export class GameComponent implements OnInit, OnDestroy {
     window.opener.location.reload();
   }
 
+  /*
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.initCanvas();
   }
+  */
 
   ngOnInit(): void {
     this.gameSubscription = this.gameService.gameSubject.subscribe((game) => {
@@ -90,7 +92,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
 
     if(this.canvas != undefined) {
-      if(!this.isWhite) { this.reverseBoard(); } 
+      if(this.isWhite) { this.reverseBoard(); } 
 
       //draw canvas
       this.ctx = this.canvas.nativeElement.getContext('2d');
