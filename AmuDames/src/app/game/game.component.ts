@@ -95,7 +95,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
 
     if(this.canvas != undefined) {
-      if(this.isWhite) { this.reverseBoard(); } 
+      // if(this.isWhite) { this.reverseBoard(); } 
 
       //draw canvas
       this.ctx = this.canvas.nativeElement.getContext('2d');
