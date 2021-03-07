@@ -13,6 +13,7 @@ gameRouter.get('/', (req, res) => {
 });
 
 gameRouter.get('/search/start', (req, res) => {
+    console.log("Hello!");
     gameManager.addPlayerWaiting(req.session.user, (result) => {
         res.json(result);
         res.end();
@@ -20,9 +21,11 @@ gameRouter.get('/search/start', (req, res) => {
 });
 
 gameRouter.get('/search/stop', (req, res) => {
-    res.sendStatus(501);
-
-    // Arrête la recherche d'une partie pour le joueur
+    if (req.session.user === undefined) return;
+    gameManager.removePlayerWaiting(req.session.user, () => {
+        res.json({ status: 200 });
+        res.end();
+    });
 });
 
 export default gameRouter;

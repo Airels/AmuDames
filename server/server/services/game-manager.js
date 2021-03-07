@@ -27,9 +27,10 @@ function tryMatch() {
         }
 
         if (p2 !== undefined) {
-            removePlayerWaiting(p2);
-            semaphore.leave();
-            matchPlayers(p1, p2);
+            removePlayerWaiting(p2, () => {
+                semaphore.leave();
+                matchPlayers(p1, p2);
+            }, true);
         } else { 
             semaphore.leave();
         }
@@ -37,7 +38,7 @@ function tryMatch() {
 }
 
 const addPlayerWaiting = (user, callback) => {
-    console.log("ADD: " + waitingList.length);
+    console.log("ADD");
     semaphore.take(() => {
         if (waitingList.find(u => u.username == user.username)) {
             callback({ status: 409 });
@@ -53,13 +54,11 @@ const addPlayerWaiting = (user, callback) => {
     });
 }
 
-const removePlayerWaiting = (user) => {
-    let index = waitingList.indexOf(user);
-
-    if (index > -1)
-        waitingList.splice(index);
-    else
-        return -1;
+const removePlayerWaiting = (user, callback, forMatch) => {
+    console.log("REMOVE");
+    let p = waitingList.splice(user)[0];
+    if (forMatch === undefined) p.callback({ status: 205 }); // Answer to add request
+    callback();
 }
 
 async function matchPlayers(p1, p2) {

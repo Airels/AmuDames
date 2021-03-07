@@ -20,27 +20,37 @@ export class GameManagerService {
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
     public searchGame(): void {
+        console.log(this.game !== undefined);
+        if (this.game !== undefined) return;
+
+        console.log("ADD");
+
         this.httpService.gameFinderStart().subscribe((res) => {
-            if (res.status == 409) {
-                alert("Another instance of your account is actually finding a game, please disconnect from your previous session to continue.");
-                this.router.navigate(['/home']);
-            } else if (res.status == 201) {
-                alert("MATCH FOUND! PREPARE TO BATTLE! BAYBLADE!");
-                this.createGame(res);
-            } else {
-                alert("An error occured. Please try again later.");
+            switch (res.status) {
+                case 409:
+                    alert("Another instance of your account is actually finding a game, please disconnect from your previous session to continue.");
+                    this.router.navigate(['/home']);
+                    break;
+                case 201:
+                    this.createGame(res);
+                    break;
+                case 205:
+                    console.log("Search stopped by user");
+                    break;
+                default:
+                    alert("An error occured. Please try again later. (" + res.status + ")");
             }
         });
     }
 
     public stopSearch(): void {
+        console.log("STOP");
         this.httpService.gameFinderStop().subscribe((res) => {
             console.log(res);
         });
     }
 
     public createGame(res: any): void {
-        console.log(res.game)
         this.game = new Game(res.game.id, res.game.whiteUser, res.game.blackUser, res.game.startTime, res.game.cases);
         this.gameID = res.id;
         this.playerID = res.playerID;

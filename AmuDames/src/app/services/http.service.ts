@@ -84,6 +84,7 @@ export class HttpService {
 
     // Game-Finder Management
     public gameFinderStart(): Observable<any> {
+        console.log("START");
         return this.http.get(this.serverURL + '/game/search/start');
     }
 
