@@ -22,8 +22,11 @@
 
 #canvas {
     border-width: 0.2em;
-    border-color: black;
+    border-color: white;
     border-style: solid;
+    margin-top: 0; padding-top: 0;
+    width: 40vw;
+    height: 40vw;
 }
 
 .desc {

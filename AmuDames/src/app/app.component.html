@@ -14,7 +14,7 @@
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" (click)="isCollapsed = !isCollapsed">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-collapse collapse" id="navbarCollapse" [ngbCollapse]="isCollapsed">
+      <div class="navbar-collapse collapse" id="navbarCollapse" [ngbCollapse]="isCollapsed" (click)="isCollapsed = (isCollapsed) ? isCollapsed : true">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/home">Home</a>

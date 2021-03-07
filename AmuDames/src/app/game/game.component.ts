@@ -59,6 +59,11 @@ export class GameComponent implements OnInit, OnDestroy {
     window.opener.location.reload();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.initCanvas();
+  }
+
   ngOnInit(): void {
     this.gameSubscription = this.gameService.gameSubject.subscribe((game) => {
       console.log("EMIT");
