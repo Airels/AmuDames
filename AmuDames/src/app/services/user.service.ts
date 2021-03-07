@@ -59,4 +59,8 @@ export class UserService {
     public getViewUser(): User | null {
         return this.viewUser;
     }
+
+    public emitUser() {
+        this.userSubject.next(this.user);
+    }
 }

@@ -4,6 +4,7 @@ const semaphore = require('semaphore')(1);
 
 const waitingList = new Array();
 const gamesList = new Array();
+const cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; 
 
 function tryMatch() {
     if (waitingList.length < 2) return;
@@ -26,9 +27,10 @@ function tryMatch() {
         }
 
         if (p2 !== undefined) {
-            removePlayerWaiting(p2);
-            semaphore.leave();
-            matchPlayers(p1, p2);
+            removePlayerWaiting(p2, () => {
+                semaphore.leave();
+                matchPlayers(p1, p2);
+            }, true);
         } else { 
             semaphore.leave();
         }
@@ -36,7 +38,7 @@ function tryMatch() {
 }
 
 const addPlayerWaiting = (user, callback) => {
-    console.log("ADD: " + waitingList.length);
+    console.log("ADD");
     semaphore.take(() => {
         if (waitingList.find(u => u.username == user.username)) {
             callback({ status: 409 });
@@ -52,13 +54,11 @@ const addPlayerWaiting = (user, callback) => {
     });
 }
 
-const removePlayerWaiting = (user) => {
-    let index = waitingList.indexOf(user);
-
-    if (index > -1)
-        waitingList.splice(index);
-    else
-        return -1;
+const removePlayerWaiting = (user, callback, forMatch) => {
+    console.log("REMOVE");
+    let p = waitingList.splice(user)[0];
+    if (forMatch === undefined) p.callback({ status: 205 }); // Answer to add request
+    callback();
 }
 
 async function matchPlayers(p1, p2) {
@@ -94,28 +94,115 @@ const getGame = async (gameID) => {
 }
 
 const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
-    return 1;
-
-    var game = game[gameID];
+    let result = [];
+    let game = await gamesList.find((game) => game.id == gameID);
     
-    if (game == undefined)  return 0;
+    if (game === undefined)  return 0;
     if (game.playerTurn != playerID) return 0;
 
-    var cases = game.cases;
+    let cases = game.cases;
 
-    if (cases[targetCase] != 0) return 0;
-    if (cases[sourceCase] == 0) return 0;
+    if (cases[targetCase.col + targetCase.row] != 0) return 0;
+    if (cases[sourceCase.col + sourceCase.row] == 0) return 0;
 
-    let possibleMoves = await getPossibleMoves(sourceCase);
+    let possibleMoves = await getPossibleMoves(sourceCase, playerID);
 
-    if (possibleMoves.includes(targetCase))
-        return 1;
+    console.log("POSSIBLE MOVES: " + JSON.stringify(possibleMoves));
+
+    // if (!possibleMoves.includes(targetCase)) return 0;
+    if (!containsMove(possibleMoves, targetCase)) return 0;
+
+    sourceCase.value = 0;
+    cases[sourceCase.col + sourceCase.row] = 0;
+
+    if (targetCase.row == 10) {
+        targetCase.value = 3;
+        cases[targetCase.col + targetCase.row] = 3;
+    } else if (targetCase.row == 1) {
+        targetCase.value = 4;
+        cases[targetCase.col + targetCase.row] = 4;
+    } else {
+        targetCase.value = playerID+1;
+        cases[targetCase.col + targetCase.row] = playerID+1;
+    }
+
+    result.push(sourceCase, targetCase);
+    game.playerTurn = (game.playerTurn+1) % 2;
+    return result;
 }
 
-function createCases() {
-    var cases = {};
+async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, PlayerID = 1 -> black
+    let possibilities = [];
+    source.col = cols.indexOf(source.col);
+
+    if (playerID == 0) {
+        if (source.col == 0) {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col+1]
+            });
+        } else if (source.col == 9) {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col-1]
+            });
+        } else {
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col+1]
+            });
+            possibilities.push({
+                row: source.row+1, 
+                col: cols[source.col-1]
+            });
+        }
+    } else if (playerID == 1) {
+        if (source.col == 0) {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col+1]
+            });
+        } else if (source.col == 9) {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col-1]
+            });
+        } else {
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col+1]
+            });
+            possibilities.push({
+                row: source.row-1, 
+                col: cols[source.col-1]
+            });
+        }
+    } else {
+        console.log("MITROGLOU");
+        return [];
+    }
+
+    console.log(possibilities.length);
+
+    return possibilities;
+}
+
+async function containsMove(possibleMoves, targetCase) {
+    let found = false;
+    possibleMoves.forEach((move) => {
+        if (move.row == targetCase.row && move.col == targetCase.col) {
+            found = true;
+            return;
+        }
+    });
+
+    return found;
+}
+
+async function createCases() {
+    var cases = [];
     let rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    let cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']; let colIndex = 1;
+    let colIndex;
 
     rows.forEach(row => {
         colIndex = 1;
@@ -137,59 +224,18 @@ function createCases() {
     return cases;
 }
 
-async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, PlayerID = 1 -> black
-    let cols = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    
-    let possibilities = [];
-    source.col = cols.indexOf(source.col);
-
-    if (playerID == 0) {
-        if (source.col == 1) {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col+1]
-            });
-        } else if (source.col == 10) {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col-1]
-            });
-        } else {
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col+1]
-            });
-            possibilities.add({
-                row: source.row+1, 
-                col: cols[source.col-1]
-            });
+const endGame = async (gameID) => {
+    let found = false;
+    // Push état de la game sur ElasticSearch
+    gamesList.forEach((game) => {
+        if (game.id = gameID) {
+            gamesList.splice(game);
+            found = true;
+            return;
         }
-    } else if (playerID == 1) {
-        if (source.col == 1) {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col+1]
-            });
-        } else if (source.col == 10) {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col-1]
-            });
-        } else {
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col+1]
-            });
-            possibilities.add({
-                row: source.row-1, 
-                col: cols[source.col-1]
-            });
-        }
-    } else {
-        return [];
-    }
+    });
 
-    return possibilities;
+    return found;
 }
 
 export default {
@@ -198,5 +244,6 @@ export default {
     matchPlayers,
     getGame,
     createGame,
-    checkMoveIsValid
+    checkMoveIsValid,
+    endGame
 };

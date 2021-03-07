@@ -12,7 +12,6 @@ import asyncHandler from 'express-async-handler';
 import serverSocket from './server-socket';
 import usersHandler from './services/users-handler';
 import usersRouter from './routes/users-routes';
-import explRouter from './routes/expl-routes';
 import gameRouter from './routes/game-routes';
 import newsRouter from './routes/news-routes';
 
@@ -27,7 +26,6 @@ app.use(session(sess));
 app.use(express.static('./app/AmuDames/'));
 
 // Routers
-app.use('/expl', explRouter);
 app.use('/game', gameRouter);
 app.use('/news', newsRouter);
 app.use('/users', usersRouter);

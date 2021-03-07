@@ -134,8 +134,6 @@ async function getRanking(req, res) {
             user.password = undefined;
             user.email = undefined;
 
-            console.log(user.country);
-
             users.push(user);
         }
 
