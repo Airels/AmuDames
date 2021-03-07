@@ -188,7 +188,7 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
     return possibilities;
 }
 
-function containsMove(possibleMoves, targetCase) {
+async function containsMove(possibleMoves, targetCase) {
     let found = false;
     possibleMoves.forEach((move) => {
         if (move.row == targetCase.row && move.col == targetCase.col) {
@@ -200,7 +200,7 @@ function containsMove(possibleMoves, targetCase) {
     return found;
 }
 
-function createCases() {
+async function createCases() {
     var cases = [];
     let rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
     let colIndex;
@@ -225,11 +225,26 @@ function createCases() {
     return cases;
 }
 
+const endGame = async (gameID) => {
+    let found = false;
+    // Push état de la game sur ElasticSearch
+    gamesList.forEach((game) => {
+        if (game.id = gameID) {
+            gamesList.splice(game);
+            found = true;
+            return;
+        }
+    });
+
+    return found;
+}
+
 export default {
     addPlayerWaiting,
     removePlayerWaiting,
     matchPlayers,
     getGame,
     createGame,
-    checkMoveIsValid
+    checkMoveIsValid,
+    endGame
 };

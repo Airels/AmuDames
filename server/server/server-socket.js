@@ -67,24 +67,27 @@ serverSocket.on('connection', (ws) => {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
                 }
             });
-        } else if (message = 'INFO') {
-            ws.send('501 - Not Implemented Yet');
+        } else if (message == 'QUIT') {
+            clients.forEach((clientSocket) => {
+                if (clientSocket.socket == ws) {
+                    if (gameID != undefined) {
+                        // Déclarer forfait
+                    }
+                    
+                    clients.splice(clientSocket);
+                    ws.send('GOODBYE');
+                    ws.close('Closed by client.');
+                    return;
+                }
+            });
         } else if (message == 'HELP') {
             ws.send("Available commands:\n"
             + "CONNECT <Game ID> <E-Mail> - To connect to a game\n"
             + "MOVE <source pawn> <target pawn> - To move a pawn\n"
-            + "INFO - To display informations you submitted\n"
+            + "QUIT - To disconnect (if you are in game, you will automatically forfeit)\n"
             + "HELP - I mean.. it's obvious what this command do...");
-        } else if (message == 'QUIT') {
-            clients.forEach((clientSocket) => {
-                if (clientSocket.socket == ws) {
-                    clients.splice(clientSocket);
-                    ws.send('GOODBYE');
-                    return;
-                }
-            });
-        } else {
-            ws.send('Request unrecognized');
+        }  else {
+            ws.send('ERR: Request unrecognized');
         }
     });
 
