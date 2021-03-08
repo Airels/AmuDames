@@ -15,7 +15,8 @@ import { User } from '../models/user.models';
 
 export class UserProfileComponent implements OnInit, OnDestroy {
   activeUser !: User | null;
-  viewUser !: Promise<User>;
+  viewUserPromise !: Promise<User>;
+  viewUser!: User;
   editForm !: FormGroup;
   deleteForm !: FormGroup;
   isCollapsed = true;
@@ -27,9 +28,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.viewUser = new Promise((resolve, reject) => {
+    this.viewUserPromise = new Promise((resolve, reject) => {
       this.viewUserSubscription = this.userService.viewUserSubject.subscribe((user: User) => {
         resolve(user);
+        this.viewUserPromise.then((value: User) => {
+          this.viewUser = value;
+        });
       });
     });
 
