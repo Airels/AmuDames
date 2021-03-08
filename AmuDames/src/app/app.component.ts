@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
 import { User } from './models/user.models'
-import { AuthService } from './services/auth.service';
 import { HttpService } from './services/http.service';
 import { UserService } from './services/user.service';
 import { validatePassword, validateCountry } from './customValidators';
@@ -22,15 +21,13 @@ export class AppComponent implements OnInit {
   signUpForm!: FormGroup;
   signInForm!: FormGroup;
 
-  isAuth: boolean = true;
   user!: User | null;
 
-  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService, private auth : AuthService,
+  constructor(private modalService: NgbModal, private formBuilder : FormBuilder, private router : Router, private http : HttpService,
     private userService : UserService, private httpService: HttpService) {}
 
   ngOnInit(): void {
     this.initForms();
-    this.isAuth = this.auth.isAuth;
     this.user = null;
     this.userService.userSubject.subscribe((user) => {
       this.user = user;
@@ -162,8 +159,6 @@ export class AppComponent implements OnInit {
 
   public disconnect() {
     this.userService.disconnect();
-    this.auth.signOut;
-    this.isAuth = this.auth.isAuth;
     this.router.navigate(['/home']);
   }
 
