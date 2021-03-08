@@ -20,8 +20,10 @@
             <a class="nav-link" routerLinkActive="active" routerLink="/home">Home</a>
           </li>
           <li class="nav-item">
-            <a *ngIf="user !== undefined" class="nav-link" routerLinkActive="active" routerLink="/search">Play</a>
-            <a *ngIf="user === undefined" class="nav-link" (click)="open(modalConnexion)">Play</a>
+            <a *ngIf="user != undefined; else userUndefined" class="nav-link" routerLinkActive="active" routerLink="/search">Play</a>
+            <ng-template #userUndefined>
+              <a class="nav-link" (click)="open(modalConnexion)">Play</a>
+            </ng-template>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/ranking">Ranking</a>
