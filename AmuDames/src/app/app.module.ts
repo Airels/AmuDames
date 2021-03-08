@@ -22,6 +22,7 @@ import { NewsService } from './services/news.service';
 import { NewsEditModalComponent } from './news-edit-modal/news-edit-modal.component';
 import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 import { GameComponent } from './game/game.component';
+import { AuthGuardInGame } from './services/auth-guard-in-game.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { GameComponent } from './game/game.component';
     AuthService,
     AuthGuard,
     UserService,
-    NewsService
+    NewsService,
+    AuthGuardInGame
   ],
   bootstrap: [AppComponent]
 })

@@ -266,7 +266,7 @@ async function createCases() {
 
 const endGame = async (gameID) => {
     let found = false;
-    // Push état de la game sur ElasticSearch
+    // Push état de la game sur ElasticSearch & update elo pour les deux joueurs
     gamesList.forEach((game) => {
         if (game.id = gameID) {
             gamesList.splice(game);

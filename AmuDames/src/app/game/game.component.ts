@@ -68,7 +68,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.gameSubscription = this.gameService.gameSubject.subscribe((game) => {
-      console.log("EMIT");
       this.game = game;
       this.isPlaying = (game.playerTurn == this.gameService.playerID);
       
@@ -159,6 +158,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.gameSubscription.unsubscribe();
+    this.gameService.quit();
   }
 
   reverseBoard(): void {

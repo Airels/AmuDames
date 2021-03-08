@@ -6,17 +6,18 @@ import { GuideComponent } from './guide/guide.component';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { AuthGuardInGame } from './services/auth-guard-in-game.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: 'home', component:  HomeComponent },
-  { path: 'search', canActivate: [AuthGuard], component: GameLobbyComponent },
+  { path: 'home', canActivate: [AuthGuardInGame], component:  HomeComponent },
+  { path: 'search', canActivate: [AuthGuard, AuthGuardInGame], component: GameLobbyComponent },
   { path: 'play', canActivate: [AuthGuard], component:  PlayComponent },
-  { path: 'ranking', component: RankingComponent },
-  { path: 'guide', component: GuideComponent },
-  { path: 'user-profile/:email', canActivate: [AuthGuard], component: UserProfileComponent },
+  { path: 'ranking', canActivate: [AuthGuardInGame], component: RankingComponent },
+  { path: 'guide', canActivate: [AuthGuardInGame], component: GuideComponent },
+  { path: 'user-profile/:email', canActivate: [AuthGuard, AuthGuardInGame], component: UserProfileComponent },
   { path: 'game', component: GameComponent },
   { path: '**', redirectTo: 'home' }
 ];

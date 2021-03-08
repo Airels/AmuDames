@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Game } from '../models/game.models';
 import { User } from '../models/user.models';
 import { HttpService } from './http.service';
@@ -16,6 +16,7 @@ export class GameManagerService {
     user!: User;
     connected: boolean = false;
     cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    private connectionSubscription!: Subscription;
 
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
@@ -44,7 +45,7 @@ export class GameManagerService {
     }
 
     public stopSearch(): void {
-        if (this.game !== undefined) return;
+        if (this.connected) return;
         this.httpService.gameFinderStop().subscribe((res) => {
             console.log(res);
         });
@@ -63,7 +64,7 @@ export class GameManagerService {
     }
 
     public serverConnection() {
-        this.ws.createObservableSocket('ws://localhost:8085').subscribe((data) => {
+        this.connectionSubscription = this.ws.createObservableSocket('ws://localhost:8085').subscribe((data) => {
             console.log("< " + data);
 
             if (data == "AmuDames Game Manager") {
@@ -84,6 +85,12 @@ export class GameManagerService {
                 this.emitGame();
             } else if (data == "WIN") {
                 // Player win
+                alert("You won!");
+                this.reset();
+            } else if (data == "LOSE") {
+                // Player lost
+                alert("You lost!");
+                this.reset();
             }
         });
     }
@@ -152,5 +159,10 @@ export class GameManagerService {
         });
     
         return cases;
+    }
+
+    public reset() {
+        this.connected = false;
+        this.connectionSubscription.unsubscribe()
     }
 }
