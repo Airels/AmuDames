@@ -6,7 +6,7 @@ const usersRouter = express.Router();
 
 usersRouter.get('/rank', asyncHandler(usersHandler.getRanking));
 
-usersRouter.get('/username/:username', asyncHandler(usersHandler.getUsers))
+// usersRouter.get('/username/:username', asyncHandler(usersHandler.getUsers))
 usersRouter.get('/email/:email', asyncHandler(usersHandler.getUser));
 
 usersRouter.use((req, res, next) => { // CHECK IF USER CONNECTED

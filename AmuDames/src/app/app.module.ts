@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
-import { PlayComponent } from './play/play.component';
 import { RankingComponent } from './ranking/ranking.component';
 import { GuideComponent } from './guide/guide.component';
 import { GameManagerService } from './services/game-manager.service';
@@ -28,7 +27,6 @@ import { AuthGuardInGame } from './services/auth-guard-in-game.service';
   declarations: [
     AppComponent,
     HomeComponent,
-    PlayComponent,
     RankingComponent,
     GuideComponent,
     UserProfileComponent,

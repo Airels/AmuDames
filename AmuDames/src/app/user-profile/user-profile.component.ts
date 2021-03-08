@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, from } from 'rxjs';
-import { User } from '../models/user.models';
+import { Observable, Subscription } from 'rxjs';
 import { HttpService } from '../services/http.service';
-import {UserService} from '../services/user.service';
+import { UserService } from '../services/user.service';
 import { validatePassword, validateCountry } from '../customValidators';
 import { Router } from '@angular/router';
+import { User } from '../models/user.models';
 
 @Component({
   selector: 'app-user-profile',
@@ -19,12 +19,24 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   editForm !: FormGroup;
   deleteForm !: FormGroup;
   isCollapsed = true;
+  userSubscription!: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private http : HttpService, public userService : UserService, public userSubscription : User, private router: Router) { 
+  constructor(private formBuilder: FormBuilder, private http : HttpService, private userService : UserService, private router: Router) { 
     
   }
 
   ngOnInit(): void {
+    this.userService.viewUserSubject.subscribe((user: User) => {
+      this.viewUser = user;
+    });
+
+    this.userService.userSubject.subscribe((user: User) => {
+      this.activeUser = user;
+    });
+
+    this.userService.emitViewUser();
+    this.userService.emitUser();
+
     this.editForm = this.formBuilder.group({
       username: [this.viewUser.username, [Validators.required]],
       email: [this.viewUser.email, [Validators.required, Validators.email]],
@@ -39,14 +51,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.deleteForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.pattern(`^${this.viewUser.username}$`)]]
     });
-
-    this.userService.viewUserSubject.subscribe((user: User) => {
-      this.viewUser = user;
-    });
-
-    this.userService.userSubject.subscribe((user) => {
-      this.activeUser = user;
-    });
   }
 
   ngOnDestroy(): void {
@@ -60,12 +64,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       formValue['username'],
       formValue['password'],
       formValue['email'],
-      this.viewUser.elo,
+      undefined,
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
       this.viewUser.isAdmin
     );
+
     this.http.updateUser(updateUser);
   }
 
@@ -85,7 +90,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       error: e => {
         alert("Error while deleting the user");
       },
-      complete: () => this.router.navigate(['/home'])
+      complete: () => {
+        this.userService.disconnect();
+        this.router.navigate(['/home']);
+      }
     });
   }
 }

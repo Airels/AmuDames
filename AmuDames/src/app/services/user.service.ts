@@ -5,7 +5,7 @@ import { AuthGuard } from './auth-guard.service';
 import { GameManagerService } from './game-manager.service';
 import { HttpService } from './http.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService {
 
     private user!: User | null;
@@ -42,18 +42,18 @@ export class UserService {
     public addViewUser(email: string): void {
         this.httpService.getUserByEmail(email).subscribe({
             next: res => {
-              if (res.status == 200) {
-                this.viewUser = res.user; //todo ??
-              }
-              else {
-                alert("Error getting user");
-              }
+              if (res.status == 200)
+                this.viewUser = res.user;
+              else
+                alert("Error while getting user")
             },
             error: e => {
-              alert("Error sending the news");
+              alert("Error whille getting user: " + e);
+            },
+            complete: () => {
+                this.viewUserSubject.next(this.viewUser);
             },
           });
-        this.viewUserSubject.next(this.viewUser);
     }
 
     public getViewUser(): User | null {
@@ -62,5 +62,9 @@ export class UserService {
 
     public emitUser() {
         this.userSubject.next(this.user);
+    }
+
+    public emitViewUser() {
+        this.viewUserSubject.next(this.viewUser);
     }
 }

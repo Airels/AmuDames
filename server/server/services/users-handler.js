@@ -66,12 +66,15 @@ async function getUser(req, res) {
         let result = await esdb.getUser.byEmail(email);
         
         if (result.body.hits.total.value == 0) {
-            res.sendStatus(404);
+            res.json({ status: 404 });
         } else {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
             user.email = undefined;
-            res.status(200).json(user);
+            res.json({
+                status: 200,
+                user: user
+            });
         }
     } catch (e) {
         res.status(500).send(e);
