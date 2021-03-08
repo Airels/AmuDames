@@ -20,21 +20,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   deleteForm !: FormGroup;
   isCollapsed = true;
   userSubscription!: Subscription;
+  viewUserSubscription!: Subscription;
 
   constructor(private formBuilder: FormBuilder, private http : HttpService, private userService : UserService, private router: Router) { 
     
   }
 
   ngOnInit(): void {
-    this.userService.viewUserSubject.subscribe((user: User) => {
+    this.viewUserSubscription = this.userService.viewUserSubject.subscribe((user: User) => {
       this.viewUser = user;
     });
+    this.userService.emitViewUser();
 
-    this.userService.userSubject.subscribe((user: User) => {
+    this.userSubscription = this.userService.userSubject.subscribe((user: User) => {
       this.activeUser = user;
     });
-
-    this.userService.emitViewUser();
     this.userService.emitUser();
 
     this.editForm = this.formBuilder.group({
@@ -54,8 +54,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userService.viewUserSubject.unsubscribe();
-    //this.viewUser = undefined;
+    this.userSubscription.unsubscribe();
+    this.viewUserSubscription.unsubscribe();
   }
 
   onSubmitEditUser(): void {
