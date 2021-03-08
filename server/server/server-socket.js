@@ -71,12 +71,18 @@ serverSocket.on('connection', (ws) => {
             clients.forEach((clientSocket) => {
                 if (clientSocket.socket == ws) {
                     if (gameID != undefined) {
-                        gameManager.endGame(gameID);
+                        clients.splice(clientSocket);
+
+                        if (gameManager.endGame(gameID)) {
+                            serverSocket.broadcastEnd(gameID, undefined, playerID);
+                        } else {
+                            console.error("An error occured during finishing a game.");
+                        }
                     }
 
-                    clients.splice(clientSocket);
                     ws.send('GOODBYE');
-                    ws.close('Closed by client.');
+                    console.log("A client disconnected");
+                    ws.close();
                     return;
                 }
             });
@@ -108,3 +114,35 @@ serverSocket.broadcast = function broadcast(gameID, moves) {
         }
     });
 };
+
+serverSocket.broadcastEnd = function broadcastEnd(gameID, winnerID, loserID) {
+    console.log("Broadcast end");
+    let i = 0;
+    let winnerSent = false, loserSent = false;
+
+    // Conditions à revoir
+    
+    clients.forEach((clientSocket) => {
+        if (i >= 2) return;
+
+        if (clientSocket.gameID == gameID) {
+            if ((winnerID !== undefined && clientSocket.playerID == winnerID) || loserSent) {
+                clientSocket.socket.send('WIN'); 
+                console.log("A client disconnected");
+                clientSocket.socket.close();
+                winnerSent = true;
+            }
+
+            if ((loserID !== undefined && clientSocket.playerID == loserID) || winnerSent) {
+                clientSocket.socket.send('LOSE');
+                console.log("A client disconnected");
+                clientSocket.socket.close();
+                loserSent = true;
+            }
+
+            clients.splice(clientSocket);
+
+            i++;
+        }
+    });
+}
