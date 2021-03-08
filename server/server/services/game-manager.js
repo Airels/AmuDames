@@ -111,11 +111,10 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
     if (!(await containsMove(possibleMoves, targetCase))) return 0;
 
     if (eatMove) {
-        opponentCase = cases[
-            cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)]
-            +
-            ((sourceCase.row + targetCase.row)/2)
-        ];
+        let col = cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)];
+        let row = ((sourceCase.row + targetCase.row)/2);
+
+        opponentCase = cases[col+row];
 
         console.log(((sourceCase.row + targetCase.row)/2));
         console.log(cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)]);
@@ -124,9 +123,13 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
 
         if (opponentCase == 0) return 0;
 
+        cases[col+row] = 0;
+        
+
         result.push({
             row: ((sourceCase.row + targetCase.row)/2),
-            col: cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)]
+            col: cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)],
+            value: 0
         });
     }
 
