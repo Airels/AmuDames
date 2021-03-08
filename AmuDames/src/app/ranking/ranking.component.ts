@@ -33,7 +33,7 @@ export class RankingComponent implements OnInit, OnDestroy {
 
   public goToUserProfile(email: string) {
     this.userService.addViewUser(email);
-    this.router.navigate(['/user-profile', { email: this.userService.getViewUser()?.email }]);
+    this.router.navigate([`/user-profile/${this.userService.getViewUser()?.email}`]);
   }
 }
 

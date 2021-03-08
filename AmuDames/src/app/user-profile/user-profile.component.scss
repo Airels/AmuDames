@@ -4,6 +4,11 @@
     border-width: 0.6em;
     border-style: solid;
     margin-left: 10%;
-    width: 256px;
-    height: 256px;
+    width:  128px;
+    height: 128px;
+}
+
+.card {
+    color: white;
+    background-color: rgba($color: white, $alpha: 0.5);
 }
