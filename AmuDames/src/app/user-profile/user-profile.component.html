@@ -1,18 +1,17 @@
-<div class="jumbotron bg-dark p-5 rounded-lg m-3 text-white">
-    <h1 class="display-4 text-white">{{ viewUser.username }} 's profile</h1>
+<div class="jumbotron bg-dark p-5 rounded-lg m-3">
+    <h1 class="display-4 text-white">{{ viewUser.username }}'s profile</h1>
     <hr>
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-around justify-content-md-center">
       <div class="col-md-auto">
-        <img class="viewuser-img" src="{{ viewUser.profileImageURL }}">
+        <img class="viewuser-img" src="{{ viewUser.profileImageURL | async }}">
       </div>
-      <div class="w-100"></div>
       <div class="col col-lg-2">
         <div class = "user-profile">
           <div class="card">
             <div class="card-header">
-              <div class="row justify-content-md-center">
+              <div class="row justify-content-around">
                 <div class="col-md-auto">
-                  <img src="https://www.countryflags.io/{{ viewUser.country }}/flat/24.png">
+                  <img src="https://www.countryflags.io/{{ viewUser.country | async }}/flat/24.png">
                 </div>
                 <div class="col-md-auto">
                   <p>Elo: {{ viewUser.elo }}</p>
@@ -21,14 +20,14 @@
             </div>
             <div class="card-body">
               <blockquote class="blockquote mb-0">
-                <footer class="blockquote-footer">{{ viewUser.description }}</footer>
+                <footer class="blockquote-footer">{{ viewUser.description | async }}</footer>
               </blockquote>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="activeUser != null && ((viewUser.email == activeUser.email) || activeUser.isAdmin)">
+    <div *ngIf="activeUser != null && ((viewUser.email | async == activeUser.email) || activeUser.isAdmin)">
       <hr>
       <p>
         <button type="button" class="btn btn-outline-light" (click)="collapse.toggle()">

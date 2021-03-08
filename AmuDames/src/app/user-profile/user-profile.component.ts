@@ -15,7 +15,7 @@ import { User } from '../models/user.models';
 
 export class UserProfileComponent implements OnInit, OnDestroy {
   activeUser !: User | null;
-  viewUser !: User;
+  viewUser !: Promise<User>;
   editForm !: FormGroup;
   deleteForm !: FormGroup;
   isCollapsed = true;
@@ -27,10 +27,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.viewUserSubscription = this.userService.viewUserSubject.subscribe((user: User) => {
-      this.viewUser = user;
+    this.viewUser = new Promise((resolve, reject) => {
+      this.viewUserSubscription = this.userService.viewUserSubject.subscribe((user: User) => {
+        resolve(user);
+      });
     });
-    this.userService.emitViewUser();
 
     this.userSubscription = this.userService.userSubject.subscribe((user: User) => {
       this.activeUser = user;
@@ -38,11 +39,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userService.emitUser();
 
     this.editForm = this.formBuilder.group({
-      username: [this.viewUser.username, [Validators.required]],
-      email: [this.viewUser.email, [Validators.required, Validators.email]],
-      country: [this.viewUser.country, [Validators.required]],
-      profilePicture: [this.viewUser.profileImageURL, [Validators.required]],
-      description: [this.viewUser.description, [Validators.required, Validators.maxLength(25)]],
+      username: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      country: ['', [Validators.required]],
+      profilePicture: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(25)]],
       password: ['', []],
       passwordConfirm: ['', []],
       options: this.formBuilder.array([])
