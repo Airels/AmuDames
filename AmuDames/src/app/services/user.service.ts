@@ -39,8 +39,8 @@ export class UserService {
         return this.user;
     }
 
-    public addViewUser(email: string): void {
-        this.httpService.getUserByEmail(email).subscribe({
+    public addViewUser(username: string): void {
+        this.httpService.getUserByUsername(username).subscribe({
             next: res => {
               if (res.status == 200)
                 this.viewUser = res.user;

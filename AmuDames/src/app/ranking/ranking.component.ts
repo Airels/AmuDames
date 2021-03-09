@@ -31,9 +31,9 @@ export class RankingComponent implements OnInit, OnDestroy {
     this.rankingSubscription.unsubscribe();
   }
 
-  public goToUserProfile(email: string) {
-    this.userService.addViewUser(email);
-    this.router.navigate([`/user-profile/${this.userService.getViewUser()?.email}`]);
+  public goToUserProfile(username: string) {
+    this.userService.addViewUser(username);
+    this.router.navigate([`/user-profile/${this.userService.getViewUser()?.username}`]);
   }
 }
 

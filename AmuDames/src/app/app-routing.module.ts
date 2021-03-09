@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'search', canActivate: [AuthGuard, AuthGuardInGame], component: GameLobbyComponent },
   { path: 'ranking', canActivate: [AuthGuardInGame], component: RankingComponent },
   { path: 'guide', canActivate: [AuthGuardInGame], component: GuideComponent },
-  { path: 'user-profile/:email', canActivate: [AuthGuard, AuthGuardInGame], component: UserProfileComponent },
+  { path: 'user-profile/:username', canActivate: [AuthGuard, AuthGuardInGame], component: UserProfileComponent },
   { path: 'game', component: GameComponent },
   { path: '**', redirectTo: 'home' }
 ];

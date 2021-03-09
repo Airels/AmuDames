@@ -92,6 +92,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           alert("user sucesfully deleted");
           if(this.viewUser.email == this.activeUser?.email) {
             this.activeUser = null;
+            this.router.navigate(['/home']);
           }
         }
       },
@@ -100,7 +101,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         this.userService.disconnect();
-        this.router.navigate(['/home']);
       }
     });
   }
