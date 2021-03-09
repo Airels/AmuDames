@@ -111,11 +111,11 @@ export class GameComponent implements OnInit, OnDestroy {
           let pos = this.getPosition();
           if((this.board[pos[0]][pos[1]] == 1) && this.isWhite) {
             this.initCanvas();
-            this.drawWhiteMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.drawWhitePawn(pos[1], pos[0], w, this.sizeMen, true); 
             this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, true);
           } else if((this.board[pos[0]][pos[1]] == 2) && !this.isWhite) {
             this.initCanvas();
-            this.drawBlackMen(pos[1], pos[0], w, this.sizeMen, true); 
+            this.drawBlackPawn(pos[1], pos[0], w, this.sizeMen, true); 
             this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, false);
           }
         }
@@ -217,16 +217,17 @@ export class GameComponent implements OnInit, OnDestroy {
 
       for (var i = 0; i<this.nRow; i++) {
         for (var j = 0; j<this.nRow; j++) {
-          if(this.board[j][i] == 1) {this.drawWhiteMen(i, j, w, this.sizeMen, false); }
-          if(this.board[j][i] == 2) {this.drawBlackMen(i, j, w, this.sizeMen, false); }
-          //todo les dames
+          if(this.board[j][i] == 1) {this.drawWhitePawn(i, j, w, this.sizeMen, false); }
+          else if(this.board[j][i] == 2) {this.drawBlackPawn(i, j, w, this.sizeMen, false); }
+          else if(this.board[j][i] == 3) {this.drawWhitePawn(i, j, w, this.sizeDame, false); }
+          else if(this.board[j][i] == 4) {this.drawBlackPawn(i, j, w, this.sizeDame, false); }
         }
       }
 
     }
   }
 
-  drawWhiteMen(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
+  drawWhitePawn(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
     let centerX = x*pos + pos/2;
     let centerY = y*pos + pos/2;
     if (this.ctx != null && this.canvas != null) {
@@ -240,7 +241,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  drawBlackMen(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
+  drawBlackPawn(x: number, y: number, pos: number, radius: number, isSelected: boolean): void {
     let centerX = x*pos + pos/2;
     let centerY = y*pos + pos/2;
     if (this.ctx != null && this.canvas != null) {
