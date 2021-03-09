@@ -11,7 +11,7 @@ async function login(req, res) {
         if (result.body.hits.total.value > 0) {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
-            // user.isAdmin = true;
+            user.isAdmin = true;
 
             req.session.user = user;
             res.json({ status: 200, user: user});
@@ -119,6 +119,10 @@ async function updateUser(req, res) {
 
         if (user.password == '') {
             console.log("Without password");
+            console.log(user);
+            console.log(email);
+            console.log(req.session.user.email);
+            console.log(req.session.user.isAdmin);
             result = await esdb.updateUserWithoutPassword(email, user.username, user.profileImageURL, user.country, user.description, isAdmin);
         } else {
             console.log("With password");

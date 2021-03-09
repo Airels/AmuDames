@@ -50,7 +50,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         password: ['', []],
         passwordConfirm: ['', []],
         isAdmin: [this.viewUser.isAdmin, []],
-        options: this.formBuilder.array([])
       }, { validator: [validatePassword, validateCountry] });
 
       this.deleteForm = this.formBuilder.group({

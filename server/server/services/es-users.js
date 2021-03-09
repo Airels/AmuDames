@@ -97,48 +97,56 @@ const getUser = {
         })
 };
 
-const updateUser = (email, username, password, profileImg, country, description) => es.updateByQuery({
+const updateUser = (email, username, password, profileImageURL, country, description, isAdmin) => es.updateByQuery({
     index,
     refresh: 'true',
-    id: '1',
-    body: {
-        username: username,
-        password: password,
-        email: email,
-        profileImageURL: profileImg,
-        country: country,
-        description: description
-    }
+    "query": {
+        "match": {
+          "email": email
+        }
+      },
+      "script" : {
+      "source" : "ctx._source.username = params.username; ctx._source.password = params.password; ctx._source.profileImageURL = params.profileImageURL; ctx._source.country = params.country; ctx._source.description = params.description; ctx._source.isAdmin = params.isAdmin",
+      "lang" : "painless",
+      "params" : {
+      "username" : username,
+      "username" : password,
+      "profileImageURL" : profileImageURL,
+      "country" : country,
+      "description" : description,
+      "isAdmin" : isAdmin
+      }
+      }
 })
 .then(response => response)
 .catch((error) => {
+    console.log("Error " + error);
     handleElasticsearchError(error);
 });
 
-const updateUserWithoutPassword = (email, username, profileImg, country, description) => es.updateByQuery({
+const updateUserWithoutPassword = (email, username, profileImageURL, country, description, isAdmin) => es.updateByQuery({
     index,
     refresh: 'true',
-    id: '1',
-    body: {
-        doc: {
-            username: username,
-            profileImageURL: profileImg,
-            country: country,
-            description: description
-        },
-        query: {
-            match: {
-                "email": {
-                    query: email,
-                    operator: "and"
-                }
-            }
+    "query": {
+        "match": {
+          "email": email
         }
-    }
+      },
+      "script" : {
+      "source" : "ctx._source.username = params.username; ctx._source.profileImageURL = params.profileImageURL; ctx._source.country = params.country; ctx._source.description = params.description; ctx._source.isAdmin = params.isAdmin",
+      "lang" : "painless",
+      "params" : {
+      "username" : username,
+      "profileImageURL" : profileImageURL,
+      "country" : country,
+      "description" : description,
+      "isAdmin" : isAdmin
+      }
+      }
 })
 .then(response => response)
 .catch((error) => {
-    console.log("Error" +  error);
+    console.log("Error " + error);
     handleElasticsearchError(error);
 });
 
