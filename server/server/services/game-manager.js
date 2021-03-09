@@ -244,7 +244,11 @@ async function containsMove(possibleMoves, targetCase) {
 }
 
 async function checkIfSomeoneWon(gameID) {
+    let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let cases;
+    let whitePawnDetected = false;
+    let blackPawnDetected = false;
+
     gamesList.forEach((game) => {
         if (game.id == gameID) {
             cases = game.cases;
@@ -252,16 +256,49 @@ async function checkIfSomeoneWon(gameID) {
         }
     });
 
-    if (cases === undefined) {
-        throw new Error('An error occured during verification of checkIfSomeoneWon');
+    if (cases === undefined)
+        throw new Error('An error occured during verification of checkIfSomeoneWon (1)');
+
+    for (let row of rows) {
+        if (whitePawnDetected && blackPawnDetected) break;
+
+        for (let col of cols) {
+            if (whitePawnDetected && blackPawnDetected) break;
+
+            let value = cases[col+row];
+
+            switch (value) {
+                case 0:
+                    break;
+                case 1:
+                case 3:
+                    whitePawnDetected = true;
+                    break;
+                case 2:
+                case 4:
+                    blackPawnDetected = true;
+                    break;
+                default:
+                    console.log(typeof(value));
+                    console.log(col + "" + row)
+                    throw new Error(`An error occured during verification of checkIfSomeoneWon (2) (${value})`);
+            }
+        }
     }
 
-    return undefined;
+    let result = -1;
+
+    if (!whitePawnDetected)
+        result = 1;
+    else if (!blackPawnDetected)
+        result = 0;
+
+    return result;
 }
 
 async function createCases() {
+    let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var cases = [];
-        let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         let colIndex;
     
         rows.forEach(row => {

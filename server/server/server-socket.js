@@ -66,12 +66,11 @@ serverSocket.on('connection', (ws) => {
                 if (result !== 0) {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
 
-                    let winnerID = gameManager.checkIfSomeoneWon(gameID);
+                    gameManager.checkIfSomeoneWon(gameID).then((winnerID) => {
+                        if (winnerID == -1) return;
 
-                    console.log(winnerID);
-
-                    // if (winnerID == undefined) return;
-                    // endGame(gameID, 0);
+                        endGame(gameID, winnerID);
+                    });
                 }
             });
         } else if (message == 'SURRENDER') {
