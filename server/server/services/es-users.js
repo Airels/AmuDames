@@ -94,21 +94,50 @@ const getUser = {
         })
 };
 
-const updateUser = (email) => es.update({
+const updateUser = (email, username, password, profileImg, country, description) => es.updateByQuery({
     index,
     refresh: 'true',
+    id: '1',
     body: {
-        username: 'username',
-        password: 'password',
-        'email': email,
-        profileImg: 'profileImageURL',
-        description: 'description',
+        username: username,
+        password: password,
+        email: email,
+        profileImageURL: profileImg,
+        country: country,
+        description: description
     }
 })
-    .then(response => response)
-    .catch((error) => {
-        handleElasticsearchError(error);
-    });
+.then(response => response)
+.catch((error) => {
+    handleElasticsearchError(error);
+});
+
+const updateUserWithoutPassword = (email, username, profileImg, country, description) => es.updateByQuery({
+    index,
+    refresh: 'true',
+    id: '1',
+    body: {
+        doc: {
+            username: username,
+            profileImageURL: profileImg,
+            country: country,
+            description: description
+        },
+        query: {
+            match: {
+                "email": {
+                    query: email,
+                    operator: "and"
+                }
+            }
+        }
+    }
+})
+.then(response => response)
+.catch((error) => {
+    console.log("Error" +  error);
+    handleElasticsearchError(error);
+});
 
 const deleteUser = (email) => es.deleteByQuery({
     index,
@@ -140,6 +169,7 @@ export default {
     userLogin,
     getUser,
     updateUser,
+    updateUserWithoutPassword,
     deleteUser,
     getRanking
 };

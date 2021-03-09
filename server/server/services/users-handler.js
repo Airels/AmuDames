@@ -108,9 +108,24 @@ async function getUsers(req, res) {
 
 async function updateUser(req, res) {
     try {
-        let email = req.session.email;
-        res.sendStatus(501);
+        let email = req.session.user.email;
+        let user = req.body;
+        let result;
+
+        if (user.password == '') {
+            console.log("Without password");
+            result = await esdb.updateUserWithoutPassword(email, user.username, user.profileImageURL, user.country, user.description);
+        } else {
+            console.log("With password");
+            result = await esdb.updateUser(email, user.username, user.password, user.profileImageURL, user.country, user.description);
+        }
+
+        console.log("Done");
+        console.log(result);
+
+        res.json({ status: result.statusCode });
     } catch (e) {
+        console.log("An error occured: " + e.name);
         res.status(500).send(e);
     }
 }

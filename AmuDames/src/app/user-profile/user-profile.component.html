@@ -42,11 +42,6 @@
               [class.is-invalid]= "editForm.get('username')!.invalid && editForm.get('username')!.touched">
           </div>
           <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" class="form-control" formControlName="email" value="viewUser.email"
-              [class.is-invalid]= "editForm.get('email')!.invalid && editForm.get('email')!.touched">
-          </div>
-          <div class="form-group">
             <label for="countries">Country:</label>
             <input id="country" list="countries" name="countries" class="form-control" formControlName="country" value="viewUser.country">
             <datalist id="countries">
@@ -251,12 +246,12 @@
       </div>
           <div class="form-group">
             <label for="password">Password (edit)</label>
-            <input type="password" id="passwordSignUp" class="form-control" formControlName="password">
+            <input type="password" id="passwordSignUp" class="form-control" formControlName="password" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="passwordConfirm">Password Confirm (edit)</label>
             <input type="password" id="passwordConfirm" class="form-control" formControlName="passwordConfirm"
-            [class.is-invalid]= "editForm.get('password')!.invalid && editForm.get('passwordConfirm')!.touched">
+            [class.is-invalid]= "editForm.get('password')!.invalid && editForm.get('passwordConfirm')!.touched" autocomplete="off">
           </div>
           <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Edit</button>
         </form>

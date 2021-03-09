@@ -31,9 +31,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.viewUserPromise = new Promise((resolve, reject) => {
       this.viewUserSubscription = this.userService.viewUserSubject.subscribe((user: User) => {
         resolve(user);
-        this.viewUserPromise.then((value: User) => {
-          this.viewUser = value;
-        });
       });
     });
 
@@ -42,19 +39,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
     this.userService.emitUser();
 
-    this.editForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      country: ['', [Validators.required]],
-      profilePicture: ['', [Validators.required]],
-      description: ['', [Validators.required, Validators.maxLength(25)]],
-      password: ['', []],
-      passwordConfirm: ['', []],
-      options: this.formBuilder.array([])
-    }, { validator: [validatePassword, validateCountry] });
+    this.viewUserPromise.then((user: User) => {
+      this.viewUser = user;
 
-    this.deleteForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.pattern(`^${this.viewUser.username}$`)]]
+      this.editForm = this.formBuilder.group({
+        username: [this.viewUser.username, [Validators.required]],
+        country: [this.viewUser.country.toUpperCase(), [Validators.required]],
+        profilePicture: [this.viewUser.profileImageURL, [Validators.required]],
+        description: [this.viewUser.description, [Validators.required, Validators.maxLength(25)]],
+        password: ['', []],
+        passwordConfirm: ['', []],
+        options: this.formBuilder.array([])
+      }, { validator: [validatePassword, validateCountry] });
+
+      this.deleteForm = this.formBuilder.group({
+        username: ['', [Validators.required, Validators.pattern(`^${this.viewUser.username}$`)]]
+      });
     });
   }
 
@@ -68,15 +68,18 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     const updateUser = new User(
       formValue['username'],
       formValue['password'],
-      formValue['email'],
+      '',
       undefined,
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
-      this.viewUser.isAdmin
+      false
     );
 
-    this.http.updateUser(updateUser);
+    this.http.updateUser(updateUser).subscribe((res: any) => {
+      console.log("ANSWER");
+      console.log(res);
+    });
   }
 
   deleteUser(): void {
@@ -93,7 +96,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         }
       },
       error: e => {
-        alert("Error while deleting the user");
+        alert("Error while deleting the user: " + e);
       },
       complete: () => {
         this.userService.disconnect();

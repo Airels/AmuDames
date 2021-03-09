@@ -52,6 +52,7 @@ export class HttpService {
     }
 
     public updateUser(user: User): Observable<any> {
+        console.log("UPDATE");
         return this.http.put(this.serverURL + '/users', user, this.httpOptions);
     }
 
