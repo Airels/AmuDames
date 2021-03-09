@@ -55,8 +55,13 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: Event) {
+    return false;
+  }
+
+  @HostListener('window:unload', ['$event'])
   unloadHandler(event: Event) {
-    window.opener.location.reload();
+    this.gameService.surrend();
   }
 
   /*
@@ -93,7 +98,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
 
     if(this.canvas != undefined) {
-      // if(this.isWhite) { this.reverseBoard(); } 
+      if(!this.isWhite) { this.reverseBoard(); } 
 
       //draw canvas
       this.ctx = this.canvas.nativeElement.getContext('2d');

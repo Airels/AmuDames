@@ -70,7 +70,7 @@ async function getUser(req, res) {
         } else {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
-            user.email = undefined;
+            if (user.email != email) user.email = undefined;
             res.json({
                 status: 200,
                 user: user
@@ -82,6 +82,7 @@ async function getUser(req, res) {
 }
 
 async function getCurrentUser(req, res) {
+    console.log(req.session.user.email);
     req.params.email = req.session.user.email;
     await getUser(req, res);
 }

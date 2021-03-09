@@ -66,9 +66,9 @@ serverSocket.on('connection', (ws) => {
                 if (result !== 0) {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
 
-                    let winnerID = gameManager.checkIfSomeoneWon(gameID);
-
-                    console.log(winnerID);
+                    gameManager.checkIfSomeoneWon(gameID).then((winnerID) => {
+                        console.log(winnerID);
+                    });
 
                     // if (winnerID == undefined) return;
                     // endGame(gameID, 0);
