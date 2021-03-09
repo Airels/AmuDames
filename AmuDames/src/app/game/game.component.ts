@@ -101,17 +101,6 @@ export class GameComponent implements OnInit, OnDestroy {
       this.initCanvas();
       this.bound = this.canvas.nativeElement.getBoundingClientRect();
 
-      //event listener : drawing for test
-      this.canvas.nativeElement.addEventListener('mousemove', e => {
-        if (this.ctx != null && this.canvas != null) {
-          this.bound = this.canvas.nativeElement.getBoundingClientRect();
-          this.x = e.clientX - this.bound.left;
-          this.y = e.clientY - this.bound.top;
-          this.ctx.fillStyle = 'gold';
-          this.ctx.fillRect(this.x, this.y, 4, 4);
-        }
-      });
-
       //event listener: select a paws
       this.canvas.nativeElement.addEventListener('click', e => {
         if (this.isPlaying === true && this.ctx != null && this.canvas != null && this.board != null) {
