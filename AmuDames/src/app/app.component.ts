@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
 
   public goToUserProfile() {
     if(this.user != null) {
-      this.userService.addViewUser(this.user.email);
+      this.userService.addViewUser(this.user.username);
       this.router.navigate([`/user-profile/${this.user.username}`]);
     }
   }

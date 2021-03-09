@@ -94,13 +94,14 @@ async function getUsers(req, res) {
         let users = [];
 
         for (let u of result.body.hits.hits) {
-            u.password = undefined;
-            u.email = undefined;
+            let user = u._source;
+            user.password = undefined;
+            user.email = undefined;
 
-            users.append(u);
+            users.push(user);
         }
-
-        res.status(200).json(users);
+        
+        res.json({ status: 200, users: users });
     } catch (e) {
         res.status(500).send(e);
     }

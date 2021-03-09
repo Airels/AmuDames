@@ -63,10 +63,13 @@ const userLogin = (mail, passwd) => es.search({
 const getUser = {
     byUsername: (username) => es.search({
         index,
-        type: 'user',
         body: {
             query: {
-                match: { 'username': username },
+                match: { 
+                    "username": {
+                        "query": username
+                    } 
+                },
             }
         }
     })

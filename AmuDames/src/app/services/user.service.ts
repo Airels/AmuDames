@@ -43,7 +43,7 @@ export class UserService {
         this.httpService.getUserByUsername(username).subscribe({
             next: res => {
               if (res.status == 200)
-                this.viewUser = res.user;
+                this.viewUser = res.users[0];
               else
                 alert("Error while getting user")
             },
