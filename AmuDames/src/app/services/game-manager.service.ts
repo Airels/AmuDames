@@ -58,8 +58,6 @@ export class GameManagerService {
 
         this.user = <User>this.userService.getUser(this);
 
-        console.log(res.game.cases);
-
         this.serverConnection();
     }
 

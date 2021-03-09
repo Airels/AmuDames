@@ -243,6 +243,22 @@ async function containsMove(possibleMoves, targetCase) {
     return found;
 }
 
+async function checkIfSomeoneWon(gameID) {
+    let cases;
+    gamesList.forEach((game) => {
+        if (game.id == gameID) {
+            cases = game.cases;
+            return;
+        }
+    });
+
+    if (cases === undefined) {
+        throw new Error('An error occured during verification of checkIfSomeoneWon');
+    }
+
+    return undefined;
+}
+
 async function createCases() {
     var cases = [];
         let rows = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -272,7 +288,7 @@ const endGame = async (gameID, winnerID) => {
     let found = false;
     // Push la game sur elasticsearch
     gamesList.forEach((game) => {
-        if (game.id = gameID) {
+        if (game.id == gameID) {
             gamesList.splice(game);
             found = true;
 
@@ -296,5 +312,6 @@ export default {
     getGame,
     createGame,
     checkMoveIsValid,
+    checkIfSomeoneWon,
     endGame
 };

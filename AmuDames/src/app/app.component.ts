@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
       this.user = user;
     });
 
-    this.httpService.getCurrentUser().subscribe((user) => {
-      this.userService.connect(user);
+    this.httpService.getCurrentUser().subscribe((res) => {
+      this.userService.connect(res.user);
     });
   }
 
