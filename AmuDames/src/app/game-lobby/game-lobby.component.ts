@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { GameManagerService } from '../services/game-manager.service';
 
 @Component({
@@ -9,6 +9,11 @@ import { GameManagerService } from '../services/game-manager.service';
 export class GameLobbyComponent implements OnInit, OnDestroy {
 
   constructor(private gameManager: GameManagerService) { }
+
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event: Event) {
+    this.gameManager.stopSearch();
+  }
 
   ngOnInit(): void {
     this.gameManager.searchGame();
