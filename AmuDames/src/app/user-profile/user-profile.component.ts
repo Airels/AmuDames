@@ -14,7 +14,7 @@ import { User } from '../models/user.models';
 })
 
 export class UserProfileComponent implements OnInit, OnDestroy {
-  activeUser !: User | null;
+  activeUser !: User;
   viewUserPromise !: Promise<User>;
   viewUser!: User;
   editForm !: FormGroup;
@@ -69,7 +69,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       formValue['username'],
       formValue['password'],
       this.viewUser.email,
-      undefined,
+      this.viewUser.elo,
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
@@ -77,8 +77,20 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     );
 
     this.http.updateUser(updateUser).subscribe((res: any) => {
-      console.log("ANSWER");
-      console.log(res);
+      if (res.status == 200 && res.updated == 1) {
+        console.log(this.activeUser?.email);
+
+        if (this.viewUser.email === this.activeUser?.email) {
+          this.userService.updateUser(updateUser);
+          alert("You account has been updated");
+        } else {
+          alert("This account has been updated");
+        }
+        this.router.navigate(['/home']);
+      } else {
+        alert("Error while updating your account.");
+        console.log(res);
+      }
     });
   }
 
@@ -91,7 +103,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         else {
           alert("user sucesfully deleted");
           if(this.viewUser.email == this.activeUser?.email) {
-            this.activeUser = null;
             this.router.navigate(['/home']);
           }
         }

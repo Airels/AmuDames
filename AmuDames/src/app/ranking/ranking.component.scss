@@ -12,3 +12,7 @@
 .card:hover {
     background-color: rgba($color: white, $alpha: 0.2);
 }
+
+img {
+    max-height: 64px;
+}

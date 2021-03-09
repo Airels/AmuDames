@@ -127,22 +127,27 @@ const updateUser = (email, username, password, profileImageURL, country, descrip
 const updateUserWithoutPassword = (email, username, profileImageURL, country, description, isAdmin) => es.updateByQuery({
     index,
     refresh: 'true',
-    "query": {
-        "match": {
-          "email": email
+    body: {
+        "query": {
+            "match": {
+                "email": {
+                    "query": email,
+                    "operator": "and"
+                }
+            }
+        },
+        "script" : {
+            "source" : "ctx._source.username = params.username; ctx._source.profileImageURL = params.profileImageURL; ctx._source.country = params.country; ctx._source.description = params.description; ctx._source.isAdmin = params.isAdmin",
+            "lang" : "painless",
+            "params" : {
+                "username" : username,
+                "profileImageURL" : profileImageURL,
+                "country" : country,
+                "description" : description,
+                "isAdmin" : isAdmin
+            }
         }
-      },
-      "script" : {
-      "source" : "ctx._source.username = params.username; ctx._source.profileImageURL = params.profileImageURL; ctx._source.country = params.country; ctx._source.description = params.description; ctx._source.isAdmin = params.isAdmin",
-      "lang" : "painless",
-      "params" : {
-      "username" : username,
-      "profileImageURL" : profileImageURL,
-      "country" : country,
-      "description" : description,
-      "isAdmin" : isAdmin
-      }
-      }
+    }
 })
 .then(response => response)
 .catch((error) => {

@@ -22,6 +22,11 @@ export class UserService {
         this.userSubject.next(this.user);
     }
 
+    public updateUser(user: User) {
+        this.user = user;
+        this.userSubject.next(this.user);
+    }
+
     public disconnect() {
         this.httpService.disconnect().subscribe((res) => {
             if (res.status == 200) {
