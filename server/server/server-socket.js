@@ -67,29 +67,37 @@ serverSocket.on('connection', (ws) => {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
                 }
             });
+        } else if (message == 'SURRENDER') {
+            if (!connected) {
+                ws.send('ERR: NOT CONNECTED YET. PLEASE USE "CONNECT" FIRST');
+                return;
+            }
+
+            let winnerID = (playerID+1)%2;
+
+            if (gameManager.endGame(gameID, winnerID)) {
+                serverSocket.broadcastEnd(gameID, winnerID);
+            } else {
+                console.error("An error occured during finishing a game.");
+            }
         } else if (message == 'QUIT') {
+            let index = 0;
+
             clients.forEach((clientSocket) => {
                 if (clientSocket.socket == ws) {
-                    if (gameID != undefined) {
-                        clients.splice(clientSocket);
-
-                        if (gameManager.endGame(gameID)) {
-                            serverSocket.broadcastEnd(gameID, undefined, playerID);
-                        } else {
-                            console.error("An error occured during finishing a game.");
-                        }
-                    }
+                    clients.splice(index);
 
                     ws.send('GOODBYE');
-                    console.log("A client disconnected");
                     ws.close();
-                    return;
                 }
+
+                index++;
             });
         } else if (message == 'HELP') {
             ws.send("Available commands:\n"
             + "CONNECT <Game ID> <E-Mail> - To connect to a game\n"
             + "MOVE <source pawn> <target pawn> - To move a pawn\n"
+            + "SURRENDER - To surrender a game\n"
             + "QUIT - To disconnect (if you are in game, you will automatically forfeit)\n"
             + "HELP - I mean.. it's obvious what this command do...");
         }  else {
@@ -115,33 +123,15 @@ serverSocket.broadcast = function broadcast(gameID, moves) {
     });
 };
 
-serverSocket.broadcastEnd = function broadcastEnd(gameID, winnerID, loserID) {
-    console.log("Broadcast end");
+serverSocket.broadcastEnd = function broadcastEnd(gameID, playerIDWinner) {
+    console.log("Broadcast end! " + playerIDWinner);
     let i = 0;
-    let winnerSent = false, loserSent = false;
-
-    // Conditions à revoir
     
     clients.forEach((clientSocket) => {
         if (i >= 2) return;
 
         if (clientSocket.gameID == gameID) {
-            if ((winnerID !== undefined && clientSocket.playerID == winnerID) || loserSent) {
-                clientSocket.socket.send('WIN'); 
-                console.log("A client disconnected");
-                clientSocket.socket.close();
-                winnerSent = true;
-            }
-
-            if ((loserID !== undefined && clientSocket.playerID == loserID) || winnerSent) {
-                clientSocket.socket.send('LOSE');
-                console.log("A client disconnected");
-                clientSocket.socket.close();
-                loserSent = true;
-            }
-
-            clients.splice(clientSocket);
-
+            clientSocket.socket.send(`END WINNER ${playerIDWinner}`)
             i++;
         }
     });

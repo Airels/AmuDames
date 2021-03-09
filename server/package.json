@@ -21,6 +21,7 @@
     "@elastic/elasticsearch": "^7.11.0",
     "babel": "^6.23.0",
     "create-react-app": "^4.0.3",
+    "elo-rating": "^1.0.1",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-session": "^1.17.1",

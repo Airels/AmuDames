@@ -1,6 +1,7 @@
 import utils from '../utils';
 import Game from '../models/game.models';
 const semaphore = require('semaphore')(1);
+const EloRating = require('elo-rating');
 
 const waitingList = new Array();
 const gamesList = new Array();
@@ -136,10 +137,10 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
     sourceCase.value = 0;
     cases[sourceCase.col + sourceCase.row] = 0;
 
-    if (targetCase.row == 10) {
+    if (targetCase.row == 9) {
         targetCase.value = 3;
         cases[targetCase.col + targetCase.row] = 3;
-    } else if (targetCase.row == 1) {
+    } else if (targetCase.row == 0) {
         targetCase.value = 4;
         cases[targetCase.col + targetCase.row] = 4;
     } else {
@@ -267,13 +268,20 @@ async function createCases() {
         return cases;
 }
 
-const endGame = async (gameID) => {
+const endGame = async (gameID, winnerID) => {
     let found = false;
-    // Push état de la game sur ElasticSearch & update elo pour les deux joueurs
+    // Push la game sur elasticsearch
     gamesList.forEach((game) => {
         if (game.id = gameID) {
             gamesList.splice(game);
             found = true;
+
+            let p1 = game.whiteUser;
+            let p2 = game.blackUser;
+
+            let eloResult = EloRating.calculate(p1.elo, p2.elo, (winnerID == 0));
+
+            // Push l'elo sur elasticsearch
             return;
         }
     });

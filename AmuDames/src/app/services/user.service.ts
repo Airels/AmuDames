@@ -46,8 +46,6 @@ export class UserService {
                     this.viewUser = res.users[0];
                 else
                     alert("Error while getting user")
-
-                console.log(this.viewUser?.isAdmin);
             },
             error: e => {
               alert("Error whille getting user: " + e);
