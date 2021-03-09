@@ -132,7 +132,6 @@ serverSocket.broadcast = function broadcast(gameID, moves) {
 };
 
 serverSocket.broadcastEnd = function broadcastEnd(gameID, playerIDWinner) {
-    console.log("Broadcast end! " + playerIDWinner);
     let i = 0;
     
     clients.forEach((clientSocket) => {

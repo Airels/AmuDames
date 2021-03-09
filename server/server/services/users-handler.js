@@ -119,31 +119,23 @@ async function updateUser(req, res) {
         let result;
 
         if (user.password == '') {
-            console.log("Without password");
-            console.log(user);
-            console.log(email);
-            console.log(req.session.user.email);
-            console.log(req.session.user.isAdmin);
-            console.log(isAdmin);
             result = await esdb.updateUserWithoutPassword(email, user.username, user.profileImageURL, user.country, user.description, isAdmin);
         } else {
-            console.log("With password");
             result = await esdb.updateUser(email, user.username, user.password, user.profileImageURL, user.country, user.description, isAdmin);
         }
 
         res.json({ status: result.statusCode, updated: result.body.updated });
     } catch (e) {
-        console.log("An error occured: " + e);
         res.status(500).send(e);
     }
 }
 
 async function deleteUser(req, res) {
     try {
-        let email = req.session.email;
+        let email = req.session.user.email;
         let result = await esdb.deleteUser(email);
         
-        res.sendStatus(result.statusCode);
+        res.json({ status: result.statusCode });
     } catch (e) {
         res.status(500).send(e);
     }

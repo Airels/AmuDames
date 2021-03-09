@@ -101,17 +101,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           alert("Error while deleting the user: ");
         }
         else {
-          alert("user sucesfully deleted");
-          if(this.viewUser.email == this.activeUser?.email) {
-            this.router.navigate(['/home']);
-          }
+          alert("user succesfully deleted");
+          this.userService.disconnect();
+          this.router.navigate(['/home']);
         }
       },
       error: e => {
         alert("Error while deleting the user: " + e);
-      },
-      complete: () => {
-        this.userService.disconnect();
       }
     });
   }

@@ -84,13 +84,14 @@ export class GameManagerService {
             } else if (data.startsWith("END")) {
                 let winnerID = data.split(' ')[2];
 
-                console.log(winnerID);
-                console.log(winnerID == this.playerID.toString());
+                console.log("GAME ENDED");
 
-                if (winnerID == this.playerID.toString())
-                    alert("You WON !");
-                else
-                    alert("You LOST !");
+                if (winnerID !== this.playerID.toString()) {
+                    alert("You LOST!");
+                }
+                else {
+                    alert("You WON!");
+                }
 
                 this.reset();
             }
@@ -173,5 +174,9 @@ export class GameManagerService {
         this.connected = false;
         this.connectionSubscription.unsubscribe()
         this.router.navigate(['/home']);
+
+        this.httpService.getCurrentUser().subscribe((res) => {
+            this.userService.updateUser(res.user);
+        });
     }
 }

@@ -1,5 +1,6 @@
 import utils from '../utils';
 import Game from '../models/game.models';
+import esdb from './es-users';
 const semaphore = require('semaphore')(1);
 const EloRating = require('elo-rating');
 
@@ -486,7 +487,8 @@ const endGame = async (gameID, winnerID) => {
 
             let eloResult = EloRating.calculate(p1.elo, p2.elo, (winnerID == 0));
 
-            // Push l'elo sur elasticsearch
+            esdb.setElo(p1.email, eloResult.playerRating);
+            esdb.setElo(p2.email, eloResult.opponentRating);
             return;
         }
     });
