@@ -6,7 +6,7 @@
         <div *ngFor="let user of ranking; let index = index">
             <div class="col">
                 <a (click)="goToUserProfile(user.username)" style="cursor: pointer">
-                    <div class="card text-center" >
+                    <div class="card text-center" style="width: 18rem;">
                         <div class="card-header">
                             <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
                             <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
