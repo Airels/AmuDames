@@ -97,56 +97,99 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
     let game = await gamesList.find((game) => game.id == gameID);
     let eatMove, opponentCase;
 
-    if (game === undefined)  return 0;
-    if (game.playerTurn != playerID) return 0;
+    if (game === undefined)  return 0;                              // Si la game n'existe pas
+    if (game.playerTurn != playerID) return 0;                      // Si ce n'est pas le tour du bon joueur
 
     let cases = game.cases;
 
-    if (cases[targetCase.col + targetCase.row] != 0) return 0;
-    if (cases[sourceCase.col + sourceCase.row] == 0) return 0;
+    if (cases[targetCase.col + targetCase.row] != 0) return 0;      // Si la case cible n'est pas vide
+    if (cases[sourceCase.col + sourceCase.row] == 0) return 0;      // Si la case source est vide
 
-    eatMove = Math.abs(sourceCase.row - targetCase.row) == 2;
+    let possibleMoves;
+    let queenMove = (cases[sourceCase.col + sourceCase.row] == 3 || cases[sourceCase.col + sourceCase.row] == 4);
 
-    let possibleMoves = await getPossibleMoves(sourceCase, playerID);
+    if (queenMove) {                                                    // S'il s'agit d'une dame
+        possibleMoves = await getPossibleQueenMoves(sourceCase, gameID);
+        console.log("QUEEN: " + JSON.stringify(possibleMoves));
+    } else {
+        eatMove = Math.abs(sourceCase.row - targetCase.row) == 2;       // Si la distance entre la source du pion et sa case cible est de 2 cases, alors c'est qu'il veut manger
+        possibleMoves = await getPossibleMoves(sourceCase, playerID);   // Récupération des moves possibles pour ce pion
+    }
 
-    if (!(await containsMove(possibleMoves, targetCase))) return 0;
+    if (!(await containsMove(possibleMoves, targetCase))) return 0;         // Si le mouvement demandé est illégal
 
-    if (eatMove) {
-        let col = cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)];
-        let row = ((sourceCase.row + targetCase.row)/2);
+    if (queenMove) {
+        let vector = {
+            row: targetCase.row - sourceCase.row,
+            col: cols.indexOf(targetCase.col) - cols.indexOf(sourceCase.col)
+        }
 
-        opponentCase = cases[col+row];
+        console.log("VECTOR: " + JSON.stringify(vector));
 
-        console.log(((sourceCase.row + targetCase.row)/2));
-        console.log(cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)]);
+        if (vector.row > 1 && vector.col > 1) {
+            opponentCase = {
+                row: targetCase.row-1,
+                col: cols[cols.indexOf(targetCase.col)-1]
+            }
+        } else if (vector.row < -1 && vector.col > 1) {
+            opponentCase = {
+                row: targetCase.row+1,
+                col: cols[cols.indexOf(targetCase.col)-1]
+            }
+        } else if (vector.row < -1 && vector.col < -1) {
+            opponentCase = {
+                row: targetCase.row+1,
+                col: cols[cols.indexOf(targetCase.col)+1]
+            }
+        } else if (vector.row > 1 && vector.col < -1) {
+            opponentCase = {
+                row: targetCase.row-1,
+                col: cols[cols.indexOf(targetCase.col)+1]
+            }
+        }
 
-        console.log(opponentCase);
-
-        if (opponentCase == 0) return 0;
-
-        cases[col+row] = 0;
+        if (opponentCase !== undefined) {
+            if (cases[opponentCase.col + opponentCase.row] == playerID+1 || cases[opponentCase.col + opponentCase.row] == playerID+3) return 0;
         
+            if (cases[opponentCase.col + opponentCase.row] != 0) {
+                opponentCase.value = 0;
+                cases[opponentCase.col + opponentCase.row] = 0;
 
-        result.push({
-            row: ((sourceCase.row + targetCase.row)/2),
-            col: cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)],
-            value: 0
-        });
+                result.push(opponentCase);
+            }
+        }
+    } else {
+        if (eatMove) {
+            let col = cols[((cols.indexOf(sourceCase.col) + cols.indexOf(targetCase.col))/2)];
+            let row = ((sourceCase.row + targetCase.row)/2);
+    
+            opponentCase = cases[col+row];
+    
+            if (opponentCase == 0 || opponentCase == playerID+1 || opponentCase == playerID+3) return 0;
+    
+            cases[col+row] = 0;
+            
+            result.push({
+                row: row,
+                col: col,
+                value: 0
+            });
+        }
+    }
+
+    if (targetCase.row == 9) {                          // Deviens une Dame Blanche
+        targetCase.value = 3;
+        cases[targetCase.col + targetCase.row] = 3;
+    } else if (targetCase.row == 0) {                   // Deviens une Dame Noire
+        targetCase.value = 4;
+        cases[targetCase.col + targetCase.row] = 4;
+    } else {                                            // Déplace le pion source sur la cible
+        targetCase.value = cases[sourceCase.col + sourceCase.row];
+        cases[targetCase.col + targetCase.row] = cases[sourceCase.col + sourceCase.row];
     }
 
     sourceCase.value = 0;
     cases[sourceCase.col + sourceCase.row] = 0;
-
-    if (targetCase.row == 9) {
-        targetCase.value = 3;
-        cases[targetCase.col + targetCase.row] = 3;
-    } else if (targetCase.row == 0) {
-        targetCase.value = 4;
-        cases[targetCase.col + targetCase.row] = 4;
-    } else {
-        targetCase.value = playerID+1;
-        cases[targetCase.col + targetCase.row] = playerID+1;
-    }
 
     result.push(sourceCase, targetCase);
     game.playerTurn = (game.playerTurn+1) % 2;
@@ -230,6 +273,115 @@ async function getPossibleMoves(source, playerID) { // PlayerID = 0 -> white, Pl
     source.col = cols[source.col];
     return possibilities;
 }
+
+async function getPossibleQueenMoves(source, gameID) {
+    let cases;
+    gamesList.forEach((game) => {
+        if (game.id == gameID) {
+            cases = game.cases;
+            return;
+        }
+    });
+
+    let possibilities = [];
+    source.col = cols.indexOf(source.col);
+
+    /* 
+        - de row à 10 & col à 10 -> cas 1
+        - de row à 10 & col à 0  -> cas 2
+        - de row à 0 & col à 10  -> cas 3
+        - de row à 0 & col à 0   -> cas 4
+    */
+
+    let row, col;
+
+    for (row = source.row+1, col = source.col+1; row < 10 || col < 10; row++, col++) {
+        let value = cases[cols[col]+row];
+
+        if (value == 0) {
+            possibilities.push({
+                row: row,
+                col: cols[col]
+            })
+        } else {
+            if (((row+1) > 9) || (cols[col+1] == undefined)) break;
+
+            possibilities.push({
+                row: row+1,
+                col: cols[col+1]
+            });
+            break;
+        }
+    }
+
+    for (row = source.row-1, col = source.col+1; row > -1 || col < 10; row--, col++) {
+        let value = cases[cols[col]+row];
+
+        if (value == 0) {
+            possibilities.push({
+                row: row,
+                col: cols[col]
+            })
+        } else {
+            if (((row-1) < 0) || (cols[col+1] == undefined)) break;
+
+            possibilities.push({
+                row: row-1,
+                col: cols[col+1]
+            });
+            break;
+        }
+    }
+
+    for (row = source.row-1, col = source.col-1; row > -1 || col > -1; row--, col--) {
+        let value = cases[cols[col]+row];
+
+        if (value == 0) {
+            possibilities.push({
+                row: row,
+                col: cols[col]
+            })
+        } else {
+            if (((row-1) < 0) || (cols[col-1] == undefined)) break;
+
+            possibilities.push({
+                row: row-1,
+                col: cols[col-1]
+            });
+            break;
+        }
+    }
+
+    for (row = source.row+1, col = source.col-1; row < 10 || col > -1; row++, col--) {
+        let value = cases[cols[col]+row];
+
+        if (value == 0) {
+            possibilities.push({
+                row: row,
+                col: cols[col]
+            })
+        } else {
+            if (((row+1) > 9) || (cols[col-1] == undefined)) break;
+
+            possibilities.push({
+                row: row+1,
+                col: cols[col-1]
+            });
+            break;
+        }
+    }
+
+    /*
+        - Peut se déplacer en diagonale de manière illimité
+        - Peut manger UN SEUL et UNIQUE pion
+        - Si deux pions sur le chemin, déplacement impossible
+        - Si pion mangé, doit se trouver JUSTE après lui
+    */
+
+    source.col = cols[source.col];
+    return possibilities;
+}
+
 
 async function containsMove(possibleMoves, targetCase) {
     let found = false;
