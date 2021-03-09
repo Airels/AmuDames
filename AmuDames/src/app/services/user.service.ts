@@ -42,10 +42,12 @@ export class UserService {
     public addViewUser(username: string): void {
         this.httpService.getUserByUsername(username).subscribe({
             next: res => {
-              if (res.status == 200)
-                this.viewUser = res.users[0];
-              else
-                alert("Error while getting user")
+                if (res.status == 200)
+                    this.viewUser = res.users[0];
+                else
+                    alert("Error while getting user")
+
+                console.log(this.viewUser?.isAdmin);
             },
             error: e => {
               alert("Error whille getting user: " + e);

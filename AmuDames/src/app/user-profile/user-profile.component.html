@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="activeUser != null && activeUser.isAdmin">
+    <div *ngIf="activeUser != null && ((viewUser.username == activeUser.username) || (activeUser.isAdmin == true))">
       <hr>
       <p>
         <button type="button" class="btn btn-outline-light" (click)="collapse.toggle()">
@@ -254,10 +254,18 @@
             <input type="password" id="passwordConfirm" class="form-control" formControlName="passwordConfirm"
             [class.is-invalid]= "editForm.get('password')!.invalid && editForm.get('passwordConfirm')!.touched" autocomplete="off">
           </div>
+          <div class="form-group" *ngIf="activeUser.isAdmin == true">
+            <label>Is this user admin :</label>
+            <input id="country" list="adminOptions" name="adminOptions" class="form-control" formControlName="isAdmin">
+            <datalist id="adminOptions">
+              <option value="true"></option>
+              <option value="false"></option>
+            </datalist>
+          </div>
           <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Edit</button>
         </form>
       </div>
-      <div *ngIf="activeUser != null && ((viewUser.email == activeUser.email))">
+      <div *ngIf="activeUser != null && ((viewUser.username == activeUser.username) || (activeUser.isAdmin == true))">
         <hr>
         <p>Delete this account: Please type the account username to delete it. All datas will be deleted from the server, a recovery is not possible. Be carefull.</p>
         <form [formGroup]="deleteForm" (ngSubmit)="deleteUser()">

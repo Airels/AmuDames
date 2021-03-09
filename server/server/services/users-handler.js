@@ -11,7 +11,7 @@ async function login(req, res) {
         if (result.body.hits.total.value > 0) {
             let user = result.body.hits.hits[0]._source;
             user.password = undefined;
-            user.isAdmin = true;
+            // user.isAdmin = true;
 
             req.session.user = user;
             res.json({ status: 200, user: user});
@@ -96,11 +96,13 @@ async function getUsers(req, res) {
         for (let u of result.body.hits.hits) {
             let user = u._source;
             user.password = undefined;
-            user.email = undefined;
+
+            if (req.session.user.isAdmin == 'false')
+                user.email = undefined;
 
             users.push(user);
         }
-        
+
         res.json({ status: 200, users: users });
     } catch (e) {
         res.status(500).send(e);
@@ -109,16 +111,17 @@ async function getUsers(req, res) {
 
 async function updateUser(req, res) {
     try {
-        let email = req.session.user.email;
+        let email = (req.session.user.isAdmin) ? req.body.email : req.session.user.email;
         let user = req.body;
+        let isAdmin = (req.session.user.isAdmin == 'true') ? req.body.isAdmin : 'false';
         let result;
 
         if (user.password == '') {
             console.log("Without password");
-            result = await esdb.updateUserWithoutPassword(email, user.username, user.profileImageURL, user.country, user.description);
+            result = await esdb.updateUserWithoutPassword(email, user.username, user.profileImageURL, user.country, user.description, isAdmin);
         } else {
             console.log("With password");
-            result = await esdb.updateUser(email, user.username, user.password, user.profileImageURL, user.country, user.description);
+            result = await esdb.updateUser(email, user.username, user.password, user.profileImageURL, user.country, user.description, isAdmin);
         }
 
         console.log("Done");

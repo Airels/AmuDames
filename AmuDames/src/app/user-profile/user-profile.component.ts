@@ -49,6 +49,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         description: [this.viewUser.description, [Validators.required, Validators.maxLength(25)]],
         password: ['', []],
         passwordConfirm: ['', []],
+        isAdmin: [this.viewUser.isAdmin, []],
         options: this.formBuilder.array([])
       }, { validator: [validatePassword, validateCountry] });
 
@@ -68,12 +69,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     const updateUser = new User(
       formValue['username'],
       formValue['password'],
-      '',
+      this.viewUser.email,
       undefined,
       formValue['profilePicture'],
       formValue['country'],
       formValue['description'],
-      false
+      formValue['isAdmin']
     );
 
     this.http.updateUser(updateUser).subscribe((res: any) => {
