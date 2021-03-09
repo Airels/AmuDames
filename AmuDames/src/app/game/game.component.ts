@@ -119,7 +119,7 @@ export class GameComponent implements OnInit, OnDestroy {
           } else if((this.board[pos[0]][pos[1]] == 3) && this.isWhite) {
             this.initCanvas();
             this.drawBlackPawn(pos[1], pos[0], w, this.sizeDame, true); 
-            this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, false);
+            this.selected = [pos[0], pos[1]]; this.drawOracle(pos[0], pos[1], false, true);
           } else if((this.board[pos[0]][pos[1]] == 4) && !this.isWhite) {
             this.initCanvas();
             this.drawBlackPawn(pos[1], pos[0], w, this.sizeDame, true); 
