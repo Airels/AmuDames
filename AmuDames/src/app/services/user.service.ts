@@ -45,7 +45,7 @@ export class UserService {
                 if (res.status == 200)
                     this.viewUser = res.users[0];
                 else
-                    alert("Error while getting user")
+                    alert("Error while getting user");
             },
             error: e => {
               alert("Error whille getting user: " + e);

@@ -65,6 +65,13 @@ serverSocket.on('connection', (ws) => {
                 console.log("MOVE: " + JSON.stringify(result));
                 if (result !== 0) {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
+
+                    let winnerID = gameManager.checkIfSomeoneWon(gameID);
+
+                    console.log(winnerID);
+
+                    // if (winnerID == undefined) return;
+                    // endGame(gameID, 0);
                 }
             });
         } else if (message == 'SURRENDER') {
@@ -75,11 +82,7 @@ serverSocket.on('connection', (ws) => {
 
             let winnerID = (playerID+1)%2;
 
-            if (gameManager.endGame(gameID, winnerID)) {
-                serverSocket.broadcastEnd(gameID, winnerID);
-            } else {
-                console.error("An error occured during finishing a game.");
-            }
+            endGame(gameID, winnerID);
         } else if (message == 'QUIT') {
             let index = 0;
 
@@ -109,7 +112,13 @@ serverSocket.on('connection', (ws) => {
     console.log("A client connected");
 });
 
-
+function endGame(gameID, winnerID) {
+    if (gameManager.endGame(gameID, winnerID)) {
+        serverSocket.broadcastEnd(gameID, winnerID);
+    } else {
+        console.error("An error occured during finishing a game.");
+    }
+}
 
 serverSocket.broadcast = function broadcast(gameID, moves) {
     let i = 0;

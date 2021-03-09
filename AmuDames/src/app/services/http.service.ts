@@ -39,16 +39,16 @@ export class HttpService {
     
 
     // User management
-    public getCurrentUser(): Observable<User> {
+    public getCurrentUser(): Observable<any> {
         return this.http.get<User>(this.serverURL + '/users/');
     }
 
     public getUserByUsername(username: string): Observable<any> {
-        return this.http.get<User>(this.serverURL + `/users/username/${username}`);
+        return this.http.get<any>(this.serverURL + `/users/username/${username}`);
     }
 
     public getUserByEmail(email: string): Observable<any> {
-        return this.http.get<User>(this.serverURL + `/users/email/${email}`);
+        return this.http.get<any>(this.serverURL + `/users/email/${email}`);
     }
 
     public updateUser(user: User): Observable<any> {
