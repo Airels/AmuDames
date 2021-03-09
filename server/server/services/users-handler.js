@@ -125,7 +125,7 @@ async function updateUser(req, res) {
 
         res.json({ status: result.statusCode });
     } catch (e) {
-        console.log("An error occured: " + e.name);
+        console.log("An error occured: " + e);
         res.status(500).send(e);
     }
 }
