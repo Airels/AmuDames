@@ -124,36 +124,39 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
             col: cols.indexOf(targetCase.col) - cols.indexOf(sourceCase.col)
         }
 
-        if (vector.row > 0 && vector.col > 0) {
+        console.log("VECTOR: " + JSON.stringify(vector));
+
+        if (vector.row > 1 && vector.col > 1) {
             opponentCase = {
                 row: targetCase.row-1,
                 col: cols[cols.indexOf(targetCase.col)-1]
             }
-        } else if (vector.row < 0 && vector.col > 0) {
+        } else if (vector.row < -1 && vector.col > 1) {
             opponentCase = {
                 row: targetCase.row+1,
                 col: cols[cols.indexOf(targetCase.col)-1]
             }
-        } else if (vector.row < 0 && vector.col < 0) {
+        } else if (vector.row < -1 && vector.col < -1) {
             opponentCase = {
                 row: targetCase.row+1,
                 col: cols[cols.indexOf(targetCase.col)+1]
             }
-        } else {
+        } else if (vector.row > 1 && vector.col < -1) {
             opponentCase = {
                 row: targetCase.row-1,
                 col: cols[cols.indexOf(targetCase.col)+1]
             }
         }
 
-        console.log("Vector: " + JSON.stringify(vector));
-        console.log(`cases[${opponentCase.col}${opponentCase.row}] = ${cases[opponentCase.col + opponentCase.row]}`);
+        if (opponentCase !== undefined) {
+            if (cases[opponentCase.col + opponentCase.row] == playerID+1 || cases[opponentCase.col + opponentCase.row] == playerID+3) return 0;
+        
+            if (cases[opponentCase.col + opponentCase.row] != 0) {
+                opponentCase.value = 0;
+                cases[opponentCase.col + opponentCase.row] = 0;
 
-        if (cases[opponentCase.col + opponentCase.row] != 0) {
-            opponentCase.value = 0;
-            cases[opponentCase.col + opponentCase.row] = 0;
-
-            result.push(opponentCase);
+                result.push(opponentCase);
+            }
         }
     } else {
         if (eatMove) {
@@ -162,7 +165,7 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
     
             opponentCase = cases[col+row];
     
-            if (opponentCase == 0) return 0;
+            if (opponentCase == 0 || opponentCase == playerID+1 || opponentCase == playerID+3) return 0;
     
             cases[col+row] = 0;
             
