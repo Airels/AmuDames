@@ -4,31 +4,29 @@
     <hr>
     <div class="row justify-content-between">
         <div *ngFor="let user of ranking; let index = index">
-            <div class="col-4">
+            <div class="col-2">
                 <div class="card">
+                    <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-xl">
-                                <ul class="navbar-nav  flex-row">
-                                    <li>
-                                        <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
-                                    </li>
-                                    <li>
-                                        <a (click)="goToUserProfile(user.username)" style="cursor: pointer">
-                                            <div>
-                                                <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
-                                                {{ user.username }} 
-                                                <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
-                                                <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
-                                                <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
-                                                <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
-                                                <br>
-                                                {{ user.elo }} <br>
-                                                <i class="desc">" {{ user.description }} "</i>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
+                        <div class="row justify-content-between">
+                            <div class="col-3">
+                                <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
+                                <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
+                                <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
+                                <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="row ">
+                                    <div class="col-2">
+                                        <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png">
+                                    </div>
+                                    <div class="col-2">
+                                        {{ user.username }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                {{ user.elo }}
                             </div>
                         </div>
                     </div>
@@ -36,6 +34,5 @@
             </div>
         </div>
       </div>
-    <br>
 </div>
 
