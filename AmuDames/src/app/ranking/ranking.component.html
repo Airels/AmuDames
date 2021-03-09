@@ -2,37 +2,39 @@
     <h1 class="display-4 text-white">AMU Dames' Ranking</h1>
     <p class="lead text-white">Check out the best players of Amu Dames!</p>
     <hr>
-    <div class="row justify-content-between">
+    <div class="row">
         <div *ngFor="let user of ranking; let index = index">
-            <div class="col-2">
-                <div class="card">
-                    <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
-                    <div class="card-body">
-                        <div class="row justify-content-between">
-                            <div class="col-3">
-                                <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
-                                <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
-                                <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
-                                <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
-                            </div>
-                            <div class="col-3">
-                                <div class="row ">
-                                    <div class="col-2">
-                                        <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png">
-                                    </div>
-                                    <div class="col-2">
-                                        {{ user.username }}
-                                    </div>
+            <div class="col">
+                <a (click)="goToUserProfile(user.username)" style="cursor: pointer">
+                    <div class="card text-center" >
+                        <div class="card-header">
+                            <span class="badge badge-warning mr-3" *ngIf="index == 0">{{ index+1 }}</span>
+                            <span class="badge badge-light mr-3" *ngIf="index == 1">{{ index+1 }}</span>
+                            <span class="badge badge-secondary mr-3" *ngIf="index == 2">{{ index+1 }}</span>
+                            <span class="badge badge-dark mr-3" *ngIf="index > 2">{{ index+1 }}</span>
+                        </div>
+                        <div class="card-body">
+                          <div class="card-title">
+                            <img class="user-img user-img player1" src="{{ user.profileImageURL }}">
+                          </div>
+                          <div class="row justify-content-between">
+                                <div class="col">
+                                    <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png">
+                                </div>
+                                <div class="col">
+                                    {{ user.username }}
+                                </div>
+                                <div class="col">
+                                    {{ user.elo }}
                                 </div>
                             </div>
-                            <div class="col-3">
-                                {{ user.elo }}
-                            </div>
+                        </div>
+                        <div class="card-footer">
+                            {{ user.description }}
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
-      </div>
+    </div>
 </div>
-
