@@ -21,7 +21,7 @@ export class GameManagerService {
     constructor(private userService: UserService, private ws: WebSocketService, private httpService: HttpService, private router: Router) {}
 
     public searchGame(): void {
-        if (this.game !== undefined) {
+        if (this.connected) {
             this.router.navigate(['/game']);
             return;
         }
@@ -83,13 +83,17 @@ export class GameManagerService {
 
                 this.game.setPlayerTurn();
                 this.emitGame();
-            } else if (data == "WIN") {
-                // Player win
-                alert("You won!");
-                this.reset();
-            } else if (data == "LOSE") {
-                // Player lost
-                alert("You lost!");
+            } else if (data.startsWith("END")) {
+                let winnerID = data.split(' ')[2];
+
+                console.log(winnerID);
+                console.log(winnerID == this.playerID.toString());
+
+                if (winnerID == this.playerID.toString())
+                    alert("You WON !");
+                else
+                    alert("You LOST !");
+
                 this.reset();
             }
         });
@@ -127,6 +131,11 @@ export class GameManagerService {
         }
     }
 
+    public surrend() {
+        let command = "SURRENDER";
+        this.ws.sendMessage(command);
+    }
+
     public quit() {
         let command = "QUIT";
         this.ws.sendMessage(command);
@@ -162,7 +171,9 @@ export class GameManagerService {
     }
 
     public reset() {
+        this.quit();
         this.connected = false;
         this.connectionSubscription.unsubscribe()
+        this.router.navigate(['/home']);
     }
 }

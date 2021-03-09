@@ -149,7 +149,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.gameSubscription.unsubscribe();
-    this.gameService.quit();
+    
+    if (this.gameService.connected)
+      this.gameService.surrend();
   }
 
   reverseBoard(): void {
