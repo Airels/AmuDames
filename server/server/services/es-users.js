@@ -56,7 +56,6 @@ const userLogin = (mail, passwd) => es.search({
         }
     }
 }).then(response => response).catch((error) => {
-    console.log(error);
     handleElasticsearchError(error);
 });
 
@@ -93,8 +92,7 @@ const getUser = {
     })
         .then(res => res)
         .catch(e => {
-            handleElasticsearchError(e)
-            console.log(e);
+            handleElasticsearchError(e);
         })
 };
 
@@ -156,7 +154,6 @@ const updateUserWithoutPassword = (email, username, profileImageURL, country, de
 })
 .then(response => response)
 .catch((error) => {
-    console.log("Error " + error);
     handleElasticsearchError(error);
 });
 

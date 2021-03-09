@@ -18,7 +18,7 @@ export class WebSocketService {
     }
 
     public sendMessage(message: any) {
-        console.log("> " + message);
+        // console.log("> " + message);
         this.webSocket.send(message);
     }
 }

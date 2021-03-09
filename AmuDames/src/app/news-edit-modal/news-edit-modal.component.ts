@@ -54,7 +54,6 @@ export class NewsEditModalComponent implements OnInit {
             this.closeModal();
             break;
           default:
-            console.log(res);
             alert("An error occured during news update: " + res.status);
         }
       },

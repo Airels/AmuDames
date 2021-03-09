@@ -20,7 +20,6 @@ async function login(req, res) {
         }
     } catch (e) {
         res.status(500).send(e);
-        console.log("An error occured during login: ", e);
     }
 }
 
@@ -54,7 +53,6 @@ async function addUser(req, res) {
             res.json({ status: 409});
         }
     } catch (e) {
-        console.log("An error occured during register: ", e);
         res.status(500).send(e);
     }
 }
@@ -83,7 +81,6 @@ async function getUser(req, res) {
 }
 
 async function getCurrentUser(req, res) {
-    console.log(req.session.user.email);
     req.params.email = req.session.user.email;
     await getUser(req, res);
 }
@@ -157,7 +154,6 @@ async function getRanking(req, res) {
 
         res.json(users);
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 }

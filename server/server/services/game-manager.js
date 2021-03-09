@@ -111,7 +111,6 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
 
     if (queenMove) {                                                    // S'il s'agit d'une dame
         possibleMoves = await getPossibleQueenMoves(sourceCase, gameID);
-        console.log("QUEEN: " + JSON.stringify(possibleMoves));
     } else {
         eatMove = Math.abs(sourceCase.row - targetCase.row) == 2;       // Si la distance entre la source du pion et sa case cible est de 2 cases, alors c'est qu'il veut manger
         possibleMoves = await getPossibleMoves(sourceCase, playerID);   // Récupération des moves possibles pour ce pion
@@ -124,8 +123,6 @@ const checkMoveIsValid = async (gameID, playerID, sourceCase, targetCase) => {
             row: targetCase.row - sourceCase.row,
             col: cols.indexOf(targetCase.col) - cols.indexOf(sourceCase.col)
         }
-
-        console.log("VECTOR: " + JSON.stringify(vector));
 
         if (vector.row > 1 && vector.col > 1) {
             opponentCase = {
@@ -432,8 +429,6 @@ async function checkIfSomeoneWon(gameID) {
                     blackPawnDetected = true;
                     break;
                 default:
-                    console.log(typeof(value));
-                    console.log(col + "" + row)
                     throw new Error(`An error occured during verification of checkIfSomeoneWon (2) (${value})`);
             }
         }

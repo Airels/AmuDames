@@ -51,7 +51,6 @@ serverSocket.on('connection', (ws) => {
             }
 
             args = message.split(' ');
-            console.log(args);
 
             if (args.length != 3) {
                 ws.send('Invalid syntax.');
@@ -62,7 +61,6 @@ serverSocket.on('connection', (ws) => {
             let target = JSON.parse(args[2]);
 
             gameManager.checkMoveIsValid(gameID, playerID, source, target).then(result => {
-                console.log("MOVE: " + JSON.stringify(result));
                 if (result !== 0) {
                     serverSocket.broadcast(gameID, JSON.stringify(result));
 
@@ -108,7 +106,6 @@ serverSocket.on('connection', (ws) => {
     });
 
     ws.send("AmuDames Game Manager");
-    console.log("A client connected");
 });
 
 function endGame(gameID, winnerID) {

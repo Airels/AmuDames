@@ -22,7 +22,6 @@ export class RankingComponent implements OnInit, OnDestroy {
   ngOnInit(): any {
     this.rankingSubscription = this.http.getRanking().subscribe((users) => {
       for (let user of users) {
-        console.log(user);
         this.ranking.push(user);
       }
     });

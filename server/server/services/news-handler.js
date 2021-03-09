@@ -26,7 +26,6 @@ async function addNews(req, res) {
 
         res.json({ status: result.statusCode, timestamp: news.date });
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 }
@@ -60,8 +59,6 @@ async function deleteNews(req, res) {
     try {
         let timestamp = req.params.timestamp;
         let result = await esdb.deleteNews(timestamp);
-        console.log(timestamp);
-        console.log(result);
 
         if (result.statusCode == 200 && result.body.deleted > 0)
             res.json({ status: 200 });

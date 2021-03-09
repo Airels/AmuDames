@@ -36,7 +36,6 @@ export class GameManagerService {
                     this.createGame(res);
                     break;
                 case 205:
-                    console.log("Search stopped by user");
                     break;
                 default:
                     alert("An error occured. Please try again later. (" + res.status + ")");
@@ -47,7 +46,7 @@ export class GameManagerService {
     public stopSearch(): void {
         if (this.connected) return;
         this.httpService.gameFinderStop().subscribe((res) => {
-            console.log(res);
+            // console.log(res);
         });
     }
 
@@ -63,7 +62,7 @@ export class GameManagerService {
 
     public serverConnection() {
         this.connectionSubscription = this.ws.createObservableSocket('ws://localhost:8085').subscribe((data) => {
-            console.log("< " + data);
+            // console.log("< " + data);
 
             if (data == "AmuDames Game Manager") {
                 let command = "CONNECT " + this.gameID + " " + this.user.email;
@@ -83,8 +82,6 @@ export class GameManagerService {
                 this.emitGame();
             } else if (data.startsWith("END")) {
                 let winnerID = data.split(' ')[2];
-
-                console.log("GAME ENDED");
 
                 if (winnerID !== this.playerID.toString()) {
                     alert("You LOST!");

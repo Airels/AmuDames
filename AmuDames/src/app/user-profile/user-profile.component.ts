@@ -78,8 +78,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.http.updateUser(updateUser).subscribe((res: any) => {
       if (res.status == 200 && res.updated == 1) {
-        console.log(this.activeUser?.email);
-
         if (this.viewUser.email === this.activeUser?.email) {
           this.userService.updateUser(updateUser);
           alert("You account has been updated");

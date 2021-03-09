@@ -114,9 +114,6 @@ export class AppComponent implements OnInit {
         },
         complete: () => this.router.navigate(['/home'])
       });
-
-      
-      console.log(formValue);
   }
 
   onSubmitSignIn() {
@@ -139,8 +136,6 @@ export class AppComponent implements OnInit {
       },
       complete: () => this.router.navigate(['/home'])
     });
-
-    console.log(formValue);
 }
 
   public switchConnexionForm() {
