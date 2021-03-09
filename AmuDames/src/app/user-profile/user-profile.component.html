@@ -1,10 +1,11 @@
 <div class="jumbotron bg-dark p-5 rounded-lg m-3" *ngIf="viewUser != null"> <!-- to show once view user is set by promise-->
     <h1 class="display-4 text-white">{{ viewUser.username }}'s profile</h1>
     <hr>
-    <div class="row justify-content-around justify-content-md-center">
+    <div class="row justify-content-md-center">
       <div class="col-md-auto">
         <img class="viewuser-img" src="{{ viewUser.profileImageURL }}">
       </div>
+      <div class="w-100"></div>
       <div class="col col-lg-2">
         <div class = "user-profile">
           <div class="card">
