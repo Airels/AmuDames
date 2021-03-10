@@ -45,8 +45,10 @@ async function addUser(req, res) {
         if (result.body.hits.total.value == 0) {
             let response = await esdb.addUser(username, passwd, email, default_elo, country, default_profileImageURL, default_description);
             
-            if (response.statusCode == 201)
+            if (response.statusCode == 201){
+                req.session.user = user;
                 res.json({ status: 201, user: user });
+            }
             else
                 res.json({ status: response.statusCode});
         } else {

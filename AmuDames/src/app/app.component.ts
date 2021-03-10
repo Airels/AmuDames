@@ -87,10 +87,10 @@ export class AppComponent implements OnInit {
         formValue['username'],
         formValue['password'],
         formValue['email'],
-        formValue['country'],
+        800,
         "../assets/images/user/user_blank.png",
-        "fr",
-        undefined,
+        formValue['country'],
+        "I am a new user!",
         false
       );
 
