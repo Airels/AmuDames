@@ -17,14 +17,25 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/node": "^7.13.0",
     "@elastic/elasticsearch": "^7.11.0",
+    "babel": "^6.23.0",
+    "create-react-app": "^4.0.3",
+    "elo-rating": "^1.0.1",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "express-session": "^1.17.1",
+    "i": "^0.3.6",
+    "rxjs-compat": "^6.6.3",
+    "save-dev": "0.0.1-security",
+    "semaphore": "^1.1.0",
     "ws": "^7.4.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.13",
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13"
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }

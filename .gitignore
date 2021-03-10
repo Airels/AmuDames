@@ -2,4 +2,5 @@
 /AmuDames/node_modules
 /server/dist
 /server/app
+/server/server/app
 /server/node_modules

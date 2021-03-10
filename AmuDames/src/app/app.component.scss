@@ -1,0 +1,96 @@
+body {
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    background: url(../assets/images/bkg.jpg); 
+    background-repeat: repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: fixed;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+//override bootstrap
+:host ::ng-deep .jumbotron {
+    background-color: rgba($color: #000000, $alpha: 0.5) !important;
+    height: 100% !important;
+}
+.navbar {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+    z-index: 0 !important;
+    position: fixed; top: 0; left: 0;
+    width: 100%;
+}
+
+.credit {
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+    z-index: 0 !important;
+    width: 100%;
+}
+
+.info-navbar {
+    color: white;
+    text-align: right;
+    font-size: small;
+}
+.profile-navbar {
+    position: fixed; top: 0; right: 0; border: 0;
+}
+
+.user-button {
+    position: fixed; top: 1%; right: 80px;
+    z-index: 2 !important;
+}
+.user-text {
+    position: fixed; top: 1%; right: 150px;
+    z-index: 2 !important;
+}
+.user-img {
+    border-color: white;
+    border-radius: 50%;
+    border-width: 0.3em;
+    border-style: solid;
+    margin-left: 10%;
+    width: 64px;
+    height: 64px;
+}
+.user-profile {
+    color: lightgray;
+}
+.user-profile:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.user-info {
+    position: absolute;
+    right: 2%;
+    top: 1%;
+}
+
+.user-img-connected { border-color: green ;}
+.user-img-disconnected { border-color: red ;}
+
+footer {
+    background-color: transparent;
+    color: white;
+    position: fixed;
+    text-align: center;
+    height: 1.6em;
+    font-size: 1em;
+    width: 100%;
+    bottom: 0;
+}
+
+input {
+    width: 100%;
+}
+
+.plink {
+    color: lightskyblue;
+}
+.plink:hover {
+    color: blue;
+}

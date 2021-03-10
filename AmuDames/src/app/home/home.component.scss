@@ -1,0 +1,41 @@
+#newsBox {
+    color: white;
+}
+
+hr {
+    color: white;
+    border-color: white;
+}
+
+.sub-link {
+    text-indent: 2em;
+    padding-left: 0.5em;
+}
+
+.sub-link {
+    color: goldenrod !important;
+}
+.sub-link:hover {
+    color: gold !important;
+    text-decoration: underline !important;
+}
+
+.card {
+    background-color: rgba($color: white, $alpha: 0.5);
+}
+
+.scrollable {
+    height: 90vh;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+.scrollable::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.scrollable::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba($color: #FFFFFF, $alpha: 0.5);
+}

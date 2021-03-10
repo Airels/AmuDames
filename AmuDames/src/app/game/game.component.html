@@ -1,0 +1,47 @@
+<div class="jumbotron bg-dark rounded-lg">
+    <div class="container text-center justify-content-center">
+        <div class="d-flex flex-column float-md-center">
+            <div class="p-2 d-flex">
+                <div class="d-inline-flex p-2">
+                    <ul class="navbar-nav  flex-row p-0 m-0">
+                        <li>
+                            <img class="user-img user-img playerWhite" *ngIf="isWhite" src="{{ user.profileImageURL }}">
+                            <img class="user-img user-img playerBlack" *ngIf="!isWhite" src="{{ user.profileImageURL }}">
+                        </li>
+                        <li>
+                            <div>
+                                <img src="https://www.countryflags.io/{{ user.country }}/flat/24.png"> <br>
+                                {{ user.username }} <br>
+                                {{ user.elo }} <br>
+                                <i class="desc">" {{ user.description }} "</i>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-inline-flex p-2">
+                    <h2 *ngIf="isPlaying; else elseBlock">Your Turn</h2>
+                    <ng-template #elseBlock><h2>Opp. Turn</h2></ng-template>
+                </div>
+                <div class="d-inline-flex p-2">
+                    <ul class="navbar-nav  flex-row">
+                        <li>
+                            <div>
+                                <img src="https://www.countryflags.io/{{ opponent.country }}/flat/24.png"> <br>
+                                {{ opponent.username }} <br>
+                                {{ opponent.elo }} <br>
+                                <i class="desc">" {{ opponent.description }} "</i>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <img class="user-img user-img playerWhite" *ngIf="!isWhite" src="{{ opponent.profileImageURL }}">
+                            <img class="user-img user-img playerBlack" *ngIf="isWhite" src="{{ opponent.profileImageURL }}">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="canvas justify-content-between">
+                <canvas #canvas id="canvas" width="500" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+  </div>
