@@ -51,22 +51,6 @@ const getNewsByDate = (date) => es.search({
         handleElasticsearchError(e)
 });
 
-
-const updateNews = (date) => es.update({
-    index,
-    refresh: 'true',
-    body: {
-        title: 'username',
-        type: 'password',
-        'date': date,
-        content: 'content',
-    }
-})
-    .then(response => response)
-    .catch((error) => {
-        handleElasticsearchError(error);
-});
-
 const deleteNews = (date) => es.deleteByQuery({
     index,
     refresh: 'true',
