@@ -66,6 +66,5 @@ const deleteNews = (date) => es.deleteByQuery({
 export default {
     createNews,
     getNews,
-    updateNews,
     deleteNews
 };
